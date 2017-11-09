@@ -151,7 +151,7 @@ $(function(){
 				   				<@ms.notify msg="生成文件失败" type="fail"/>
 				   				$("#saveUpdate").removeAttr("disabled");
 				   			}
-				   			var columnType = ${columnType};
+				   			var columnType = ${columnType?default(0)};
 				   			if(columnType == 1){
 				   				location.href=managerPath+"/cms/article/${categoryId?default(0)}/main.do";
 				   			}

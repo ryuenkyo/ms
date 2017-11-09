@@ -239,18 +239,19 @@ public class ArticleAction extends BaseAction {
 		mode.addAttribute("appId", appId);
 		mode.addAttribute("listColumn", JSONArray.toJSONString(list));
 		boolean isEditCategory = false; // 新增，不是单篇
-		// 获取栏目id
-		ColumnEntity column = (ColumnEntity) columnBiz.getEntity(categoryId);
-		int columnType = column.getColumnType();
-		// 判断栏目是否是单篇
-		if (column != null && column.getColumnType() == ColumnTypeEnum.COLUMN_TYPE_COVER.toInt()) {
-			isEditCategory = true; // 是单页
+		if(categoryId != 0){
+			// 获取栏目id
+			ColumnEntity column = (ColumnEntity) columnBiz.getEntity(categoryId);
+			int columnType = column.getColumnType();
+			// 判断栏目是否是单篇
+			if (column != null && column.getColumnType() == ColumnTypeEnum.COLUMN_TYPE_COVER.toInt()) {
+				isEditCategory = true; // 是单页
+			}
+			mode.addAttribute("columnType", columnType);
 		}
-		;
 		mode.addAttribute("categoryTitle", categoryTitle);
 		mode.addAttribute("isEditCategory", isEditCategory); // 新增状态
 		mode.addAttribute("categoryId", categoryId);
-		mode.addAttribute("columnType", columnType);
 		// 添加一个空的article实体
 		ArticleEntity article = new ArticleEntity();
 		mode.addAttribute("article", article);
