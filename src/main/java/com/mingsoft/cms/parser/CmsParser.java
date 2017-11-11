@@ -244,7 +244,7 @@ public class CmsParser extends IGeneralParser {
 					int[] _columnIds = columnBiz.queryChildIdsByColumnId(column.getCategoryId(), app.getAppId());
 					columnIds = new int [_columnIds.length+1]; 
 					if (_columnIds.length>0) {
-						System.arraycopy(_columnIds, 0, columnIds, 0, _columnIds.length-1);
+						System.arraycopy(_columnIds, 0, columnIds, 0, _columnIds.length);
 					}
 					columnIds[_columnIds.length] = column.getCategoryId();
 				}
