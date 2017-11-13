@@ -28,9 +28,7 @@
 			</@shiro.hasPermission>
 			</div>
 			</div>
-			
 		</@ms.form>
-		
 		<!--选择更新的栏目-->
 		<@ms.form name="generateColumn">
 			<@ms.formRow label="选择要生成栏目" width="300">
@@ -46,12 +44,10 @@
 			</@shiro.hasPermission>
 			</div></div>
 		</@ms.form>
-
-		
 		<@ms.form name="generateArticle">
 			<@ms.formRow label="文章栏目" width="300">
         			<#if list?has_content>
-						<@ms.treeInput  treeId="inputTreee" json="${list?default('')}" jsonId="categoryId" jsonPid="categoryCategoryId" jsonName="categoryTitle" addNodesName="所有栏目" buttonText="选择更新的栏目" inputName="columnId"  showIcon="true" expandAll="true" />
+						<@ms.treeInput  treeId="inputTreee" json="${list?default('')}" jsonId="categoryId" jsonPid="categoryCategoryId" jsonName="categoryTitle" addNodesName="所有栏目" buttonText="选择更新的栏目" inputName="articleId"  showIcon="true" expandAll="true" />
     				<#else> 
 						<@ms.treeInput  treeId="errorTree"  buttonText="暂无数据" />
     				</#if>	
@@ -87,17 +83,13 @@
 	
 	//点击一键更新主页时，进行主页更新
 	$("#updateIndex").click(function(){
-		
-		
 		//选择的主页模板名称和主页位置
 		var url = $("#select_id").val();
 		var position =$("input[name='position']").val();
-		
 		//封装ajax请求参数
 		var URL="${managerPath}/cms/generate//generateIndex.do";
 		var DATA = "url="+url+"&position="+position;
 		$(this).html("更新中..").attr("disabled", "disabled");
-		
 		$(this).request({url:URL,data:DATA,type:"json",method:"post",func:function(msg) {
 			$("#updateIndex").html("更新主页").removeAttr("disabled");
 			if(msg.result){
@@ -108,7 +100,6 @@
 			$("#updateIndex").html("更新主页")
 		}});
 	});
-	
 	//点击预览时，进行预览
 	$("#viewIndex").click(function(){
 		var position =$("input[name='position']").val();
@@ -116,18 +107,15 @@
 	});
 </script>
 
-<!--点击进行按钮提交-->
+<!--点击生成栏目按钮-->
 <script>
 	$("#updateColumn").click(function() {
-		
 		var columnId = 0;
 		if($("input[name='columnId']").val() !="" && $("input[name='columnId']").val().length>0){
 			columnId = $("input[name='columnId']").val();
 		}
-		
 		var URL="${managerPath}/cms/generate/"+columnId+"/genernateColumn.do";
 		$(this).html("更新中..").attr("disabled", "disabled");
-		
 		$(this).request({url:URL,data:columnId,type:"json",method:"post",func:function(msg) {
 			$("#updateColumn").html("更新栏目").removeAttr("disabled");
 			//回调处理方式
@@ -137,32 +125,28 @@
 				alert(msg.resultMsg);
 			}
 		}});
-		
 	});
 </script>
 
-<!--点击进行按钮提交-->
-	<script>
-		$("#updateArticle").click(function() {
-			
-			var columnId = 0;
-			if($("input[name='columnId']").val() !="" && $("input[name='columnId']").val().length>0){
-				columnId = $("input[name='columnId']").val();
+<!--点击生成文章按钮-->
+<script>
+	$("#updateArticle").click(function() {
+		var articleId = 0;
+		if($("input[name='articleId']").val() !="" ){
+			articleId = $("input[name='articleId']").val();
+		}
+		var URL="${managerPath}/cms/generate/" + articleId + "/generateArticle.do";
+		var DATA = "dateTime=" + $("input[name='dateTime']").val();
+		$(this).html("更新中..").attr("disabled", "disabled");
+		
+		$(this).request({url:URL,data:DATA,type:"json",method:"post",func:function(msg) {
+			$("#updateArticle").html("更新文档").removeAttr("disabled");
+			//回调处理方式
+			if(msg.result){
+				<@ms.notify msg="更新成功" type="warning"/>
+			}else{
+				alert(msg.resultMsg);
 			}
-			
-			var URL="${managerPath}/cms/generate/" + columnId + "/generateArticle.do";
-			var DATA = "dateTime=" + $("input[name='dateTime']").val();
-			$(this).html("更新中..").attr("disabled", "disabled");
-			
-			$(this).request({url:URL,data:DATA,type:"json",method:"post",func:function(msg) {
-				$("#updateArticle").html("更新文档").removeAttr("disabled");
-				//回调处理方式
-				if(msg.result){
-					<@ms.notify msg="更新成功" type="warning"/>
-				}else{
-					alert(msg.resultMsg);
-				}
-			}});
-			
-		});
-	</script>
+		}});
+	});
+</script>
