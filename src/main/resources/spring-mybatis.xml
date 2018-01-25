@@ -11,10 +11,12 @@
                http://www.springframework.org/schema/aop
                http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
                ">
+   
+	
     
-    <context:property-placeholder location="classpath:ms.properties" />
 	<!-- JNDI方式配置数据源 -->
 	<!-- <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean"> 
+
 		<property name="jndiName" value="${jndiName}"></property> </bean> -->
 	<!-- 配置数据源 -->
 	<bean name="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
@@ -43,7 +45,9 @@
 		<property name="testOnReturn" value="false" />
 		
 		<!-- 打开PSCache，并且指定每个连接上PSCache的大小（Oracle使用）
+
 		<property name="poolPreparedStatements" value="true" />
+
 		<property name="maxPoolPreparedStatementPerConnectionSize" value="20" /> -->
 		
 		<!-- 配置监控统计拦截的filters -->

@@ -6,7 +6,7 @@
 	<display-name>mybatis</display-name>
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>classpath:spring-*.xml</param-value>
+		<param-value>classpath:spring-core.xml,classpath:spring-mybatis.xml,classpath:spring-shiro.xml</param-value>
 	</context-param>
 	<filter>
 		<description>字符集过滤器</description>
