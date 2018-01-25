@@ -46,4 +46,8 @@
 			<bean class="com.mingsoft.people.interceptor.ActionInterceptor" />
 		</mvc:interceptor>
 	</mvc:interceptors>
+	
+	<!-- 导入其他配置文件 -->
+	<import resource="spring-mybatis.xml" />
+	<import resource="spring-shiro.xml" />
 </beans>

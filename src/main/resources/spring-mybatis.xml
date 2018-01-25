@@ -65,7 +65,7 @@
 
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
 		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
-		<property name="basePackage" value="com.mingsoft.**.dao,net.mingsoft.**.dao" />
+		<property name="basePackage" value="**.dao" />
 	</bean>
 
 	<!-- 配置事务管理器 -->
@@ -103,7 +103,7 @@
 	</tx:advice>
 	<aop:config>
 		<aop:pointcut id="transactionPointcut"
-			expression="execution(* com.mingsoft.**.biz..*Impl.*(..)) and execution(* net.mingsoft.**.biz..*Impl.*(..))" />
+			expression="execution(* **.biz..*Impl.*(..)) and execution(* **.biz..*Impl.*(..))" />
 		<aop:advisor pointcut-ref="transactionPointcut"
 			advice-ref="transactionAdvice" />
 	</aop:config>
@@ -117,8 +117,7 @@
 		scope="prototype">
 		<property name="patterns">
 			<list>
-				<value>com.mingsoft.*.biz.*</value>
-				<value>net.mingsoft.*.biz.*</value>
+				<value>.biz.*</value>
 			</list>
 		</property>
 	</bean>
