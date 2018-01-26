@@ -152,8 +152,7 @@
 
 	<!-- 删除文章管理的信息 开始 -->
 	<delete id="deleteEntity" parameterType="int">
-		delete from cms_article
-		where ARTICLE_BASICID = #{basicId}
+		DELETE c,b from cms_article c,basic b WHERE c.article_basicid=b.basic_id and b.basic_id=#{basicId}
 	</delete>
 	<!-- 删除文章管理的信息 结束 -->
 

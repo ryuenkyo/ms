@@ -226,10 +226,6 @@ public class ArticleAction extends BaseAction {
 	public String add(ModelMap mode, HttpServletRequest request) {
 		int categoryId = this.getInt(request, "categoryId", 0);
 		String categoryTitle = request.getParameter("categoryTitle");
-		// 判断栏目是否为""
-		if (StringUtil.isBlank(categoryTitle)) {
-			categoryTitle = null;
-		}
 		// 文章属性
 		mode.addAttribute("articleType", articleType());
 
@@ -243,6 +239,10 @@ public class ArticleAction extends BaseAction {
 			// 获取栏目id
 			ColumnEntity column = (ColumnEntity) columnBiz.getEntity(categoryId);
 			int columnType = column.getColumnType();
+			// 判断栏目是否为"",如果是"",就重新赋值
+			if (StringUtil.isBlank(categoryTitle)) {
+				categoryTitle = column.getCategoryTitle();
+			}
 			// 判断栏目是否是单篇
 			if (column != null && column.getColumnType() == ColumnTypeEnum.COLUMN_TYPE_COVER.toInt()) {
 				isEditCategory = true; // 是单页
