@@ -239,6 +239,10 @@ public class ArticleAction extends BaseAction {
 			// 获取栏目id
 			ColumnEntity column = (ColumnEntity) columnBiz.getEntity(categoryId);
 			int columnType = column.getColumnType();
+			// 判断栏目是否为"",如果是"",就重新赋值
+			if (StringUtil.isBlank(categoryTitle)) {
+				categoryTitle = column.getCategoryTitle();
+			}
 			// 判断栏目是否是单篇
 			if (column != null && column.getColumnType() == ColumnTypeEnum.COLUMN_TYPE_COVER.toInt()) {
 				isEditCategory = true; // 是单页
