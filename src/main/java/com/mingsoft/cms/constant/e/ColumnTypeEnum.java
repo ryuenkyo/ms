@@ -25,30 +25,12 @@ import com.mingsoft.base.constant.e.BaseEnum;
 
 /**
  * 
- * 
- * 
- * <p>
- * <b>铭飞科技</b>
- * </p>
- * 
- * <p>
- * Copyright: Copyright (c) 2014 - 2015
- * </p>
- *
- * @author 王天培
- *                QQ:78750478
- *
- * <p>
- * Comments:文章栏目分类类型
- * </p>
- *
- * <p>
- * Create Date:2015-1-18
- * </p>
- *
- * <p>
- * Modification history:
- * </p>
+ * @ClassName:  ColumnTypeEnum   
+ * @Description:TODO(文章栏目分类类型)   
+ * @author: 铭飞开发团队
+ * @date:   2018年1月31日 下午2:55:18   
+ *     
+ * @Copyright: 2018 www.mingsoft.net Inc. All rights reserved.
  */
 public enum ColumnTypeEnum implements BaseEnum {
 	/**

@@ -29,13 +29,16 @@ import com.mingsoft.parser.IParser;
 import com.mingsoft.parser.IParserRegexConstant;
 import com.mingsoft.util.RegexUtil;
 import com.mingsoft.util.StringUtil;
+
 /**
+ * 
+ * @ClassName:  NoParser   
+ * @Description:TODO 
  * 不解析标签类，当前端使用该标签后。被该标签包裹的内容的标签将不会被解析
- * @author 史爱华
- * @version 
- * 版本号：100-000-000<br/>
- * 创建日期：2015-11-19<br/>
- * 历史修订：<br/>
+ * @author: 铭飞开发团队
+ * @date:   2018年1月31日 下午2:59:59   
+ *     
+ * @Copyright: 2018 www.mingsoft.net Inc. All rights reserved.
  */
 public class NoParser  extends IParser{
 	

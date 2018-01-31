@@ -26,13 +26,13 @@ import java.util.Date;
 import com.mingsoft.parser.IParser;
 import com.mingsoft.parser.IParserRegexConstant;
 /**
- * 内容发布时间(单标签)
- * 文章内容标签
- * {ms:field.date  fmt="yyyy-mm-dd"/}
- * @author 成卫雄
- * QQ:330216230
- * 技术支持：景德镇铭飞科技
- * 官网：www.ming-soft.com
+ * 
+ * @ClassName:  ArticleDateParser   
+ * @Description:TODO(内容发布时间(单标签))   
+ * @author: 铭飞开发团队
+ * @date:   2018年1月31日 下午2:56:53   
+ *     
+ * @Copyright: 2018 www.mingsoft.net Inc. All rights reserved.
  */
 public class ArticleDateParser extends IParser {
 	

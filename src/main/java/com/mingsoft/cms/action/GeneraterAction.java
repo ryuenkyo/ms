@@ -67,38 +67,12 @@ import net.mingsoft.basic.util.BasicUtil;
 
 /**
  * 
- * <p>
- * <b>mswx-铭飞微信酒店预订平台</b>
- * </p>
- * 
- * 
- * <p>
- * Copyright: Copyright (c) 2014 - 2015
- * </p>
- * 
- * <p>
- * Company:景德镇铭飞科技有限公司
- * </p>
- * 
- * @author 成卫雄
- * 
- * @version 300-001-001
- * 
- *          <p>
- *          版权所有 铭飞科技
- *          </p>
- * 
- *          <p>
- *          Comments:应用静态生成，适用于静态信息的应用，例如网站、商城、，但是像论坛这些就不需要这些生成功能；
- *          </p>
- * 
- *          <p>
- *          Create Date:2014-8-6
- *          </p>
- * 
- *          <p>
- *          Modification history:
- *          </p>
+ * @ClassName:  GeneraterAction   
+ * @Description:TODO 生成器
+ * @author: 铭飞开发团队
+ * @date:   2018年1月31日 下午2:52:07   
+ *     
+ * @Copyright: 2018 www.mingsoft.net Inc. All rights reserved.
  */
 @Controller("cmsGenerater")
 @RequestMapping("/${managerPath}/cms/generate")

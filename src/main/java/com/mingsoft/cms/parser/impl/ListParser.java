@@ -44,6 +44,9 @@ import com.mingsoft.parser.impl.general.DateParser;
 import com.mingsoft.util.StringUtil;
 
 /**
+ * 
+ * @ClassName:  ListParser   
+ * @Description:TODO 
  * 解析列表标签, {ms:arclist typeid= size= titlelen= flag = }:列表头标签,<br/>
  * {/ms:arclist}:列表尾标签,<br/>
  * 列表中的属性：<br/>
@@ -64,10 +67,10 @@ import com.mingsoft.util.StringUtil;
  * [field.typelink/]:分类连接,点击连接连接到当前分类的列表,<br/>
  * [field.link/]:内容链接,点击显示文章具体的内容地址,<br/>
  * [field.hit/]:信息点击预览数,<br/>
- * [field.keyword/]:文章关键字,<br/>
- * [field.flag/]:文章flag,<br/>
- * 
- * @author 成卫雄 QQ:330216230 技术支持：景德镇铭飞科技 官网：www.ming-soft.com
+ * @author: 铭飞开发团队
+ * @date:   2018年1月31日 下午2:59:48   
+ *     
+ * @Copyright: 2018 www.mingsoft.net Inc. All rights reserved.
  */
 public class ListParser extends com.mingsoft.mdiy.parser.ListParser {
 	

@@ -33,38 +33,12 @@ import com.mingsoft.util.PageUtil;
 
 /**
  * 
- * 
- * <p>
- * <b>铭飞MS平台</b>
- * </p>
- * 
- * <p>
- * Copyright: Copyright (c) 2014 - 2015
- * </p>
- * 
- * <p>
- * Company:景德镇铭飞科技有限公司
- * </p>
- * 
- * @author 姓名 郭鹏辉
- * 
- * @version 300-001-001
- * 
- *          <p>
- *          版权所有 铭飞科技
- *          </p>
- * 
- *          <p>
- *          Comments:文章管理持久化层 || 继承IBaseDao持久化层
- *          </p>
- * 
- *          <p>
- *          Create Date:2014-7-14
- *          </p>
- * 
- *          <p>
- *          Modification history:
- *          </p>
+ * @ClassName:  IArticleDao   
+ * @Description:TODO(文章管理持久化层 || 继承IBaseDao持久化层)   
+ * @author: 铭飞开发团队
+ * @date:   2018年1月31日 下午2:55:33   
+ *     
+ * @Copyright: 2018 www.mingsoft.net Inc. All rights reserved.
  */
 public interface IArticleDao extends IBaseDao {
 

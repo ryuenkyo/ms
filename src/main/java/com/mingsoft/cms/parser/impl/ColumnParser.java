@@ -29,12 +29,13 @@ import com.mingsoft.parser.IParserRegexConstant;
 import com.mingsoft.util.StringUtil;
 
 /**
- * 获取当前栏目的信息的标签
- * @author 史爱华
- * @version 
- * 版本号：100-000-000<br/>
- * 创建日期：2012-12-21<br/>
- * 历史修订：<br/>
+ * 
+ * @ClassName:  ColumnParser   
+ * @Description:TODO 获取当前栏目的信息的标签  
+ * @author: 铭飞开发团队
+ * @date:   2018年1月31日 下午2:59:22   
+ *     
+ * @Copyright: 2018 www.mingsoft.net Inc. All rights reserved.
  */
 public class ColumnParser  extends IParser{
 	

@@ -28,9 +28,14 @@ import com.mingsoft.parser.IParser;
 
 
 /**
- * 当前文章的上一篇文章，下一篇文章的链接标题解析（单标签） 上一篇文章链接：{ms:field.prelink/} 上一篇文章标题：{ms:field.pretitle/} 下一篇文章链接：{ms:field.nextlink/} 下一篇文章标题：{ms:field.nexttitle/} 文章内容标签
  * 
- * @author 成卫雄 QQ:330216230 技术支持：景德镇铭飞科技 官网：www.ming-soft.com
+ * @ClassName:  ArticleHistoryParser   
+ * @Description:TODO
+ * 当前文章的上一篇文章，下一篇文章的链接标题解析（单标签） 上一篇文章链接：{ms:field.prelink/} 上一篇文章标题：{ms:field.pretitle/} 下一篇文章链接：{ms:field.nextlink/} 下一篇文章标题：{ms:field.nexttitle/} 文章内容标签
+ * @author: 铭飞开发团队
+ * @date:   2018年1月31日 下午2:57:17   
+ *     
+ * @Copyright: 2018 www.mingsoft.net Inc. All rights reserved.
  */
 public class ArticleHistoryParser extends IParser {
 	
