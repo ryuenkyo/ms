@@ -76,13 +76,13 @@ public class ListParser extends com.mingsoft.mdiy.parser.ListParser {
 	/**
 	 * 文章关键字,文章所属分类的编号 文章列表子标签 [field.keyword/]
 	 */
-	protected final static String KEY_WORD_FIELD_LIST="\\[field.keyword/\\]";
+	protected final static String FIELD_KEY_WORD="\\[field.keyword/\\]";
 	
 	/**
 	 * 文章flag标签,显示文章的属性
 	 */
 	
-	protected final static String FLAG_FIELD_LIST="\\[field.flag/\\]";
+	protected final static String FIELD_FLAG="\\[field.flag/\\]";
 	/**
 	 * 新增字段业务层
 	 */
@@ -178,7 +178,7 @@ public class ListParser extends com.mingsoft.mdiy.parser.ListParser {
 					// 文章发布时间(非必填),
 					htmlList = new DateParser(htmlList,article.getBasicDateTime()).parse();//tabContent(htmlList, date(article.getBasicUpdateTime(), htmlList),DATE_FIELD_LIST);
 					// 文章关键字
-					htmlList = tabContent(htmlList, article.getArticleKeyword(),KEY_WORD_FIELD_LIST);
+					htmlList = tabContent(htmlList, article.getArticleKeyword(),FIELD_KEY_WORD);
 					// 文章flag属性
 					String articleType = article.getArticleType();
 					
@@ -197,9 +197,9 @@ public class ListParser extends com.mingsoft.mdiy.parser.ListParser {
 								e.printStackTrace();
 							}
 						}
-						htmlList = tabContent(htmlList, flagStr,FLAG_FIELD_LIST);
+						htmlList = tabContent(htmlList, flagStr,FIELD_FLAG);
 					}else{
-						htmlList = tabContent(htmlList, articleType,FLAG_FIELD_LIST);
+						htmlList = tabContent(htmlList, articleType,FIELD_FLAG);
 					}
 					// 分类名称，文章所属分类的名称,
 					htmlList = tabContent(htmlList, StringUtil.null2String(article.getColumn().getCategoryTitle()),TYPENAME_FIELD_LIST);
