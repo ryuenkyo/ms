@@ -64,13 +64,25 @@ import com.mingsoft.util.StringUtil;
  * [field.typelink/]:分类连接,点击连接连接到当前分类的列表,<br/>
  * [field.link/]:内容链接,点击显示文章具体的内容地址,<br/>
  * [field.hit/]:信息点击预览数,<br/>
+ * [field.keyword/]:文章关键字,<br/>
+ * [field.flag/]:文章flag,<br/>
  * 
  * @author 成卫雄 QQ:330216230 技术支持：景德镇铭飞科技 官网：www.ming-soft.com
  */
 public class ListParser extends com.mingsoft.mdiy.parser.ListParser {
 	
 	protected static final String FIELD_HIT = "\\[field.hit/\\]";
-
+	
+	/**
+	 * 文章关键字,文章所属分类的编号 文章列表子标签 [field.keyword/]
+	 */
+	protected final static String FIELD_KEY_WORD="\\[field.keyword/\\]";
+	
+	/**
+	 * 文章flag标签,显示文章的属性
+	 */
+	
+	protected final static String FIELD_FLAG="\\[field.flag/\\]";
 	/**
 	 * 新增字段业务层
 	 */
@@ -165,7 +177,30 @@ public class ListParser extends com.mingsoft.mdiy.parser.ListParser {
 					htmlList = tabContent(htmlList, "<script src='"+app.getAppHostUrl()+"/basic/"+article.getBasicId()+"/hit.do?isShow=true'></script>",FIELD_HIT);
 					// 文章发布时间(非必填),
 					htmlList = new DateParser(htmlList,article.getBasicDateTime()).parse();//tabContent(htmlList, date(article.getBasicUpdateTime(), htmlList),DATE_FIELD_LIST);
+					// 文章关键字
+					htmlList = tabContent(htmlList, article.getArticleKeyword(),FIELD_KEY_WORD);
+					// 文章flag属性
+					String articleType = article.getArticleType();
 					
+					if(!articleType.isEmpty()){
+						String[] flags = articleType.split(",");
+						String flagStr = "";
+						for(int j=0;j<flags.length;j++){
+							try {
+								String flag = com.mingsoft.cms.constant.Const.ARTICLE_ATTRIBUTE_RESOURCE.getString(flags[j]);
+								if(j == 0){
+									flagStr = flag;
+								}else{
+									flagStr = flagStr + "," + flag;
+								}
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+						}
+						htmlList = tabContent(htmlList, flagStr,FIELD_FLAG);
+					}else{
+						htmlList = tabContent(htmlList, articleType,FIELD_FLAG);
+					}
 					// 分类名称，文章所属分类的名称,
 					htmlList = tabContent(htmlList, StringUtil.null2String(article.getColumn().getCategoryTitle()),TYPENAME_FIELD_LIST);
 					// 文章链接 ：[field.link/]
