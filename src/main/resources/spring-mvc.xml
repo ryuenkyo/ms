@@ -99,7 +99,7 @@
 	</bean>
 
 	<!-- 系统错误转发配置[并记录错误日志] -->
-	<bean class="net.mingsoft.basic.exception.SimpleMappingExceptionResolver"/>
+	<bean class="net.mingsoft.base.exception.SimpleMappingExceptionResolver"/>
 
 	<mvc:interceptors>
 		<mvc:interceptor>
