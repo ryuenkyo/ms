@@ -438,6 +438,9 @@ public class CmsParser extends IGeneralParser {
 			where.put("basicId", article.getBasicId());
 			// 获取各字段的值
 			// 根据表单类型id查找出所有的字段信息
+			if(contentModel == null){
+				return "";
+			}
 			List fieldLists = fieldBiz.queryBySQL(contentModel.getCmTableName(), listFieldName, where);
 			if(fieldLists.size()>0){
 				Map filedValue = (Map) fieldLists.get(0);
