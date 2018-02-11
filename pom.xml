@@ -34,8 +34,8 @@
 	<properties>
 		<ms.base.version>1.0.3-SNAPSHOT</ms.base.version>
 		<ms.basic.version>1.0.4-SNAPSHOT</ms.basic.version>
-		<ms.mdiy.version>1.0.2-SNAPSHOT</ms.mdiy.version>
-		<ms.mpeople.version>1.0.2-SNAPSHOT</ms.mpeople.version>
+		<ms.mdiy.version>1.0.3-SNAPSHOT</ms.mdiy.version>
+		<ms.mpeople.version>1.0.3-SNAPSHOT</ms.mpeople.version>
 	</properties>
 	<dependencies>
 
@@ -45,13 +45,7 @@
 			<version>${ms.base.version}</version>
 		</dependency>
 		<!-- ms-base源码jar包 -->
-		<dependency>
-			<groupId>net.mingsoft</groupId>
-			<artifactId>ms-base</artifactId>
-			<version>${ms.base.version}</version>
-			<classifier>sources</classifier>
-			<scope>provided</scope>
-		</dependency>
+
 
 		<!-- ms-basic基础模块war包，包含后台管理的基础功能 -->
 		<dependency>
@@ -61,13 +55,7 @@
 			<type>war</type>
 		</dependency>
 		<!-- ms-basic源码jar包 -->
-		<dependency>
-			<groupId>net.mingsoft</groupId>
-			<artifactId>ms-basic</artifactId>
-			<version>${ms.basic.version}</version>
-			<classifier>sources</classifier>
-			<scope>provided</scope>
-		</dependency>
+		
 
 		<!-- ms-basic开发依赖，主要方便业务开发 -->
 		<dependency>
@@ -129,10 +117,26 @@
 		<dependency>
 			<groupId>net.mingsoft</groupId>
 			<artifactId>ms-upgrader</artifactId>
-			<version>1.0.3-SNAPSHOT</version>
+			<version>1.0.4-SNAPSHOT</version>
 		</dependency>
 
-	
+		<dependency>
+			<groupId>net.mingsoft</groupId>
+			<artifactId>ms-msso-client</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>net.mingsoft</groupId>
+			<artifactId>ms-msso-server</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>net.mingsoft</groupId>
+			<artifactId>ms-msend</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+			<type>war</type>
+		</dependency>
 	</dependencies>
 
 	<build>
