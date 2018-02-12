@@ -24,13 +24,13 @@ package com.mingsoft.cms.parser.impl;
 import com.mingsoft.parser.IParser;
 
 /**
- * 内容标题(单标签)
- * 文章内容标签
- * {ms:field.title/}
- * @author 成卫雄
- * QQ:330216230
- * 技术支持：景德镇铭飞科技
- * 官网：www.ming-soft.com
+ * 
+ * @ClassName:  ArticleTitleParser   
+ * @Description:TODO 内容标题(单标签)
+ * @author: 铭飞开发团队
+ * @date:   2018年1月31日 下午2:58:31   
+ *     
+ * @Copyright: 2018 www.mingsoft.net Inc. All rights reserved.
  */
 public class ArticleTitleParser extends IParser {
 	

@@ -74,9 +74,13 @@ import com.mingsoft.util.StringUtil;
 import net.mingsoft.basic.util.BasicUtil;
 
 /**
- * 替换标签类
  * 
- * @author 成卫雄 QQ:330216230 技术支持：景德镇铭飞科技 官网：www.ming-soft.com
+ * @ClassName:  CmsParser   
+ * @Description:TODO(替换标签类)   
+ * @author: 铭飞开发团队
+ * @date:   2018年1月31日 下午2:56:00   
+ *     
+ * @Copyright: 2018 www.mingsoft.net Inc. All rights reserved.
  */
 @Component
 @Scope("prototype")

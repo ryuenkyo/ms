@@ -27,13 +27,13 @@ import com.mingsoft.parser.IParser;
 import com.mingsoft.util.StringUtil;
 
 /**
- * 文章所在栏目链接(单标签)
- * 文章内容标签
- * {ms:field.typelink/}
- * @author 成卫雄
- * QQ:330216230
- * 技术支持：景德镇铭飞科技
- * 官网：www.ming-soft.com
+ * 
+ * @ClassName:  ArticleTypeLinkParser   
+ * @Description:TODO 文章所在栏目链接(单标签)
+ * @author: 铭飞开发团队
+ * @date:   2018年1月31日 下午2:58:49   
+ *     
+ * @Copyright: 2018 www.mingsoft.net Inc. All rights reserved.
  */
 public class ArticleTypeLinkParser extends IParser {
 	

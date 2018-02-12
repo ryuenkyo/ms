@@ -56,29 +56,12 @@ import net.mingsoft.basic.util.BasicUtil;
 
 /**
  * 
- * 
- * 
- * <p>
- * <b>铭飞科技</b>
- * </p>
- * 
- * <p>
- * Copyright: Copyright (c) 2014 - 2015
- * </p>
- *
- * @author 王天培 QQ:78750478
- *
- *         <p>
- *         Comments: 前段文章控制，如果标签不能满足可以使用这个控制来满足用户的查询文章需求，主要是通过ajax返回json数据格式
- *         </p>
- *
- *         <p>
- *         Create Date:2014-10-15
- *         </p>
- *
- *         <p>
- *         Modification history:
- *         </p>
+ * @ClassName:  ArticleAction   
+ * @Description:TODO 前段文章控制，如果标签不能满足可以使用这个控制来满足用户的查询文章需求，主要是通过ajax返回json数据格式   
+ * @author: 铭飞开发团队
+ * @date:   2018年1月31日 下午2:52:44   
+ *     
+ * @Copyright: 2018 www.mingsoft.net Inc. All rights reserved.
  */
 @Controller("jsonApiArticle")
 @RequestMapping("/mcms/article")

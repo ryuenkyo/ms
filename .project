@@ -3,6 +3,7 @@
 	<name>mcms</name>
 	<comment></comment>
 	<projects>
+		<project>ms-msend</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

@@ -59,46 +59,18 @@ import com.mingsoft.cms.parser.CmsParser;
 import com.mingsoft.parser.IParserRegexConstant;
 import com.mingsoft.util.FileUtil;
 import com.mingsoft.util.StringUtil;
-import com.mingsoft.util.proxy.Header;
-import com.mingsoft.util.proxy.Proxy;
-import com.mingsoft.util.proxy.Result;
 
+import cn.hutool.http.HttpUtil;
 import net.mingsoft.basic.util.BasicUtil;
 
 /**
  * 
- * <p>
- * <b>mswx-铭飞微信酒店预订平台</b>
- * </p>
- * 
- * 
- * <p>
- * Copyright: Copyright (c) 2014 - 2015
- * </p>
- * 
- * <p>
- * Company:景德镇铭飞科技有限公司
- * </p>
- * 
- * @author 成卫雄
- * 
- * @version 300-001-001
- * 
- *          <p>
- *          版权所有 铭飞科技
- *          </p>
- * 
- *          <p>
- *          Comments:应用静态生成，适用于静态信息的应用，例如网站、商城、，但是像论坛这些就不需要这些生成功能；
- *          </p>
- * 
- *          <p>
- *          Create Date:2014-8-6
- *          </p>
- * 
- *          <p>
- *          Modification history:
- *          </p>
+ * @ClassName:  GeneraterAction   
+ * @Description:TODO 生成器
+ * @author: 铭飞开发团队
+ * @date:   2018年1月31日 下午2:52:07   
+ *     
+ * @Copyright: 2018 www.mingsoft.net Inc. All rights reserved.
  */
 @Controller("cmsGenerater")
 @RequestMapping("/${managerPath}/cms/generate")
@@ -646,18 +618,38 @@ public class GeneraterAction extends BaseAction {
 	public void genernateForArticle(HttpServletResponse response, HttpServletRequest request, @PathVariable int columnId) {
 		// 生成html
 		// 1、更新文章
+//		Map parms = new HashMap();
+//		parms.put("dateTime", StringUtil.getSimpleDateStr(new Date(), "yyyy-MM-dd"));
+//		Header header = new Header(this.getHost(request), com.mingsoft.base.constant.Const.UTF8);
+//		String cookie = "";
+//		for (Cookie c : request.getCookies()) {
+//			cookie += c.getName() + "=" + c.getValue() + ";";
+//		}
+//		header.setCookie(cookie);
+//		Result re = Proxy.get(this.getUrl(request) + managerPath + "/cms/generate/" + columnId + "/generateArticle.do", header, parms);
+//		ColumnEntity column = (ColumnEntity) columnBiz.getEntity(columnId);
+//		if (column != null && column.getColumnType() == ColumnTypeEnum.COLUMN_TYPE_COVER.toInt()) {
+//			Proxy.get(this.getUrl(request) + managerPath + "/cms/generate/" + columnId + "/genernateColumn.do", header, null);
+//		}
+//		// 2、更新栏目
+//		// Proxy.get(this.getUrl(request)+"/manager/cms/generate/"+columnId+"/genernateColumn.do",
+//		// header, null, Const.UTF8);
+//
+//		// 3主
+//		Map map = new HashMap();
+//		map.put("url", IParserRegexConstant.REGEX_INDEX_HTML);
+//		map.put("position", IParserRegexConstant.HTML_INDEX);
+//		Proxy.get(this.getUrl(request) + managerPath + "/cms/generate/generateIndex.do", header, map);
 		Map parms = new HashMap();
 		parms.put("dateTime", StringUtil.getSimpleDateStr(new Date(), "yyyy-MM-dd"));
-		Header header = new Header(this.getHost(request), com.mingsoft.base.constant.Const.UTF8);
 		String cookie = "";
 		for (Cookie c : request.getCookies()) {
 			cookie += c.getName() + "=" + c.getValue() + ";";
 		}
-		header.setCookie(cookie);
-		Result re = Proxy.get(this.getUrl(request) + managerPath + "/cms/generate/" + columnId + "/generateArticle.do", header, parms);
+		HttpUtil.get(this.getUrl(request) + managerPath + "/cms/generate/" + columnId + "/generateArticle.do",parms);
 		ColumnEntity column = (ColumnEntity) columnBiz.getEntity(columnId);
 		if (column != null && column.getColumnType() == ColumnTypeEnum.COLUMN_TYPE_COVER.toInt()) {
-			Proxy.get(this.getUrl(request) + managerPath + "/cms/generate/" + columnId + "/genernateColumn.do", header, null);
+			HttpUtil.get(this.getUrl(request) + managerPath + "/cms/generate/" + columnId + "/genernateColumn.do");
 		}
 		// 2、更新栏目
 		// Proxy.get(this.getUrl(request)+"/manager/cms/generate/"+columnId+"/genernateColumn.do",
@@ -667,7 +659,7 @@ public class GeneraterAction extends BaseAction {
 		Map map = new HashMap();
 		map.put("url", IParserRegexConstant.REGEX_INDEX_HTML);
 		map.put("position", IParserRegexConstant.HTML_INDEX);
-		Proxy.get(this.getUrl(request) + managerPath + "/cms/generate/generateIndex.do", header, map);
+		HttpUtil.get(this.getUrl(request) + managerPath + "/cms/generate/generateIndex.do", map);
 
 		this.outJson(response, ModelCode.CMS_GENERATE_ARTICLE, true);
 	}

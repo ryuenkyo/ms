@@ -152,8 +152,8 @@
 
 	<!-- 删除文章管理的信息 开始 -->
 	<delete id="deleteEntity" parameterType="int">
-		delete from cms_article
-		where ARTICLE_BASICID = #{basicId}
+		DELETE b from basic b WHERE b.basic_id=#{basicId};
+		DELETE c from cms_article c WHERE c.article_basicid=#{basicId}
 	</delete>
 	<!-- 删除文章管理的信息 结束 -->
 
@@ -375,7 +375,7 @@
 		on c.CATEGORY_ID = cl.COLUMN_CATEGORY_ID
 		<if test="tableName!=null">left join ${tableName} d on d.basicId=a.ARTICLE_BASICID
 		</if>
-		where a.ARTICLE_WEBID = #{websiteId}
+		where c.DEL=0 and a.ARTICLE_WEBID = #{websiteId}
 		<if test="ids!=null">
 			and
 			b.BASIC_CATEGORYID in

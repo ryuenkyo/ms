@@ -27,12 +27,12 @@ import com.mingsoft.base.constant.e.BaseEnum;
 
 /**
  * 
- * 铭飞mcms开源系统
- * @author 猪
- * @version 
- * 版本号：100-000-000<br/>
- * 创建日期：2016年1月20日<br/>
- * 历史修订：<br/>
+ * @ClassName:  Const   
+ * @Description:TODO(常量定义)   
+ * @author: 铭飞开发团队
+ * @date:   2018年1月31日 下午2:54:42   
+ *     
+ * @Copyright: 2018 www.mingsoft.net Inc. All rights reserved.
  */
 public final class Const {
 	

@@ -23,6 +23,15 @@ package com.mingsoft.cms.parser.impl;
 
 import com.mingsoft.parser.IParser;
 
+/**
+ * 
+ * @ClassName:  ArticleLitpicParser   
+ * @Description:TODO 文章缩略标签
+ * @author: 铭飞开发团队
+ * @date:   2018年1月31日 下午2:58:11   
+ *     
+ * @Copyright: 2018 www.mingsoft.net Inc. All rights reserved.
+ */
 public class ArticleLitpicParser extends IParser {
 	/**
 	 * 文章缩略标签

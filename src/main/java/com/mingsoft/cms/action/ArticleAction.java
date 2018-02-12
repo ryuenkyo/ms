@@ -72,39 +72,12 @@ import net.mingsoft.basic.bean.EUListBean;
 import net.mingsoft.basic.util.BasicUtil;
 
 /**
- * 
- * 
- * <b>铭飞MS平台</b>
- * </p>
- * 
- * <p>
- * Copyright: Copyright (c) 2014 - 2015
- * </p>
- * 
- * <p>
- * Company:景德镇铭飞科技有限公司
- * </p>
- * 
- * @author 姓名 郭鹏辉
- * 
- * @version 300-001-001
- * 
- *          <p>
- *          版权所有 铭飞科技
- *          </p>
- * 
- *          <p>
- *          Comments:文章控制层 ， 继承BasicAction
- *          </p>
- * 
- *          <p>
- *          Create Date:2014-7-5
- *          </p>
- * 
- *          <p>
- *          Modification history:bootstrap-table修改
- *          2017-4-2
- *          </p>
+ * @ClassName:  ArticleAction   
+ * @Description:TODO 文章管理   
+ * @author: 铭飞开发团队
+ * @date:   2018年1月31日 下午2:51:39   
+ *     
+ * @Copyright: 2018 www.mingsoft.net Inc. All rights reserved.
  */
 @Controller
 @RequestMapping("/${managerPath}/cms/article")
@@ -226,10 +199,6 @@ public class ArticleAction extends BaseAction {
 	public String add(ModelMap mode, HttpServletRequest request) {
 		int categoryId = this.getInt(request, "categoryId", 0);
 		String categoryTitle = request.getParameter("categoryTitle");
-		// 判断栏目是否为""
-		if (StringUtil.isBlank(categoryTitle)) {
-			categoryTitle = null;
-		}
 		// 文章属性
 		mode.addAttribute("articleType", articleType());
 
@@ -243,6 +212,10 @@ public class ArticleAction extends BaseAction {
 			// 获取栏目id
 			ColumnEntity column = (ColumnEntity) columnBiz.getEntity(categoryId);
 			int columnType = column.getColumnType();
+			// 判断栏目是否为"",如果是"",就重新赋值
+			if (StringUtil.isBlank(categoryTitle)) {
+				categoryTitle = column.getCategoryTitle();
+			}
 			// 判断栏目是否是单篇
 			if (column != null && column.getColumnType() == ColumnTypeEnum.COLUMN_TYPE_COVER.toInt()) {
 				isEditCategory = true; // 是单页

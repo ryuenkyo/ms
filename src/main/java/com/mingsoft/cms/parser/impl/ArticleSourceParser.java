@@ -23,13 +23,13 @@ package com.mingsoft.cms.parser.impl;
 
 import com.mingsoft.parser.IParser;
 /**
- * 内容发布来源(单标签)
- * 文章来源标签
- * {ms:field.source/}
- * @author 成卫雄
- * QQ:330216230
- * 技术支持：景德镇铭飞科技
- * 官网：www.ming-soft.com
+ * 
+ * @ClassName:  ArticleSourceParser   
+ * @Description:TODO 内容发布来源(单标签)
+ * @author: 铭飞开发团队
+ * @date:   2018年1月31日 下午2:58:24   
+ *     
+ * @Copyright: 2018 www.mingsoft.net Inc. All rights reserved.
  */
 public class ArticleSourceParser extends IParser {
 	

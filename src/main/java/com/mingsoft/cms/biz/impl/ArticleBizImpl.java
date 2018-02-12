@@ -49,38 +49,12 @@ import com.mingsoft.util.StringUtil;
 
 /**
  * 
- * 
- * <p>
- * <b>铭飞MS平台</b>
- * </p>
- * 
- * <p>
- * Copyright: Copyright (c) 2014 - 2015
- * </p>
- * 
- * <p>
- * Company:景德镇铭飞科技有限公司
- * </p>
- * 
- * @author 姓名 郭鹏辉
- * 
- * @version 300-001-001
- * 
- *          <p>
- *          版权所有 铭飞科技
- *          </p>
- * 
- *          <p>
- *          Comments:文章管理业务层实现类 || 继承BasicBizImpl || 实现IArticleBiz
- *          </p>
- * 
- *          <p>
- *          Create Date:2014-7-14
- *          </p>
- * 
- *          <p>
- *          Modification history:
- *          </p>
+ * @ClassName:  ArticleBizImpl   
+ * @Description:TODO(文章管理业务层实现类 || 继承BasicBizImpl || 实现IArticleBiz)   
+ * @author: 铭飞开发团队
+ * @date:   2018年1月31日 下午2:53:53   
+ *     
+ * @Copyright: 2018 www.mingsoft.net Inc. All rights reserved.
  */
 @Service("ArticleBizImpl")
 public class ArticleBizImpl extends BasicBizImpl implements IArticleBiz {
