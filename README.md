@@ -49,7 +49,7 @@ QQ交流群号：①231212174 ②221335098 <br/>
 
 #快速体验
 * 将MCMS项目源码导入eclipse；
-* 创建数据库db-mcms-open,注意：数据库使用utf-8编码，导入doc/db-mcms-open-4.6.2.sql,＊-up-*.sql表示sql升级补丁是手动升级包，如果导入了系统对应的完整版SQL，sql升级补丁不需要重复导入；
+* 创建数据库db-mcms-open,注意：数据库使用utf-8编码，导入doc/db-mcms-open-4.6.2.sql,＊-up-*.sql表示sql升级补丁是手动升级包，如果导入了系统对应的完整版SQL，sql升级补丁不需要重复导入； 
 * 修改src\main\resources\ms.properties文件中的数据库设置参数；
 * 第一次启动必须先访问后台，后台访问地址：http://+ip地址（或localhost）:tomcat端口/项目发布名/ms/login.do <font color="red">必需先访问后台界面再访问前台界面</font>
 * 前台访问地址：http://ip地址（或localhost）:tomcat端口/项目发布名<font color="red">,如果发布的地址不是http://localhost:8080/ms-mcms</font>，先在后台生成静态页面再进行访问
