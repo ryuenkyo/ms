@@ -38,14 +38,12 @@
 		<ms.mpeople.version>1.0.3-SNAPSHOT</ms.mpeople.version>
 	</properties>
 	<dependencies>
-
 		<dependency>
 			<groupId>net.mingsoft</groupId>
 			<artifactId>ms-base</artifactId>
 			<version>${ms.base.version}</version>
 		</dependency>
 		<!-- ms-base源码jar包 -->
-
 
 		<!-- ms-basic基础模块war包，包含后台管理的基础功能 -->
 		<dependency>
@@ -55,7 +53,6 @@
 			<type>war</type>
 		</dependency>
 		<!-- ms-basic源码jar包 -->
-		
 
 		<!-- ms-basic开发依赖，主要方便业务开发 -->
 		<dependency>
