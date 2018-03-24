@@ -1,6 +1,10 @@
 <@ms.html5>
 	<@ms.nav title="文章管理" back=true>
-		<@ms.saveButton  id="saveUpdate" /> 
+		<#if article.basicId == 0>
+	 		<@ms.saveButton id="saveUpdate"/>
+	 	<#else>
+	 		<@ms.updateButton id="saveUpdate"/>
+	 	</#if>
 	</@ms.nav>
 	<@ms.panel>
 		<@ms.form isvalidation=true name="articleForm" action="${managerPath}/cms/article/${autoCURD}.do">
@@ -143,7 +147,7 @@ $(function(){
 				   				<#if article.basicId !=0>
 				   					<@ms.notify msg="更新文章成功，并已生成" type="success"/>
 					   			<#else>
-					   				<@ms.notify msg="更新文章成功，并已生成" type="success"/>
+					   				<@ms.notify msg="保存文章成功，并已生成" type="success"/>
 					   			</#if>
 				   				$("#saveUpdate").removeAttr("disabled");
 				   			}else{
@@ -151,9 +155,13 @@ $(function(){
 				   				<@ms.notify msg="生成文件失败" type="fail"/>
 				   				$("#saveUpdate").removeAttr("disabled");
 				   			}
-				   			var columnType = ${columnType?default(0)};
+				   			var columnType = ${isStr?default(0)};
 				   			if(columnType == 1){
 				   				location.href=managerPath+"/cms/article/${categoryId?default(0)}/main.do";
+				   			}
+				   			var dataId = obj.resultData;
+				   			if(dataId!=""){
+				   				location.href = base+"${baseManager}/cms/article/"+dataId+"/edit.do";
 				   			}
 						}});
 				   		$("#saveUpdate").removeAttr("disabled");

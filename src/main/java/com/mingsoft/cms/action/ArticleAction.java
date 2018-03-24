@@ -208,6 +208,7 @@ public class ArticleAction extends BaseAction {
 		mode.addAttribute("appId", appId);
 		mode.addAttribute("listColumn", JSONArray.toJSONString(list));
 		boolean isEditCategory = false; // 新增，不是单篇
+		String isStr="1";//新增，不是单篇
 		if(categoryId != 0){
 			// 获取栏目id
 			ColumnEntity column = (ColumnEntity) columnBiz.getEntity(categoryId);
@@ -219,11 +220,13 @@ public class ArticleAction extends BaseAction {
 			// 判断栏目是否是单篇
 			if (column != null && column.getColumnType() == ColumnTypeEnum.COLUMN_TYPE_COVER.toInt()) {
 				isEditCategory = true; // 是单页
+				isStr = "2";
 			}
 			mode.addAttribute("columnType", columnType);
 		}
 		mode.addAttribute("categoryTitle", categoryTitle);
 		mode.addAttribute("isEditCategory", isEditCategory); // 新增状态
+		mode.addAttribute("isStr", isStr);
 		mode.addAttribute("categoryId", categoryId);
 		// 添加一个空的article实体
 		ArticleEntity article = new ArticleEntity();
@@ -300,7 +303,7 @@ public class ArticleAction extends BaseAction {
 		//
 
 		if (article.getColumn().getColumnType() == ColumnTypeEnum.COLUMN_TYPE_COVER.toInt()) {
-			this.outJson(response, ModelCode.CMS_ARTICLE, true, "" + article.getColumn().getCategoryId(), "");
+			this.outJson(response, ModelCode.CMS_ARTICLE, true, "" + article.getColumn().getCategoryId(), article.getBasicId());
 		} else {
 			this.outJson(response, ModelCode.CMS_ARTICLE, true, article.getColumn().getCategoryId()+"", "");
 		}
