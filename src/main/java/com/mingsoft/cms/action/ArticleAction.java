@@ -228,6 +228,7 @@ public class ArticleAction extends BaseAction {
 		mode.addAttribute("isEditCategory", isEditCategory); // 新增状态
 		mode.addAttribute("isStr", isStr);
 		mode.addAttribute("categoryId", categoryId);
+		mode.addAttribute("articleImagesUrl", "/upload/"+BasicUtil.getAppId()+"/");
 		// 添加一个空的article实体
 		ArticleEntity article = new ArticleEntity();
 		mode.addAttribute("article", article);
@@ -490,6 +491,7 @@ public class ArticleAction extends BaseAction {
 		ArticleEntity articleEntity = null;
 		int appId = this.getAppId(request);
 		model.addAttribute("appId", appId);
+		model.addAttribute("articleImagesUrl", "/upload/"+BasicUtil.getAppId()+"/");
 		if (categoryId > 0) { // 分类获取文章
 			articleEntity = articleBiz.getByCategoryId(categoryId);
 			ColumnEntity column = articleEntity.getColumn();
