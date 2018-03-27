@@ -112,7 +112,7 @@
      				var url=msg.resultMsg;
      				window.open(url,"_blank");
      			}else{
-     			<@ms.notify msg="请先生存主页，再次访问" type="warning"/>
+     			<@ms.notify msg="请先生成主页，再次访问" type="warning"/>
      			}
      		}
 		})
