@@ -208,11 +208,11 @@ public class ArticleAction extends BaseAction {
 		mode.addAttribute("appId", appId);
 		mode.addAttribute("listColumn", JSONArray.toJSONString(list));
 		boolean isEditCategory = false; // 新增，不是单篇
-		String isStr="1";//新增，不是单篇
+		int columnType=1;//新增，不是单篇
 		if(categoryId != 0){
 			// 获取栏目id
 			ColumnEntity column = (ColumnEntity) columnBiz.getEntity(categoryId);
-			int columnType = column.getColumnType();
+			columnType = column.getColumnType();
 			// 判断栏目是否为"",如果是"",就重新赋值
 			if (StringUtil.isBlank(categoryTitle)) {
 				categoryTitle = column.getCategoryTitle();
@@ -220,13 +220,12 @@ public class ArticleAction extends BaseAction {
 			// 判断栏目是否是单篇
 			if (column != null && column.getColumnType() == ColumnTypeEnum.COLUMN_TYPE_COVER.toInt()) {
 				isEditCategory = true; // 是单页
-				isStr = "2";
+				columnType = column.getColumnType();;
 			}
-			mode.addAttribute("columnType", columnType);
 		}
 		mode.addAttribute("categoryTitle", categoryTitle);
 		mode.addAttribute("isEditCategory", isEditCategory); // 新增状态
-		mode.addAttribute("isStr", isStr);
+		mode.addAttribute("columnType", columnType);
 		mode.addAttribute("categoryId", categoryId);
 		mode.addAttribute("articleImagesUrl", "/upload/"+BasicUtil.getAppId()+"/");
 		// 添加一个空的article实体

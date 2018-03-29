@@ -146,25 +146,25 @@ $(function(){
 							if(re.result){
 				   				<#if article.basicId !=0>
 				   					<@ms.notify msg="更新文章成功，并已生成" type="success"/>
+				   					$("#saveUpdate").removeAttr("disabled");
 					   			<#else>
 					   				<@ms.notify msg="保存文章成功，并已生成" type="success"/>
 					   			</#if>
-				   				$("#saveUpdate").removeAttr("disabled");
 				   			}else{
 				   				//生成失败则将按钮信息返回默认
 				   				<@ms.notify msg="生成文件失败" type="fail"/>
 				   				$("#saveUpdate").removeAttr("disabled");
 				   			}
-				   			var columnType = ${isStr?default(0)};
+				   			var columnType = ${columnType?default(0)};
 				   			if(columnType == 1){
 				   				location.href=managerPath+"/cms/article/${categoryId?default(0)}/main.do";
-				   			}
-				   			var dataId = obj.resultData;
-				   			if(dataId!=""){
-				   				location.href = base+"${baseManager}/cms/article/"+dataId+"/edit.do";
+				   			}else{
+				   				var dataId = obj.resultData;
+				   				if(dataId!=""){
+				   					location.href = base+"${baseManager}/cms/article/"+dataId+"/edit.do";
+				   				}
 				   			}
 						}});
-				   		$("#saveUpdate").removeAttr("disabled");
 					}else{
 						<@ms.notify msg="操作失败" type="fail"/>
 				   		$("#saveUpdate").removeAttr("disabled");
