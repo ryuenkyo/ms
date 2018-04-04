@@ -26,14 +26,21 @@
 
 	<!-- 安全认证过滤器 -->
 	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
-		<property name="securityManager" ref="securityManager" /><!-- 
-			<property name="loginUrl" value="${cas.server}?service=${cas.project}${managerPath}/cas" 
-			/> -->
+		<property name="securityManager" ref="securityManager" />
 		<property name="loginUrl" value="${managerPath}/login.do" />
 		<property name="successUrl" value="${managerPath}/index.do" />
 		<property name="filterChainDefinitions">
 			<ref bean="shiroFilterChainDefinitions" />
 		</property>
+		<property name="filters">
+			<map>
+				<entry key="logout" value-ref="logoutFilter"/>
+			</map>
+		</property>
+	</bean>
+	
+	<bean id="logoutFilter" class="org.apache.shiro.web.filter.authc.LogoutFilter" >
+		<property name="redirectUrl" value="${managerPath}/login.do"/>
 	</bean>
 
 	<!-- 安全管理器配置 -->

@@ -208,10 +208,11 @@ public class ArticleAction extends BaseAction {
 		mode.addAttribute("appId", appId);
 		mode.addAttribute("listColumn", JSONArray.toJSONString(list));
 		boolean isEditCategory = false; // 新增，不是单篇
+		int columnType=1;//新增，不是单篇
 		if(categoryId != 0){
 			// 获取栏目id
 			ColumnEntity column = (ColumnEntity) columnBiz.getEntity(categoryId);
-			int columnType = column.getColumnType();
+			columnType = column.getColumnType();
 			// 判断栏目是否为"",如果是"",就重新赋值
 			if (StringUtil.isBlank(categoryTitle)) {
 				categoryTitle = column.getCategoryTitle();
@@ -219,12 +220,14 @@ public class ArticleAction extends BaseAction {
 			// 判断栏目是否是单篇
 			if (column != null && column.getColumnType() == ColumnTypeEnum.COLUMN_TYPE_COVER.toInt()) {
 				isEditCategory = true; // 是单页
+				columnType = column.getColumnType();;
 			}
-			mode.addAttribute("columnType", columnType);
 		}
 		mode.addAttribute("categoryTitle", categoryTitle);
 		mode.addAttribute("isEditCategory", isEditCategory); // 新增状态
+		mode.addAttribute("columnType", columnType);
 		mode.addAttribute("categoryId", categoryId);
+		mode.addAttribute("articleImagesUrl", "/upload/"+BasicUtil.getAppId()+"/");
 		// 添加一个空的article实体
 		ArticleEntity article = new ArticleEntity();
 		mode.addAttribute("article", article);
@@ -300,7 +303,7 @@ public class ArticleAction extends BaseAction {
 		//
 
 		if (article.getColumn().getColumnType() == ColumnTypeEnum.COLUMN_TYPE_COVER.toInt()) {
-			this.outJson(response, ModelCode.CMS_ARTICLE, true, "" + article.getColumn().getCategoryId(), "");
+			this.outJson(response, ModelCode.CMS_ARTICLE, true, "" + article.getColumn().getCategoryId(), article.getBasicId());
 		} else {
 			this.outJson(response, ModelCode.CMS_ARTICLE, true, article.getColumn().getCategoryId()+"", "");
 		}
@@ -487,6 +490,7 @@ public class ArticleAction extends BaseAction {
 		ArticleEntity articleEntity = null;
 		int appId = this.getAppId(request);
 		model.addAttribute("appId", appId);
+		model.addAttribute("articleImagesUrl", "/upload/"+BasicUtil.getAppId()+"/");
 		if (categoryId > 0) { // 分类获取文章
 			articleEntity = articleBiz.getByCategoryId(categoryId);
 			ColumnEntity column = articleEntity.getColumn();

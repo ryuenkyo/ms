@@ -1,6 +1,10 @@
 <@ms.html5>
 	<@ms.nav title="文章管理" back=true>
-		<@ms.saveButton  id="saveUpdate" /> 
+		<#if article.basicId == 0>
+	 		<@ms.saveButton id="saveUpdate"/>
+	 	<#else>
+	 		<@ms.updateButton id="saveUpdate"/>
+	 	</#if>
 	</@ms.nav>
 	<@ms.panel>
 		<@ms.form isvalidation=true name="articleForm" action="${managerPath}/cms/article/${autoCURD}.do">
@@ -10,7 +14,7 @@
 				<@ms.checkboxlist colSm="2" name="checkbox" label="文章属性" list=articleType listKey="key"  listValue="value" />
 			</#if>
 			<@ms.formRow colSm="2" label="文章缩略图" width="400" >
-					<@ms.uploadImg path="article" inputName="basicThumbnails" size="1" msg="提示:文章缩略图,支持jpg格式"  imgs="${article.basicThumbnails?default('')}"  />
+					<@ms.uploadImg path="article" uploadFloderPath="${articleImagesUrl?default('')}" inputName="basicThumbnails" size="1" msg="提示:文章缩略图,支持jpg格式"  imgs="${article.basicThumbnails?default('')}"  />
 			</@ms.formRow>
 			<@ms.text name="articleSource" colSm="2" width="200" label="文章来源" title="文章来源" size="5"  placeholder="请输入文章来源"  value="${article.articleSource?default('')}" />
 			<@ms.text name="articleAuthor" colSm="2" width="200" label="文章作者" title="文章作者" size="5"  placeholder="请输入文章作者"  value="${article.articleAuthor?default('')}" />
@@ -142,10 +146,10 @@ $(function(){
 							if(re.result){
 				   				<#if article.basicId !=0>
 				   					<@ms.notify msg="更新文章成功，并已生成" type="success"/>
+				   					$("#saveUpdate").removeAttr("disabled");
 					   			<#else>
-					   				<@ms.notify msg="更新文章成功，并已生成" type="success"/>
+					   				<@ms.notify msg="保存文章成功，并已生成" type="success"/>
 					   			</#if>
-				   				$("#saveUpdate").removeAttr("disabled");
 				   			}else{
 				   				//生成失败则将按钮信息返回默认
 				   				<@ms.notify msg="生成文件失败" type="fail"/>
@@ -154,9 +158,13 @@ $(function(){
 				   			var columnType = ${columnType?default(0)};
 				   			if(columnType == 1){
 				   				location.href=managerPath+"/cms/article/${categoryId?default(0)}/main.do";
+				   			}else{
+				   				var dataId = obj.resultData;
+				   				if(dataId!=""){
+				   					location.href = base+"${baseManager}/cms/article/"+dataId+"/edit.do";
+				   				}
 				   			}
 						}});
-				   		$("#saveUpdate").removeAttr("disabled");
 					}else{
 						<@ms.notify msg="操作失败" type="fail"/>
 				   		$("#saveUpdate").removeAttr("disabled");
