@@ -152,7 +152,7 @@ $(function(){
 					   			</#if>
 				   			}else{
 				   				//生成失败则将按钮信息返回默认
-				   				<@ms.notify msg="生成文件失败" type="fail"/>
+				   				<@ms.notify msg="生成文件失败" type="warning"/>
 				   				$("#saveUpdate").removeAttr("disabled");
 				   			}
 				   			var columnType = ${columnType?default(0)};
@@ -166,7 +166,7 @@ $(function(){
 				   			}
 						}});
 					}else{
-						<@ms.notify msg="操作失败" type="fail"/>
+						<@ms.notify msg="操作失败" type="warning"/>
 				   		$("#saveUpdate").removeAttr("disabled");
 					}
 				}});
