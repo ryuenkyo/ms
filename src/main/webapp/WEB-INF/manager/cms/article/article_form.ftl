@@ -147,8 +147,12 @@ $(function(){
 				   				<#if article.basicId !=0>
 				   					<@ms.notify msg="更新文章成功，并已生成" type="success"/>
 				   					$("#saveUpdate").removeAttr("disabled");
+				   					//更新并生成后成功后路径进行跳转
+				   					urlArticle_Form()
 					   			<#else>
 					   				<@ms.notify msg="保存文章成功，并已生成" type="success"/>
+					   				//更新并生成后成功后路径进行跳转
+					   				urlArticle_Form()
 					   			</#if>
 				   			}else{
 				   				//生成失败则将按钮信息返回默认
@@ -166,7 +170,7 @@ $(function(){
 				   			}
 						}});
 					}else{
-						<@ms.notify msg="操作失败" type="fail"/>
+						<@ms.notify msg="操作失败" type="warning"/>
 				   		$("#saveUpdate").removeAttr("disabled");
 					}
 				}});
@@ -178,6 +182,10 @@ $(function(){
 	});	
 });
 
+//文章更新并生成后跳转的方法
+function urlArticle_Form(){
+    location.href=managerPath+"/cms/article/${categoryId?default(0)}/main.do";
+}
 
 //选择栏目后查询自定义模型
 function clickZtreeId(event,treeId,treeNode){

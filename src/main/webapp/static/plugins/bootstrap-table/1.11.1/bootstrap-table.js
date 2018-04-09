@@ -1595,7 +1595,7 @@
 
     BootstrapTable.prototype.onPageNumber = function (event) {
         if (this.options.pageNumber === +$(event.currentTarget).text()) {
-            return;
+            return false;
         }
         this.options.pageNumber = +$(event.currentTarget).text();
         this.updatePagination(event);
