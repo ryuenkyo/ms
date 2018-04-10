@@ -29,6 +29,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.mingsoft.base.entity.BaseEntity;
 import com.mingsoft.basic.biz.IBasicBiz;
+import com.mingsoft.basic.entity.ColumnEntity;
 import com.mingsoft.cms.entity.ArticleEntity;
 import com.mingsoft.mdiy.entity.ContentModelEntity;
 import com.mingsoft.util.PageUtil;
@@ -254,5 +255,11 @@ public interface IArticleBiz extends IBasicBiz {
 	 */
 	@Deprecated
 	public int getCountByWebsiteId(int webId);
+	/**
+	 * 判断栏目是否为父栏目
+	 * @param column
+	 * @return
+	 */
+	public boolean isParentColumn(int basicCategoryId);
 
 }

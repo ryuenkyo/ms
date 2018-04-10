@@ -37,6 +37,7 @@ import com.mingsoft.basic.biz.ICategoryBiz;
 import com.mingsoft.basic.biz.IColumnBiz;
 import com.mingsoft.basic.biz.IModelBiz;
 import com.mingsoft.basic.biz.impl.BasicBizImpl;
+import com.mingsoft.basic.entity.CategoryEntity;
 import com.mingsoft.basic.entity.ColumnEntity;
 import com.mingsoft.cms.biz.IArticleBiz;
 import com.mingsoft.cms.constant.ModelCode;
@@ -325,6 +326,18 @@ public class ArticleBizImpl extends BasicBizImpl implements IArticleBiz {
 	public int getCountByWebsiteId(int webId) {
 		// TODO Auto-generated method stub
 		return articleDao.getCountByWebsiteId(webId);
+	}
+
+	@Override
+	public boolean isParentColumn(int basicCategoryId) {
+		List<CategoryEntity> coulumnList = categoryBiz.queryAll();
+		for (CategoryEntity columnEntity : coulumnList) {
+			//判断当前栏目id是否存在于栏目表中父id中，存在则为父栏目，不存在则为子栏目
+			if(columnEntity.getCategoryCategoryId()==basicCategoryId){
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

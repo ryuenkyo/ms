@@ -247,7 +247,7 @@ public class ArticleAction extends BaseAction {
 		// 获取站点id
 		int appId = this.getAppId(request);
 		// 验证文章，文章自由排序，栏目id
-
+//		if(article.getAc){}
 		if (!validateForm(article, response)) {
 			this.outJson(response, ModelCode.CMS_ARTICLE, false);
 
@@ -270,7 +270,11 @@ public class ArticleAction extends BaseAction {
 			article.setBasicThumbnails(article.getBasicThumbnails().replace("|", ""));
 		}
 		ColumnEntity column = (ColumnEntity) columnBiz.getEntity(article.getBasicCategoryId());
+		if(articleBiz.isParentColumn(article.getBasicCategoryId())){
+			this.outJson(response, ModelCode.CMS_ARTICLE, false,getResString("articleParentColumn"));
+		}
 		article.setColumn(column);
+		
 		// 添加文章所属的站点id
 		article.setArticleWebId(appId);
 		// 绑定模块编号

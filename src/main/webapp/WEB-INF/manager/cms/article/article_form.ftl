@@ -170,7 +170,10 @@ $(function(){
 				   			}
 						}});
 					}else{
-						<@ms.notify msg="操作失败" type="warning"/>
+						$('.ms-notifications').offset({top:43}).notify({
+					    	type:'warning',
+					    	message: { text:obj.resultMsg }
+					 	}).show();
 				   		$("#saveUpdate").removeAttr("disabled");
 					}
 				}});
