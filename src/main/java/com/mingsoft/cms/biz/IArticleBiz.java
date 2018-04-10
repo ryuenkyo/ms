@@ -255,11 +255,5 @@ public interface IArticleBiz extends IBasicBiz {
 	 */
 	@Deprecated
 	public int getCountByWebsiteId(int webId);
-	/**
-	 * 判断栏目是否为父栏目
-	 * @param column
-	 * @return
-	 */
-	public boolean isParentColumn(int basicCategoryId);
 
 }

@@ -270,9 +270,6 @@ public class ArticleAction extends BaseAction {
 			article.setBasicThumbnails(article.getBasicThumbnails().replace("|", ""));
 		}
 		ColumnEntity column = (ColumnEntity) columnBiz.getEntity(article.getBasicCategoryId());
-		if(articleBiz.isParentColumn(article.getBasicCategoryId())){
-			this.outJson(response, ModelCode.CMS_ARTICLE, false,getResString("articleParentColumn"));
-		}
 		article.setColumn(column);
 		
 		// 添加文章所属的站点id
