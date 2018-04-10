@@ -330,11 +330,18 @@ public class ArticleBizImpl extends BasicBizImpl implements IArticleBiz {
 
 	@Override
 	public boolean isParentColumn(int basicCategoryId) {
-		List<CategoryEntity> coulumnList = categoryBiz.queryAll();
-		for (CategoryEntity columnEntity : coulumnList) {
-			//判断当前栏目id是否存在于栏目表中父id中，存在则为父栏目，不存在则为子栏目
-			if(columnEntity.getCategoryCategoryId()==basicCategoryId){
-				return true;
+		List<ColumnEntity> columnList = columnBiz.queryColumnList();
+		for (ColumnEntity columnEntity : columnList) {
+			//排除父级栏目为零的栏目id
+			if(columnEntity.getCategoryCategoryId()!=0){
+				ColumnEntity c = (ColumnEntity) columnBiz.getEntity(columnEntity.getCategoryCategoryId());
+				//排除单页栏目为父级栏目
+				if(c.getColumnType()!=2){
+					//判断当前栏目id是否存在于栏目表中父id中，存在则为父栏目，不存在则为子栏目
+					if(columnEntity.getCategoryCategoryId()==basicCategoryId){
+						return true;
+					}
+				}
 			}
 		}
 		return false;
