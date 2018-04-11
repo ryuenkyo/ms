@@ -82,7 +82,7 @@
 	});
 	//添加文章
 	$("#addButton").click(function(){
-		location.href = base+"${baseManager}/cms/article/add.do?categoryId=${categoryId?default(0)}&modelId=${Session.model_id_session?default(0)}&categoryTitle=${categoryTitle?default('')}"; 
+		location.href = base+"${baseManager}/cms/article/add.do?categoryId=${categoryId?default(0)}&modelId=${Session.model_id_session?default(0)}&categoryTitle=${categoryTitle?default('')}&booleanParent=${booleanParent}"; 
 	});	
 	//查询文章标题
 	$("#submitSearch").click(function(){

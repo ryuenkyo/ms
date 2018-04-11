@@ -22,10 +22,16 @@
 	</@ms.contentBody>
 </@ms.content>
 <script>
+
 //树形结点
 function getZtreeId(event,treeId,treeNode){
 	if (treeNode.columnType==1) {
-		$("#listFrame").attr("src","${managerPath}/cms/article/"+treeNode.categoryId+"/main.do?categoryTitle="+encodeURIComponent(treeNode.categoryTitle));
+		//父级栏目为4，子级栏目为5
+		var booleanParent = 5;
+		if(treeNode.isParent == true){
+			 booleanParent = 4;
+		}
+		$("#listFrame").attr("src","${managerPath}/cms/article/"+treeNode.categoryId+"/main.do?booleanParent="+booleanParent+"&categoryTitle="+encodeURIComponent(treeNode.categoryTitle));
 	} else if(treeNode.columnType==2){
 		//判断该单篇栏目是否存在文章
 		$.ajax({ 
@@ -44,6 +50,7 @@ function getZtreeId(event,treeId,treeNode){
 	} else if(treeNode.columnType=="" || treeNode.columnType == undefined){
 		$("#listFrame").attr("src","${managerPath}/cms/article/0/main.do"); 
 	}
+	
 }
 </script>
 </body>

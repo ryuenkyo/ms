@@ -157,6 +157,18 @@ public class ArticleAction extends BaseAction {
 	public String main(@ModelAttribute ArticleEntity article, HttpServletRequest request, ModelMap mode,
 			HttpServletResponse response, @PathVariable int categoryId) {
 		String articleType = request.getParameter("articleType");
+		String booleanParent = request.getParameter("booleanParent");
+		//文章栏目是否为父级栏目
+		if(!org.springframework.util.StringUtils.isEmpty(booleanParent)){
+			if(booleanParent.equals(ColumnTypeEnum.COLUMN_TYPE_FATHER.toInt()+"")){
+				mode.addAttribute("booleanParent", ColumnTypeEnum.COLUMN_TYPE_FATHER.toInt());
+			}else{
+				mode.addAttribute("booleanParent", ColumnTypeEnum.COLUMN_TYPE_SON.toInt());
+			}
+		}else{
+			mode.addAttribute("booleanParent", ColumnTypeEnum.COLUMN_TYPE_SON.toInt());
+		}
+		
 		mode.addAttribute("articleTypeList", articleType());
 		mode.addAttribute("articleType", articleType);
 		mode.addAttribute("categoryId", categoryId);
@@ -199,9 +211,11 @@ public class ArticleAction extends BaseAction {
 	public String add(ModelMap mode, HttpServletRequest request) {
 		int categoryId = this.getInt(request, "categoryId", 0);
 		String categoryTitle = request.getParameter("categoryTitle");
+		String booleanParent = request.getParameter("booleanParent");
 		// 文章属性
 		mode.addAttribute("articleType", articleType());
-
+		//文章栏目是否为父级栏目
+		mode.addAttribute("booleanParent", booleanParent);
 		// 站点ID
 		int appId = this.getAppId(request);
 		List<ColumnEntity> list = columnBiz.queryAll(appId, this.getModelCodeId(request, ModelCode.CMS_COLUMN));
