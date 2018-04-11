@@ -214,8 +214,6 @@ public class ArticleAction extends BaseAction {
 		String booleanParent = request.getParameter("booleanParent");
 		// 文章属性
 		mode.addAttribute("articleType", articleType());
-		//文章栏目是否为父级栏目
-		mode.addAttribute("booleanParent", booleanParent);
 		// 站点ID
 		int appId = this.getAppId(request);
 		List<ColumnEntity> list = columnBiz.queryAll(appId, this.getModelCodeId(request, ModelCode.CMS_COLUMN));

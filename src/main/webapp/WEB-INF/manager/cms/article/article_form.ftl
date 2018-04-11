@@ -88,10 +88,6 @@ $(function(){
 	
 	//更新或保存				
 	$("#saveUpdate").click(function(){
-		if(${booleanParent}==4){
-			<@ms.notify msg="不能选择父级栏目" />
-			return false;
-		}
 		//获取所有栏目属性被选中的值
 		var typeJson=""
 		$("#articleTypeField").find("select").each(function(index){ 
