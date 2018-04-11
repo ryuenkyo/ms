@@ -88,6 +88,10 @@ $(function(){
 	
 	//更新或保存				
 	$("#saveUpdate").click(function(){
+		if(${booleanParent}==4){
+			<@ms.notify msg="不能选择父级栏目" />
+			return false;
+		}
 		//获取所有栏目属性被选中的值
 		var typeJson=""
 		$("#articleTypeField").find("select").each(function(index){ 
@@ -170,7 +174,10 @@ $(function(){
 				   			}
 						}});
 					}else{
-						<@ms.notify msg="操作失败" type="warning"/>
+						$('.ms-notifications').offset({top:43}).notify({
+					    	type:'warning',
+					    	message: { text:obj.resultMsg }
+					 	}).show();
 				   		$("#saveUpdate").removeAttr("disabled");
 					}
 				}});
@@ -191,6 +198,10 @@ function urlArticle_Form(){
 function clickZtreeId(event,treeId,treeNode){
 	if(treeNode.columnType == 2){
 		<@ms.notify msg="不能选择单篇栏目" />
+		return false;
+	}
+	if(treeNode.isParent==true){
+		<@ms.notify msg="不能选择父级栏目" />
 		return false;
 	}
 	var url="${managerPath}/mdiy/contentModel/contentModelField/"+treeNode.categoryId+"/queryField.do";
