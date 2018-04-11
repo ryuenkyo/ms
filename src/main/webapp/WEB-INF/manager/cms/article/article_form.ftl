@@ -1,9 +1,9 @@
 <@ms.html5>
 	<@ms.nav title="文章管理" back=true>
 		<#if article.basicId == 0>
-	 		<@ms.saveButton id="saveUpdate"/>
+	 		<@ms.saveButton id="saveUpdate" value="保存"/>
 	 	<#else>
-	 		<@ms.updateButton id="saveUpdate"/>
+	 		<@ms.updateButton id="saveUpdate" value="更新"/>
 	 	</#if>
 	</@ms.nav>
 	<@ms.panel>
@@ -88,6 +88,13 @@ $(function(){
 	
 	//更新或保存				
 	$("#saveUpdate").click(function(){
+		//加载状态
+		var bottonText = $(this).text().trim();
+		$(this).attr("data-loading-text",bottonText+"中");
+		$(this).button('loading').delay(1000).queue(function() {
+			   $(this).button('reset');
+			   $(this).dequeue();
+		});
 		//获取所有栏目属性被选中的值
 		var typeJson=""
 		$("#articleTypeField").find("select").each(function(index){ 
