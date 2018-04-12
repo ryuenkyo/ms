@@ -26,12 +26,12 @@
 //树形结点
 function getZtreeId(event,treeId,treeNode){
 	if (treeNode.columnType==1) {
-		//父级栏目为4，子级栏目为5
-		var booleanParent = 5;
+		//父级栏目为true，子级栏目为false
+		var isParent = false;
 		if(treeNode.isParent == true){
-			 booleanParent = 4;
+			 isParent = true;
 		}
-		$("#listFrame").attr("src","${managerPath}/cms/article/"+treeNode.categoryId+"/main.do?booleanParent="+booleanParent+"&categoryTitle="+encodeURIComponent(treeNode.categoryTitle));
+		$("#listFrame").attr("src","${managerPath}/cms/article/"+treeNode.categoryId+"/main.do?isParent="+isParent+"&categoryTitle="+encodeURIComponent(treeNode.categoryTitle));
 	} else if(treeNode.columnType==2){
 		//判断该单篇栏目是否存在文章
 		$.ajax({ 
