@@ -82,9 +82,12 @@
 	});
 	//添加文章
 	$("#addButton").click(function(){
-		if(${booleanParent}==true){
-			<@ms.notify msg="不能选择父级栏目" />
-			return false;
+		var isParent = ${isParent}+"";
+		if(isParent != ""){
+			if(isParent==true+""){
+				<@ms.notify msg="不能选择父级栏目" />
+				return false;
+			}
 		}
 		location.href = base+"${baseManager}/cms/article/add.do?categoryId=${categoryId?default(0)}&modelId=${Session.model_id_session?default(0)}&categoryTitle=${categoryTitle?default('')}"; 
 	});	

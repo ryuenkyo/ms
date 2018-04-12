@@ -157,17 +157,11 @@ public class ArticleAction extends BaseAction {
 	public String main(@ModelAttribute ArticleEntity article, HttpServletRequest request, ModelMap mode,
 			HttpServletResponse response, @PathVariable int categoryId) {
 		String articleType = request.getParameter("articleType");
-		String booleanParent = request.getParameter("booleanParent");
-		//文章栏目是否为父级栏目
-		if(!org.springframework.util.StringUtils.isEmpty(booleanParent)){
-			mode.addAttribute("booleanParent", booleanParent);
-		}else{
-			mode.addAttribute("booleanParent", "false");
-		}
-		
+		String isParent = BasicUtil.getString("isParent");
+		mode.addAttribute("isParent", isParent);
 		mode.addAttribute("articleTypeList", articleType());
 		mode.addAttribute("articleType", articleType);
-		mode.addAttribute("categoryId", categoryId);
+ 		mode.addAttribute("categoryId", categoryId);
 		//返回文章页面显示地址
 		return view("/cms/article/article_main");
 	}
