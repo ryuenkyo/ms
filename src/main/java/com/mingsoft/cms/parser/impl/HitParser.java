@@ -35,7 +35,7 @@ import com.mingsoft.parser.IParser;
 public class HitParser extends IParser {
 	
 	/**
-	 * 文章标题标签
+	 * 文章点击量标签
 	 */
 	private final static String ARTICLE_HIT_FIELD="\\{ms:field.hit/\\}";
 	
