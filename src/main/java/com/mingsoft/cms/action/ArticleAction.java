@@ -160,13 +160,9 @@ public class ArticleAction extends BaseAction {
 		String booleanParent = request.getParameter("booleanParent");
 		//文章栏目是否为父级栏目
 		if(!org.springframework.util.StringUtils.isEmpty(booleanParent)){
-			if(booleanParent.equals(ColumnTypeEnum.COLUMN_TYPE_FATHER.toInt()+"")){
-				mode.addAttribute("booleanParent", ColumnTypeEnum.COLUMN_TYPE_FATHER.toInt());
-			}else{
-				mode.addAttribute("booleanParent", ColumnTypeEnum.COLUMN_TYPE_SON.toInt());
-			}
+			mode.addAttribute("booleanParent", booleanParent);
 		}else{
-			mode.addAttribute("booleanParent", ColumnTypeEnum.COLUMN_TYPE_SON.toInt());
+			mode.addAttribute("booleanParent", "false");
 		}
 		
 		mode.addAttribute("articleTypeList", articleType());

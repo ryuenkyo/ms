@@ -82,7 +82,7 @@
 	});
 	//添加文章
 	$("#addButton").click(function(){
-		if(${booleanParent}==4){
+		if(${booleanParent}==true){
 			<@ms.notify msg="不能选择父级栏目" />
 			return false;
 		}

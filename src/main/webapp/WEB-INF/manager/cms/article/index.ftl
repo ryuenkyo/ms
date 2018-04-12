@@ -26,10 +26,10 @@
 //树形结点
 function getZtreeId(event,treeId,treeNode){
 	if (treeNode.columnType==1) {
-		//父级栏目为4，子级栏目为5
-		var booleanParent = 5;
+		//父级栏目为true，子级栏目为false
+		var booleanParent = false;
 		if(treeNode.isParent == true){
-			 booleanParent = 4;
+			 booleanParent = true;
 		}
 		$("#listFrame").attr("src","${managerPath}/cms/article/"+treeNode.categoryId+"/main.do?booleanParent="+booleanParent+"&categoryTitle="+encodeURIComponent(treeNode.categoryTitle));
 	} else if(treeNode.columnType==2){

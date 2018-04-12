@@ -44,15 +44,7 @@ public enum ColumnTypeEnum implements BaseEnum {
 	/**
 	 * 跳转地址
 	 */
-	COLUMN_TYPE_URL(3),
-	/**
-	 * 父级栏目
-	 */
-	COLUMN_TYPE_FATHER(4),
-	/**
-	 * 子级栏目
-	 */
-	COLUMN_TYPE_SON(5);
+	COLUMN_TYPE_URL(3);
 	ColumnTypeEnum(Object code) {
 		this.code = code;
 	}
