@@ -86,6 +86,12 @@ public class ListParser extends com.mingsoft.mdiy.parser.ListParser {
 	 */
 	
 	protected final static String FIELD_FLAG="\\[field.flag/\\]";
+	
+	/**
+	 * 文章点击量标签
+	 */
+	private final static String ARTICLE_HIT_FIELD="\\{ms:field.hit/\\}";
+	
 	/**
 	 * 新增字段业务层
 	 */
@@ -176,6 +182,8 @@ public class ListParser extends com.mingsoft.mdiy.parser.ListParser {
 					htmlList = tabContent(htmlList, StringUtil.null2String(article.getArticleAuthor()),AUTHOR_FIELD_LIST);
 					// 文章来源。
 					htmlList = tabContent(htmlList, StringUtil.null2String(article.getArticleSource()),SOURCE_FIELD_LIST);
+					// 文章点击量。
+					htmlList = tabContent(htmlList, StringUtil.int2String(article.getBasicHit()),ARTICLE_HIT_FIELD);
 					// 文章来源。
 					htmlList = tabContent(htmlList, "<script src='"+app.getAppHostUrl()+"/basic/"+article.getBasicId()+"/hit.do?isShow=true'></script>",FIELD_HIT);
 					// 文章发布时间(非必填),
