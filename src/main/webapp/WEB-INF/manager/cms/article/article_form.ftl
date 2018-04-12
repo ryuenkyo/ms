@@ -88,13 +88,15 @@ $(function(){
 	
 	//更新或保存				
 	$("#saveUpdate").click(function(){
-		//加载状态
-		var bottonText = $(this).text().trim();
-		$(this).attr("data-loading-text",bottonText+"中");
-		$(this).button('loading').delay(1000).queue(function() {
-			   $(this).button('reset');
-			   $(this).dequeue();
-		});
+		//禁用按钮
+		$("#saveUpdate").attr("disabled",true);
+		//获取按钮值
+		var bottonText = $("#saveUpdate").text().trim();
+		//设置按钮加载状态值
+		$("#saveUpdate").attr("data-loading-text",bottonText+"中");
+		//执行加载状态
+		$("#saveUpdate").button('loading');
+		
 		//获取所有栏目属性被选中的值
 		var typeJson=""
 		$("#articleTypeField").find("select").each(function(index){ 
@@ -129,8 +131,6 @@ $(function(){
 					checkboxType+=$(this).val()+",";
 				}
 			});
-			var buttonText=$(this).text(); //按钮中的值
-			
 			var dataMsg = saveArticle+"&checkboxType="+checkboxType;
 			var seeMsg = "";
 			<#if article.basicId !=0>
@@ -143,9 +143,10 @@ $(function(){
 				if(isNaN($("input[name=basicSort]").val())){
 					<@ms.notify msg="自定义排序必须是数字" type="warning"/>
 					$("input[name=basicSort]").val(0);
+					//设定时间为1秒之后启用按钮
+					setTimeout(function () { $("#saveUpdate").button('reset'); },1000);
 					return;
 				}
-				$("#saveUpdate").attr("disabled",true);
 				$(this).request({url:actionUrl,data:dataMsg,loadingText:seeMsg,method:"post",type:"json",func:function(obj) {
 					if(obj.result){
 						var generateUrl =  base+"${baseManager}/cms/generate/"+obj.resultMsg+"/genernateForArticle.do";
@@ -153,22 +154,19 @@ $(function(){
 							if(re.result){
 				   				<#if article.basicId !=0>
 				   					<@ms.notify msg="更新文章成功，并已生成" type="success"/>
-				   					$("#saveUpdate").removeAttr("disabled");
-				   					//更新并生成后成功后路径进行跳转
-				   					urlArticle_Form()
 					   			<#else>
 					   				<@ms.notify msg="保存文章成功，并已生成" type="success"/>
-					   				//更新并生成后成功后路径进行跳转
-					   				urlArticle_Form()
 					   			</#if>
+					   			//更新并生成后成功后设定时间为0.5秒之后路径进行跳转
+								setTimeout(function(){urlArticle_Form();},500);
 				   			}else{
 				   				//生成失败则将按钮信息返回默认
 				   				<@ms.notify msg="生成文件失败" type="warning"/>
-				   				$("#saveUpdate").removeAttr("disabled");
 				   			}
 				   			var columnType = ${columnType?default(0)};
 				   			if(columnType == 1){
-				   				location.href=managerPath+"/cms/article/${categoryId?default(0)}/main.do";
+				   				//更新并生成后成功后设定时间为0.5秒之后路径进行跳转
+								setTimeout(function(){urlArticle_Form();},500);
 				   			}else{
 				   				var dataId = obj.resultData;
 				   				if(dataId!=""){
@@ -181,14 +179,14 @@ $(function(){
 					    	type:'warning',
 					    	message: { text:obj.resultMsg }
 					 	}).show();
-				   		$("#saveUpdate").removeAttr("disabled");
 					}
 				}});
 			}
 		}else{
 			<@ms.notify msg="请选择文章所属栏目" type="warning"/>
-			$("#saveUpdate").removeAttr("disabled");
 		}
+		//设定时间为1秒之后启用按钮
+		setTimeout(function () { $("#saveUpdate").button('reset'); },1000);
 	});	
 });
 
