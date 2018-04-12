@@ -157,7 +157,7 @@ public class ArticleAction extends BaseAction {
 	public String main(@ModelAttribute ArticleEntity article, HttpServletRequest request, ModelMap mode,
 			HttpServletResponse response, @PathVariable int categoryId) {
 		String articleType = request.getParameter("articleType");
-		String isParent = BasicUtil.getString("isParent");
+		String isParent = BasicUtil.getString("isParent", "false");
 		mode.addAttribute("isParent", isParent);
 		mode.addAttribute("articleTypeList", articleType());
 		mode.addAttribute("articleType", articleType);
