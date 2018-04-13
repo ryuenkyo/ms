@@ -310,7 +310,7 @@ public class ChannelParser extends IParser {
 				htmlList = tabContent(htmlList, articleType.getCategoryTitle(), CHANNEL_TITLE);
 				// 替换栏目链接标签
 
-				String linkUrl = webUrl + File.separator + StringUtil.null2String(articleType.getColumnPath()) + File.separator + IParserRegexConstant.HTML_INDEX;
+				String linkUrl = webUrl + StringUtil.null2String(articleType.getColumnPath()) + File.separator + IParserRegexConstant.HTML_INDEX;
 				htmlList = tabContent(htmlList, linkUrl, CHANNEL_LINK);
 				// 替换栏目关键字标签
 				htmlList = tabContent(htmlList, articleType.getColumnKeyword(), CHANNEL_KEYWORD);
