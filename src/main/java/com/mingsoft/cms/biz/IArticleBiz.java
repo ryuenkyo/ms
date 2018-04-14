@@ -255,5 +255,11 @@ public interface IArticleBiz extends IBasicBiz {
 	 */
 	@Deprecated
 	public int getCountByWebsiteId(int webId);
+	/**
+	 * 是文章articleType属性升序排序：a,b,c顺序
+	 * @param article
+	 * @return
+	 */
+	String articleTypeByAsc(String articleType);
 
 }

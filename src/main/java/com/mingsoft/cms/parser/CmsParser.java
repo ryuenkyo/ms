@@ -30,6 +30,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import com.mingsoft.base.entity.BaseEntity;
 import com.mingsoft.basic.biz.IColumnBiz;
@@ -259,6 +260,10 @@ public class CmsParser extends IGeneralParser {
 			String flag = property.get(ListParser.LIST_FLAG);
 			// 显示文章的形式noflag属性
 			String noFlag = property.get(ListParser.LIST_NOFLAG);
+			//可能列表中没有noflag属性
+			if(!StringUtils.isEmpty(noFlag)){
+				noFlag = articleBiz.articleTypeByAsc(noFlag);
+			}
 			// 数据库中该栏目下文章的总数
 			;
 			int articleCount = articleBiz.count(website.getAppId(), columnIds, flag, noFlag, null);
@@ -302,6 +307,10 @@ public class CmsParser extends IGeneralParser {
 			String flag = property.get(ListParser.LIST_FLAG);
 			// 显示文章的形式noflag属性
 			String noFlag = property.get(ListParser.LIST_NOFLAG);
+			//可能列表中没有noflag属性
+			if(!StringUtils.isEmpty(noFlag)){
+				noFlag = articleBiz.articleTypeByAsc(noFlag);
+			}
 			// 排序
 			String orderBy = property.get(ListParser.LIST_ORDERBY);
 			String order = property.get(ListParser.LIST_ORDER);
@@ -645,6 +654,10 @@ public class CmsParser extends IGeneralParser {
 				String flag = property.get(ListParser.LIST_FLAG);
 				// 显示文章的形式noflag属性
 				String noFlag = property.get(ListParser.LIST_NOFLAG);
+				//可能列表中没有noflag属性
+				if(!StringUtils.isEmpty(noFlag)){
+					noFlag = articleBiz.articleTypeByAsc(noFlag);
+				}
 				// 排序
 				String orderBy = property.get(ListParser.LIST_ORDERBY);
 				String order = property.get(ListParser.LIST_ORDER);

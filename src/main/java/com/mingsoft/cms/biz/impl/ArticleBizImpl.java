@@ -48,6 +48,8 @@ import com.mingsoft.mdiy.entity.ContentModelEntity;
 import com.mingsoft.util.PageUtil;
 import com.mingsoft.util.StringUtil;
 
+import cn.hutool.core.util.ArrayUtil;
+
 /**
  * 
  * @ClassName:  ArticleBizImpl   
@@ -326,6 +328,13 @@ public class ArticleBizImpl extends BasicBizImpl implements IArticleBiz {
 	public int getCountByWebsiteId(int webId) {
 		// TODO Auto-generated method stub
 		return articleDao.getCountByWebsiteId(webId);
+	}
+	
+	@Override
+	public String articleTypeByAsc(String articleType) {
+		String[] articleTypeArrays = articleType.split(",");
+		Arrays.sort(articleTypeArrays,String.CASE_INSENSITIVE_ORDER);
+		return ArrayUtil.join(articleTypeArrays,",")+",";
 	}
 
 
