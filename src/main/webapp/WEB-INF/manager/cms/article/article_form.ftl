@@ -18,12 +18,12 @@
 			</@ms.formRow>
 			<@ms.text name="articleSource" colSm="2" width="200" label="文章来源" title="文章来源" size="5"  placeholder="请输入文章来源"  value="${article.articleSource?default('')}" validation={"maxlength":"300", "data-bv-stringlength-message":"文章来源在300个字符以内!"} />
 			<@ms.text name="articleAuthor" colSm="2" width="200" label="文章作者" title="文章作者" size="5"  placeholder="请输入文章作者"  value="${article.articleAuthor?default('')}" validation={"maxlength":"12", "data-bv-stringlength-message":"文章作者在12个字符以内!"} />
-			<@ms.date id="basicDateTime" name="basicDateTime" time=true label="发布时间" single=true readonly="readonly" width="300" value="${(article.basicDateTime?string('yyyy-MM-dd HH:mm:ss'))!}" validation={"required":"true", "data-bv-notempty-message":"必填项目"} placeholder="点击该框选择时间段"  />
 			<#if !isEditCategory><!-- 如果不是单篇 -->
 	            <@ms.formRow colSm="2" label="所属栏目" width="300">
 	            	<@ms.treeInput treeId="inputTree" json="${listColumn?default('')}" jsonId="categoryId" jsonPid="categoryCategoryId" jsonName="categoryTitle" inputName="basicCategoryId" inputValue="${categoryId}" buttonText="${categoryTitle?default('选择栏目')}" clickZtreeId="clickZtreeId(event,treeId,treeNode);" expandAll="true"  showIcon="true"/>
 				</@ms.formRow>
             </#if>
+            <@ms.date id="basicDateTime" name="basicDateTime" time=true label="发布时间" single=true readonly="readonly" width="300" value="${(article.basicDateTime?string('yyyy-MM-dd HH:mm:ss'))!}" validation={"required":"true", "data-bv-notempty-message":"必填项目"} placeholder="点击该框选择时间段"  />
 			<@ms.textarea colSm="2" name="basicDescription" label="描述" wrap="Soft" rows="4"  size=""  value="${article.basicDescription?default('')}" placeholder="请输入对该文章的简短描述，以便用户查看文章简略" validation={"maxlength":"400","data-bv-stringlength-message":"文章描述在400个字符以内!"}/>
 			<@ms.textarea colSm="2" name="articleKeyword" label="关键字" wrap="Soft" rows="4"  size="" placeholder="请输入文章关键字"   value="${article.articleKeyword?default('')}" validation={"maxlength":"155", "data-bv-stringlength-message":"文章作者在155个字符以内!"}/>
 			<!--新填字段内容开始-->

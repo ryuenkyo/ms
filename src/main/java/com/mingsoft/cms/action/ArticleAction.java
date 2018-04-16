@@ -254,7 +254,7 @@ public class ArticleAction extends BaseAction {
 			this.outJson(response, ModelCode.CMS_ARTICLE, false);
 
 		}
-		
+		 
 		article.setBasicUpdateTime(new Timestamp(System.currentTimeMillis()));
 		// 文章类型
 		String langtyp[] = request.getParameterValues("articleType");
