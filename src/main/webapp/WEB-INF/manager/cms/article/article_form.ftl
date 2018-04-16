@@ -23,7 +23,8 @@
 	            	<@ms.treeInput treeId="inputTree" json="${listColumn?default('')}" jsonId="categoryId" jsonPid="categoryCategoryId" jsonName="categoryTitle" inputName="basicCategoryId" inputValue="${categoryId}" buttonText="${categoryTitle?default('选择栏目')}" clickZtreeId="clickZtreeId(event,treeId,treeNode);" expandAll="true"  showIcon="true"/>
 				</@ms.formRow>
             </#if>
-            <@ms.date id="basicDateTime" name="basicDateTime" time=true label="发布时间" single=true readonly="readonly" width="300" value="${(article.basicDateTime?string('yyyy-MM-dd HH:mm:ss'))!}" validation={"required":"true", "data-bv-notempty-message":"必填项目"} placeholder="点击该框选择时间段"  />
+            <@ms.hidden id="basicDateTime" name="basicDateTime" value=""/>
+            <@ms.date id="articleDateTime" name="articleDateTime" time=true label="发布时间" single=true readonly="readonly" width="300" value="${(article.basicDateTime?default(.now))?string('yyyy-MM-dd HH:mm')}" validation={"required":"true", "data-bv-notempty-message":"必填项目"} placeholder="点击该框选择时间段"  />
 			<@ms.textarea colSm="2" name="basicDescription" label="描述" wrap="Soft" rows="4"  size=""  value="${article.basicDescription?default('')}" placeholder="请输入对该文章的简短描述，以便用户查看文章简略" validation={"maxlength":"400","data-bv-stringlength-message":"文章描述在400个字符以内!"}/>
 			<@ms.textarea colSm="2" name="articleKeyword" label="关键字" wrap="Soft" rows="4"  size="" placeholder="请输入文章关键字"   value="${article.articleKeyword?default('')}" validation={"maxlength":"155", "data-bv-stringlength-message":"文章作者在155个字符以内!"}/>
 			<!--新填字段内容开始-->
@@ -36,10 +37,20 @@
 	</@ms.panel>
 </@ms.html5>     
 <script>
-//重写时间控件验证
-$('#basicDateTime').daterangepicker(basicDateTimeSet, basicDateTimeFunc);
-	$('#basicDateTime').on('apply.daterangepicker', function(ev, picker) {
-		$('#basicDateTime').parents("form:first").data('bootstrapValidator').revalidateField('basicDateTime');
+//重写时间控件
+$('#articleDateTime').daterangepicker({
+	format:'YYYY-MM-DD HH:mm',
+	singleDatePicker: true,
+	showDropdowns: true,
+	timePickerIncrement: 1,
+  	timePicker: true,
+  	timePicker12Hour: true,
+  	startDate: moment().hours(0).minutes(0).seconds(0),
+   	showDropdowns: true,
+    showWeekNumbers: true,
+  });
+$('#articleDateTime').on('apply.daterangepicker', function(ev, picker) {
+		$('#articleDateTime').parents("form:first").data('bootstrapValidator').revalidateField('articleDateTime');
 });
 var articleBasicId=0;
 $(function(){
@@ -62,7 +73,7 @@ $(function(){
 			articleType = type.split(",");
 		  	for(i=0;i<articleType.length;i++){
 				if($(this).val()==articleType[i]){
-					$(this).attr("checked",'true');
+					$(this).attr("checked",'true');sa
 				}
 			}
 		}
@@ -100,6 +111,9 @@ $(function(){
 		var bottonText = $("#saveUpdate").text().trim();
 		//设置按钮加载状态值
 		$("#saveUpdate").attr("data-loading-text",bottonText+"中");
+		
+		var articleDateTimeValue = $("#articleDateTime").val()+":00";//让时间能精确到秒与后台对应
+		$("#basicDateTime").val(articleDateTimeValue); //给basicDateTime字段赋值
 		//获取所有栏目属性被选中的值
 		var typeJson=""
 		$("#articleTypeField").find("select").each(function(index){ 
