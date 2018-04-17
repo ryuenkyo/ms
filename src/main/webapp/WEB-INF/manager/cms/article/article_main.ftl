@@ -126,8 +126,7 @@
 				success:function(msg) {
 					if (msg.result) {
 						<@ms.notify msg="删除成功!" type="success"/>
-						//设置为0.5秒后刷新
-						setTimeout(function(){location.reload();},500);
+						location.reload();
 					} else {
 						<@ms.notify msg="删除失败" type="fail"/>
 					}
