@@ -20,7 +20,11 @@
 			<@ms.text name="articleAuthor" colSm="2" width="200" label="文章作者" title="文章作者" size="5"  placeholder="请输入文章作者"  value="${article.articleAuthor?default('')}" validation={"maxlength":"12", "data-bv-stringlength-message":"文章作者在12个字符以内!"} />
 			<#if !isEditCategory><!-- 如果不是单篇 -->
 	            <@ms.formRow colSm="2" label="所属栏目" width="300">
-	            	<@ms.treeInput treeId="inputTree" json="${listColumn?default('')}" jsonId="categoryId" jsonPid="categoryCategoryId" jsonName="categoryTitle" inputName="basicCategoryId" inputValue="${categoryId}" buttonText="请选择栏目" clickZtreeId="clickZtreeId(event,treeId,treeNode);" expandAll="true"  showIcon="true"/>
+	            <#if categoryTitle=="">
+	            	<@ms.treeInput treeId="inputTree" json="${listColumn?default('')}" jsonId="categoryId" jsonPid="categoryCategoryId" jsonName="categoryTitle" inputName="basicCategoryId" inputValue="${categoryId}" buttonText="选择栏目" clickZtreeId="clickZtreeId(event,treeId,treeNode);" expandAll="true"  showIcon="true"/>
+	            <#else>
+	            	<@ms.treeInput treeId="inputTree" json="${listColumn?default('')}" jsonId="categoryId" jsonPid="categoryCategoryId" jsonName="categoryTitle" inputName="basicCategoryId" inputValue="${categoryId}" buttonText="${categoryTitle}" clickZtreeId="clickZtreeId(event,treeId,treeNode);" expandAll="true"  showIcon="true"/>
+				</#if>
 				</@ms.formRow>
             </#if>
             <@ms.hidden id="basicDateTime" name="basicDateTime" value=""/>
