@@ -77,7 +77,7 @@ $(function(){
 			articleType = type.split(",");
 		  	for(i=0;i<articleType.length;i++){
 				if($(this).val()==articleType[i]){
-					$(this).attr("checked",'true');sa
+					$(this).attr("checked",'true');
 				}
 			}
 		}
