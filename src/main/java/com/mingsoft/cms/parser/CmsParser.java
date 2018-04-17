@@ -23,6 +23,7 @@ package com.mingsoft.cms.parser;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -262,7 +263,7 @@ public class CmsParser extends IGeneralParser {
 			String noFlag = property.get(ListParser.LIST_NOFLAG);
 			//可能列表中没有noflag属性
 			if(!StringUtils.isEmpty(noFlag)){
-				noFlag = articleBiz.articleTypeByAsc(noFlag);
+				Arrays.sort(noFlag.split(","),String.CASE_INSENSITIVE_ORDER);
 			}
 			// 数据库中该栏目下文章的总数
 			;
@@ -309,7 +310,7 @@ public class CmsParser extends IGeneralParser {
 			String noFlag = property.get(ListParser.LIST_NOFLAG);
 			//可能列表中没有noflag属性
 			if(!StringUtils.isEmpty(noFlag)){
-				noFlag = articleBiz.articleTypeByAsc(noFlag);
+				Arrays.sort(noFlag.split(","),String.CASE_INSENSITIVE_ORDER);
 			}
 			// 排序
 			String orderBy = property.get(ListParser.LIST_ORDERBY);
@@ -539,7 +540,7 @@ public class CmsParser extends IGeneralParser {
 			if (tempColumnId == 0 && column != null) {
 				tempColumnId = column.getCategoryId();
 			}
-			List<ColumnEntity> categoryList = null;
+			List<ColumnEntity> categoryList = new ArrayList();
 			//指定要显示的栏目数量
 			String size = mapProperty.get(ChannelParser.CHANNEL_TYPE_SIZE);
 			Integer _size = null;
@@ -574,6 +575,9 @@ public class CmsParser extends IGeneralParser {
 					categoryList = columnBiz.queryTopSiblingListByColumnId(tempColumnId,_size);
 				} else if (type.equals(ChannelParser.CHANNEL_TYPE_LEVEL)) {
 					categoryList = columnBiz.querySibling(tempColumnId,_size);
+				} else if (type.equals(ChannelParser.CHANNEL_TYPE_SELF)) {
+					ColumnEntity columnEntiy = (ColumnEntity) columnBiz.getEntity(tempColumnId);
+					categoryList.add(columnEntiy);
 				}
 				// 替换栏目标签
 				htmlContent = new ChannelParser(channel, categoryList, this.getWebsiteUrl(), column != null ? column.getCategoryId() : 0, mapProperty.get(ChannelParser.CHANNEL_CLASS)).parse();
@@ -656,7 +660,7 @@ public class CmsParser extends IGeneralParser {
 				String noFlag = property.get(ListParser.LIST_NOFLAG);
 				//可能列表中没有noflag属性
 				if(!StringUtils.isEmpty(noFlag)){
-					noFlag = articleBiz.articleTypeByAsc(noFlag);
+					Arrays.sort(noFlag.split(","),String.CASE_INSENSITIVE_ORDER);
 				}
 				// 排序
 				String orderBy = property.get(ListParser.LIST_ORDERBY);

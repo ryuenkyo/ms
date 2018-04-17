@@ -330,12 +330,6 @@ public class ArticleBizImpl extends BasicBizImpl implements IArticleBiz {
 		return articleDao.getCountByWebsiteId(webId);
 	}
 	
-	@Override
-	public String articleTypeByAsc(String articleType) {
-		String[] articleTypeArrays = articleType.split(",");
-		Arrays.sort(articleTypeArrays,String.CASE_INSENSITIVE_ORDER);
-		return ArrayUtil.join(articleTypeArrays,",")+",";
-	}
 
 
 }

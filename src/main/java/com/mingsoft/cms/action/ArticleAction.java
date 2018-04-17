@@ -24,6 +24,7 @@ package com.mingsoft.cms.action;
 import java.io.File;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -269,8 +270,8 @@ public class ArticleAction extends BaseAction {
 		//如果选择一个属性不做排序操作
 		if(!StringUtils.isEmpty(checkboxType) && checkboxType.length()>2){
 			// 文章类型排序
-			String articleTypeAsc = articleBiz.articleTypeByAsc(checkboxType);
-			article.setArticleType(articleTypeAsc);
+			Arrays.sort(checkboxType.split(","),String.CASE_INSENSITIVE_ORDER);
+			article.setArticleType(checkboxType);
 		}else{
 			article.setArticleType(checkboxType);
 		}
@@ -400,8 +401,8 @@ public class ArticleAction extends BaseAction {
 		//如果选择一个属性不做排序操作
 		if(!StringUtils.isEmpty(checkboxType) && checkboxType.length()>2){
 			// 文章类型排序
-			String articleTypeAsc = articleBiz.articleTypeByAsc(checkboxType);
-			article.setArticleType(articleTypeAsc);
+			Arrays.sort(checkboxType.split(","),String.CASE_INSENSITIVE_ORDER);
+			article.setArticleType(checkboxType);
 		}else{
 			article.setArticleType(checkboxType);
 		}
