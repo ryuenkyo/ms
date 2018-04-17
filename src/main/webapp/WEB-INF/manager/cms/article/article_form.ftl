@@ -20,9 +20,15 @@
 			<@ms.text name="articleAuthor" colSm="2" width="200" label="文章作者" title="文章作者" size="5"  placeholder="请输入文章作者"  value="${article.articleAuthor?default('')}" validation={"maxlength":"12", "data-bv-stringlength-message":"文章作者在12个字符以内!"} />
 			<#if !isEditCategory><!-- 如果不是单篇 -->
 	            <@ms.formRow colSm="2" label="所属栏目" width="300">
-	            	<@ms.treeInput treeId="inputTree" json="${listColumn?default('')}" jsonId="categoryId" jsonPid="categoryCategoryId" jsonName="categoryTitle" inputName="basicCategoryId" inputValue="${categoryId}" buttonText="${categoryTitle?default('选择栏目')}" clickZtreeId="clickZtreeId(event,treeId,treeNode);" expandAll="true"  showIcon="true"/>
+	            <#if categoryTitle=="">
+	            	<@ms.treeInput treeId="inputTree" json="${listColumn?default('')}" jsonId="categoryId" jsonPid="categoryCategoryId" jsonName="categoryTitle" inputName="basicCategoryId" inputValue="${categoryId}" buttonText="选择栏目" clickZtreeId="clickZtreeId(event,treeId,treeNode);" expandAll="true"  showIcon="true"/>
+	            <#else>
+	            	<@ms.treeInput treeId="inputTree" json="${listColumn?default('')}" jsonId="categoryId" jsonPid="categoryCategoryId" jsonName="categoryTitle" inputName="basicCategoryId" inputValue="${categoryId}" buttonText="${categoryTitle}" clickZtreeId="clickZtreeId(event,treeId,treeNode);" expandAll="true"  showIcon="true"/>
+				</#if>
 				</@ms.formRow>
             </#if>
+            <@ms.hidden id="basicDateTime" name="basicDateTime" value=""/>
+            <@ms.date id="articleDateTime" name="articleDateTime" time=true label="发布时间" single=true readonly="readonly" width="300" value="${(article.basicDateTime?default(.now))?string('yyyy-MM-dd HH:mm')}" validation={"required":"true", "data-bv-notempty-message":"必填项目"} placeholder="点击该框选择时间段"  />
 			<@ms.textarea colSm="2" name="basicDescription" label="描述" wrap="Soft" rows="4"  size=""  value="${article.basicDescription?default('')}" placeholder="请输入对该文章的简短描述，以便用户查看文章简略" validation={"maxlength":"400","data-bv-stringlength-message":"文章描述在400个字符以内!"}/>
 			<@ms.textarea colSm="2" name="articleKeyword" label="关键字" wrap="Soft" rows="4"  size="" placeholder="请输入文章关键字"   value="${article.articleKeyword?default('')}" validation={"maxlength":"155", "data-bv-stringlength-message":"文章作者在155个字符以内!"}/>
 			<!--新填字段内容开始-->
@@ -33,8 +39,23 @@
 			<@ms.hidden name="modelId"  value="${Session.model_id_session?default('0')}" />
 		</@ms.form>
 	</@ms.panel>
-</@ms.html5>	      
+</@ms.html5>     
 <script>
+//重写时间控件
+$('#articleDateTime').daterangepicker({
+	format:'YYYY-MM-DD HH:mm',
+	singleDatePicker: true,
+	showDropdowns: true,
+	timePickerIncrement: 1,
+  	timePicker: true,
+  	timePicker12Hour: true,
+  	startDate: moment().hours(0).minutes(0).seconds(0),
+   	showDropdowns: true,
+    showWeekNumbers: true,
+  });
+$('#articleDateTime').on('apply.daterangepicker', function(ev, picker) {
+		$('#articleDateTime').parents("form:first").data('bootstrapValidator').revalidateField('articleDateTime');
+});
 var articleBasicId=0;
 $(function(){
 	//页面标题
@@ -88,13 +109,15 @@ $(function(){
 	
 	//更新或保存				
 	$("#saveUpdate").click(function(){
-		//加载状态
-		var bottonText = $(this).text().trim();
-		$(this).attr("data-loading-text",bottonText+"中");
-		$(this).button('loading').delay(1000).queue(function() {
-			   $(this).button('reset');
-			   $(this).dequeue();
-		});
+		//禁用按钮
+		$("#saveUpdate").attr("disabled",true);
+		//获取按钮值
+		var bottonText = $("#saveUpdate").text().trim();
+		//设置按钮加载状态值
+		$("#saveUpdate").attr("data-loading-text",bottonText+"中");
+		
+		var articleDateTimeValue = $("#articleDateTime").val()+":00";//让时间能精确到秒与后台对应
+		$("#basicDateTime").val(articleDateTimeValue); //给basicDateTime字段赋值
 		//获取所有栏目属性被选中的值
 		var typeJson=""
 		$("#articleTypeField").find("select").each(function(index){ 
@@ -129,8 +152,6 @@ $(function(){
 					checkboxType+=$(this).val()+",";
 				}
 			});
-			var buttonText=$(this).text(); //按钮中的值
-			
 			var dataMsg = saveArticle+"&checkboxType="+checkboxType;
 			var seeMsg = "";
 			<#if article.basicId !=0>
@@ -143,32 +164,32 @@ $(function(){
 				if(isNaN($("input[name=basicSort]").val())){
 					<@ms.notify msg="自定义排序必须是数字" type="warning"/>
 					$("input[name=basicSort]").val(0);
+					//启用按钮
+					$("#saveUpdate").button('reset');
 					return;
 				}
-				$("#saveUpdate").attr("disabled",true);
 				$(this).request({url:actionUrl,data:dataMsg,loadingText:seeMsg,method:"post",type:"json",func:function(obj) {
+					//执行加载状态
+					$("#saveUpdate").button('loading');
 					if(obj.result){
 						var generateUrl =  base+"${baseManager}/cms/generate/"+obj.resultMsg+"/genernateForArticle.do";
 						$(this).request({url:generateUrl,loadingText:"生成中....",method:"post",type:"json",func:function(re) {
 							if(re.result){
 				   				<#if article.basicId !=0>
 				   					<@ms.notify msg="更新文章成功，并已生成" type="success"/>
-				   					$("#saveUpdate").removeAttr("disabled");
-				   					//更新并生成后成功后路径进行跳转
-				   					urlArticle_Form()
 					   			<#else>
 					   				<@ms.notify msg="保存文章成功，并已生成" type="success"/>
-					   				//更新并生成后成功后路径进行跳转
-					   				urlArticle_Form()
 					   			</#if>
+					   			//更新并生成之后路径进行跳转
+								location.href=managerPath+"/cms/article/${categoryId?default(0)}/main.do";
 				   			}else{
 				   				//生成失败则将按钮信息返回默认
 				   				<@ms.notify msg="生成文件失败" type="warning"/>
-				   				$("#saveUpdate").removeAttr("disabled");
 				   			}
 				   			var columnType = ${columnType?default(0)};
 				   			if(columnType == 1){
-				   				location.href=managerPath+"/cms/article/${categoryId?default(0)}/main.do";
+				   				//更新并生成之后路径进行跳转
+								location.href=managerPath+"/cms/article/${categoryId?default(0)}/main.do";
 				   			}else{
 				   				var dataId = obj.resultData;
 				   				if(dataId!=""){
@@ -181,21 +202,19 @@ $(function(){
 					    	type:'warning',
 					    	message: { text:obj.resultMsg }
 					 	}).show();
-				   		$("#saveUpdate").removeAttr("disabled");
 					}
 				}});
 			}
 		}else{
 			<@ms.notify msg="请选择文章所属栏目" type="warning"/>
-			$("#saveUpdate").removeAttr("disabled");
+			//启用按钮
+			$("#saveUpdate").attr("disabled",false);
 		}
+		 //启用按钮
+		 $("#saveUpdate").button('reset');
+	     $("#saveUpdate").attr("disabled",false);
 	});	
 });
-
-//文章更新并生成后跳转的方法
-function urlArticle_Form(){
-    location.href=managerPath+"/cms/article/${categoryId?default(0)}/main.do";
-}
 
 //选择栏目后查询自定义模型
 function clickZtreeId(event,treeId,treeNode){

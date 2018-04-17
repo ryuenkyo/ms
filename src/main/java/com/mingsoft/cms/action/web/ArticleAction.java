@@ -34,24 +34,22 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.mingsoft.base.filter.DateValueFilter;
 import com.mingsoft.basic.action.BaseAction;
-import com.mingsoft.base.entity.ListJson;
-import com.mingsoft.cms.biz.IArticleBiz;
 import com.mingsoft.basic.biz.IColumnBiz;
+import com.mingsoft.basic.entity.ColumnEntity;
+import com.mingsoft.cms.biz.IArticleBiz;
+import com.mingsoft.cms.entity.ArticleEntity;
 import com.mingsoft.mdiy.biz.IContentModelBiz;
 import com.mingsoft.mdiy.biz.IContentModelFieldBiz;
-import com.mingsoft.basic.constant.e.CookieConstEnum;
-import com.mingsoft.cms.entity.ArticleEntity;
-import com.mingsoft.basic.entity.ColumnEntity;
 import com.mingsoft.mdiy.entity.ContentModelEntity;
-import com.mingsoft.util.PageUtil;
 import com.mingsoft.util.StringUtil;
 
+import net.mingsoft.basic.bean.ListBean;
 import net.mingsoft.basic.util.BasicUtil;
 
 /**
@@ -140,36 +138,68 @@ public class ArticleAction extends BaseAction {
 	 * 
 	 * @param pageSize
 	 *            一页显示数量
-	 * @param pageNo
+	 * @param pageNum
 	 *            当前页码
 	 * @param basicCategoryId
 	 *            分类编号
 	 *            <dt><span class="strong">返回</span></dt><br/>
-	 *            {count:"记录总数", list:
-	 *            "[{basicTitle:"标题",basicDescription:"描述",basicThumbnails:"缩略图",basicDateTime:"发布时间",basicUpdateTime:"更新时间","basicHit":点击数,"basicId":编号}]"
-	 *            }
+	 *            {"list":"[{
+	 *            "basicTitle":"标题",
+	 *            "basicDescription":"描述",
+	 *            "basicThumbnails":"缩略图",
+	 *            "basicDateTime":"发布时间",
+	 *            "basicUpdateTime":"更新时间",
+	 *            "basicHit":点击数,
+	 *            "basicId":编号,
+	 *            "articleContent":文章内容,
+	 *            "articleAuthor":文章作者
+	 *      	  "articleType":文章属性,
+	 *      	  "articleSource":文章的来源,
+	 *      	  "articleUrl":文章跳转链接地址,
+	 *      	  "articleKeyword":文章关键字,
+	 *      	  "articleCategoryId":文章所属的分类Id,
+	 *      	  "articleTypeLinkURL":文章分类url地址，主要是用户生成html使用,
+	 *            "order":"排序方式",
+	 *            "orderBy":"排序字段     
+	 *            }],
+	 *             "page":{"endRow": 2,  当前页面最后一个元素在数据库中的行号
+	 * 				"firstPage": 1, 第一页页码
+	 * 				"hasNextPage": true存在下一页false不存在, 
+	 * 				"hasPreviousPage": true存在上一页false不存在, 
+	 * 				"isFirstPage": true是第一页false不是第一页, 
+	 * 				"isLastPage": true是最后一页false不是最后一页, 
+	 * 				"lastPage": 最后一页的页码, 
+	 * 				"navigatePages": 导航数量，实现 1...5.6.7....10效果, 
+	 * 				"navigatepageNums": []导航页码集合, 
+	 * 				"nextPage": 下一页, 
+	 * 				"pageNum": 当前页码, 
+	 * 				"pageSize": 一页显示数量, 
+	 * 				"pages": 总页数, 
+	 * 				"prePage": 上一页, 
+	 * 				"size": 总记录, 
+	 * 				"startRow":当前页面第一个元素在数据库中的行号, 
+	 * 				"total":总记录数量
+	 * 				}
 	 */
-	@RequestMapping(value = "/list", method = RequestMethod.POST)
+	@RequestMapping(value = "/list")
 	@ResponseBody
 	public void list(@ModelAttribute ArticleEntity article, HttpServletRequest request, HttpServletResponse response) {
-		int pageNo = this.getPageNo(request);
-		int pageSize = this.getPageSize(request);
-		int categoryId = article.getBasicCategoryId();
-		String isHasChilds = request.getParameter("isHasChilds"); // 是否取子类信息
-
-		boolean _isHasChilds = false; // true取子栏目，false取当前栏目
-		if (!StringUtil.isBlank(isHasChilds) && isHasChilds.equals("true")) {
-			_isHasChilds = true;
-		}
 		int appId = BasicUtil.getAppId();
 		int[] ids = null;
 		if (article.getBasicCategoryId()>0) {
 			 ids = new int[]{article.getBasicCategoryId()};
 		}
+		//默认为desc排序
+		boolean isOrder = true;
+		if(!StringUtil.isBlank(article.getOrder())){
+			String	basicOrder = article.getOrder();
+			if(basicOrder.equalsIgnoreCase("asc")){
+				isOrder = false;
+			}
+		}
 		BasicUtil.startPage();
-		List list = articleBiz.query(appId, ids, null, null, null, false, article);
-		BasicUtil.endPage(list); 
-		this.outJson(response, JSONArray.toJSONString(list));
+		List list = articleBiz.query(appId, ids, null, null, article.getOrderBy(), isOrder, article);
+		this.outJson(response, JSONArray.toJSONString(new ListBean(list, BasicUtil.endPage(list)),new DateValueFilter("yyyy-MM-dd HH:mm:ss")));
 	}
 
 }
