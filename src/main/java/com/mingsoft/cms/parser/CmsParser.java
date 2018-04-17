@@ -259,6 +259,9 @@ public class CmsParser extends IGeneralParser {
 			int size = StringUtil.string2Int(property.get(ListParser.LIST_SIZE));
 			// 显示文章的形式flag属性
 			String flag = property.get(ListParser.LIST_FLAG);
+			if(!StringUtils.isEmpty(flag)){
+				Arrays.sort(flag.split(","),String.CASE_INSENSITIVE_ORDER);
+			}
 			// 显示文章的形式noflag属性
 			String noFlag = property.get(ListParser.LIST_NOFLAG);
 			//可能列表中没有noflag属性
@@ -306,6 +309,9 @@ public class CmsParser extends IGeneralParser {
 			int size = StringUtil.string2Int(property.get(ListParser.LIST_SIZE));
 			// 显示文章的形式flag属性
 			String flag = property.get(ListParser.LIST_FLAG);
+			if(!StringUtils.isEmpty(flag)){
+				Arrays.sort(flag.split(","),String.CASE_INSENSITIVE_ORDER);
+			}
 			// 显示文章的形式noflag属性
 			String noFlag = property.get(ListParser.LIST_NOFLAG);
 			//可能列表中没有noflag属性
@@ -656,6 +662,9 @@ public class CmsParser extends IGeneralParser {
 				int size = StringUtil.string2Int(property.get(ListParser.LIST_SIZE));
 				// 显示文章的形式flag属性
 				String flag = property.get(ListParser.LIST_FLAG);
+				if(!StringUtils.isEmpty(flag)){
+					Arrays.sort(flag.split(","),String.CASE_INSENSITIVE_ORDER);
+				}
 				// 显示文章的形式noflag属性
 				String noFlag = property.get(ListParser.LIST_NOFLAG);
 				//可能列表中没有noflag属性

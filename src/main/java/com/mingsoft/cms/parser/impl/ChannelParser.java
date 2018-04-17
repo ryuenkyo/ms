@@ -123,25 +123,25 @@ public class ChannelParser extends IParser {
 
 	/**
 	 * 栏目列表的属性 类型String 取值范围：son|top son表示下级栏目(默认值) top顶级栏目（非必填） 栏目父标签
-	 * {ms:channel type=”sun” typeid=””}
+	 * {ms:channel type=”son” typeid=””}
 	 */
 	public static final String CHANNEL_TYPE_SON = "son";
 
 	/**
 	 * 栏目列表的属性 类型String 取值范围：son|top son表示下级栏目(默认值) top顶级栏目（非必填） 栏目父标签
-	 * {ms:channel type=”sun” typeid=””}
+	 * {ms:channel type=”top” typeid=””}
 	 */
 	public static final String CHANNEL_TYPE_TOP = "top";
 	
 	/**
 	 * 栏目列表的属性 类型String 取值范围：son|top|self son表示下级栏目(默认值) top顶级栏目   self取到当前栏目
-	 * {ms:channel type=”sun” typeid=””}
+	 * {ms:channel type=”self” typeid=””}
 	 */
 	public static final String CHANNEL_TYPE_SELF = "self";
 
 	/**
 	 * 栏目列表的属性 类型String 取值范围：son|top|level son表示下级栏目(默认值) top顶级栏目（非必填） level取同一级
-	 * 栏目父标签 {ms:channel type=”sun” typeid=””}
+	 * 栏目父标签 {ms:channel type=”level” typeid=””}
 	 */
 	public static final String CHANNEL_TYPE_LEVEL = "level";
 

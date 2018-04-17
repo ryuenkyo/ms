@@ -92,7 +92,7 @@
 		$(this).html("更新中..").attr("disabled", "disabled");
 		$(this).request({url:URL,data:DATA,type:"json",method:"post",func:function(msg) {
 			$("#updateIndex").html("更新主页").removeAttr("disabled");
-			if(msg.result==true){
+			if(msg.result){
 				<@ms.notify msg="更新成功" type="warning"/>
 			}else{
 				$('.ms-notifications').offset({top:43}).notify({
