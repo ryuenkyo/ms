@@ -181,7 +181,7 @@ $(function(){
 					   				<@ms.notify msg="保存文章成功，并已生成" type="success"/>
 					   			</#if>
 					   			//更新并生成之后路径进行跳转
-								urlArticle_Form();
+								urlArticleForm();
 				   			}else{
 				   				//生成失败则将按钮信息返回默认
 				   				<@ms.notify msg="生成文件失败" type="warning"/>
@@ -189,7 +189,7 @@ $(function(){
 				   			var columnType = ${columnType?default(0)};
 				   			if(columnType == 1){
 				   				//更新并生成之后路径进行跳转
-								urlArticle_Form();
+								urlArticleForm();
 				   			}else{
 				   				var dataId = obj.resultData;
 				   				if(dataId!=""){
@@ -217,7 +217,7 @@ $(function(){
 });
 
 //文章更新并生成后跳转的方法
-function urlArticle_Form(){
+function urlArticleForm(){
     location.href=managerPath+"/cms/article/${categoryId?default(0)}/main.do";
 }
 

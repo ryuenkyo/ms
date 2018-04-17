@@ -162,7 +162,7 @@ public class ArticleAction extends BaseAction {
 	 *            "order":"排序方式",
 	 *            "orderBy":"排序字段     
 	 *            }],
-	 *             "page":{"endRow": 2,  最后一页页码
+	 *             "page":{"endRow": 2,  当前页面最后一个元素在数据库中的行号
 	 * 				"firstPage": 1, 第一页页码
 	 * 				"hasNextPage": true存在下一页false不存在, 
 	 * 				"hasPreviousPage": true存在上一页false不存在, 
@@ -177,7 +177,7 @@ public class ArticleAction extends BaseAction {
 	 * 				"pages": 总页数, 
 	 * 				"prePage": 上一页, 
 	 * 				"size": 总记录, 
-	 * 				"startRow": , 
+	 * 				"startRow":当前页面第一个元素在数据库中的行号, 
 	 * 				"total":总记录数量
 	 * 				}
 	 */
@@ -189,17 +189,16 @@ public class ArticleAction extends BaseAction {
 		if (article.getBasicCategoryId()>0) {
 			 ids = new int[]{article.getBasicCategoryId()};
 		}
-		//设置排序默认desc
-		boolean order = true;
-		//若排序字段为asc
+		//默认为desc排序
+		boolean isOrder = true;
 		if(!StringUtil.isBlank(article.getOrder())){
-			String	article_Order = article.getOrder();
-			if(article_Order.equalsIgnoreCase("asc")){
-				order = false;
+			String	basicOrder = article.getOrder();
+			if(basicOrder.equalsIgnoreCase("asc")){
+				isOrder = false;
 			}
 		}
 		BasicUtil.startPage();
-		List list = articleBiz.query(appId, ids, null, null, article.getOrderBy(), order, article);
+		List list = articleBiz.query(appId, ids, null, null, article.getOrderBy(), isOrder, article);
 		this.outJson(response, JSONArray.toJSONString(new ListBean(list, BasicUtil.endPage(list)),new DateValueFilter("yyyy-MM-dd HH:mm:ss")));
 	}
 
