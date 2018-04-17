@@ -116,26 +116,32 @@ public class ChannelParser extends IParser {
 	public static final String CHANNEL_CLASS = "class";
 
 	/**
-	 * 栏目列表的属性 类型String 取值范围：son|top son表示下级栏目(默认值) top顶级栏目（非必填） 栏目父标签
+	 * 栏目列表的属性 类型String 取值范围：son|top son表示下级栏目(默认值) top顶级栏目 （非必填） 栏目父标签
 	 * {ms:channel type=”sun” typeid=””}
 	 */
 	public static final String CHANNEL_TYPE = "type";
 
 	/**
 	 * 栏目列表的属性 类型String 取值范围：son|top son表示下级栏目(默认值) top顶级栏目（非必填） 栏目父标签
-	 * {ms:channel type=”sun” typeid=””}
+	 * {ms:channel type=”son” typeid=””}
 	 */
 	public static final String CHANNEL_TYPE_SON = "son";
 
 	/**
 	 * 栏目列表的属性 类型String 取值范围：son|top son表示下级栏目(默认值) top顶级栏目（非必填） 栏目父标签
-	 * {ms:channel type=”sun” typeid=””}
+	 * {ms:channel type=”top” typeid=””}
 	 */
 	public static final String CHANNEL_TYPE_TOP = "top";
+	
+	/**
+	 * 栏目列表的属性 类型String 取值范围：son|top|self son表示下级栏目(默认值) top顶级栏目   self取到当前栏目
+	 * {ms:channel type=”self” typeid=””}
+	 */
+	public static final String CHANNEL_TYPE_SELF = "self";
 
 	/**
 	 * 栏目列表的属性 类型String 取值范围：son|top|level son表示下级栏目(默认值) top顶级栏目（非必填） level取同一级
-	 * 栏目父标签 {ms:channel type=”sun” typeid=””}
+	 * 栏目父标签 {ms:channel type=”level” typeid=””}
 	 */
 	public static final String CHANNEL_TYPE_LEVEL = "level";
 
@@ -310,7 +316,7 @@ public class ChannelParser extends IParser {
 				htmlList = tabContent(htmlList, articleType.getCategoryTitle(), CHANNEL_TITLE);
 				// 替换栏目链接标签
 
-				String linkUrl = webUrl + File.separator + StringUtil.null2String(articleType.getColumnPath()) + File.separator + IParserRegexConstant.HTML_INDEX;
+				String linkUrl = webUrl + StringUtil.null2String(articleType.getColumnPath()) + File.separator + IParserRegexConstant.HTML_INDEX;
 				htmlList = tabContent(htmlList, linkUrl, CHANNEL_LINK);
 				// 替换栏目关键字标签
 				htmlList = tabContent(htmlList, articleType.getColumnKeyword(), CHANNEL_KEYWORD);

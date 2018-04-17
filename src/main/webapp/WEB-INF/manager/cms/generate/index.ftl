@@ -95,7 +95,10 @@
 			if(msg.result){
 				<@ms.notify msg="更新成功" type="warning"/>
 			}else{
-				alert(msg.resultMsg);
+				$('.ms-notifications').offset({top:43}).notify({
+					    	type:'warning',
+					    	message: { text:msg.resultMsg }
+					 	}).show();
 			}
 			$("#updateIndex").html("更新主页")
 		}});

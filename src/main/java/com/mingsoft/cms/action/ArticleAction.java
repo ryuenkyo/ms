@@ -24,6 +24,7 @@ package com.mingsoft.cms.action;
 import java.io.File;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -39,6 +40,7 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -249,7 +251,6 @@ public class ArticleAction extends BaseAction {
 		// 获取站点id
 		int appId = this.getAppId(request);
 		// 验证文章，文章自由排序，栏目id
-//		if(article.getAc){}
 		if (!validateForm(article, response)) {
 			this.outJson(response, ModelCode.CMS_ARTICLE, false);
 
@@ -265,7 +266,15 @@ public class ArticleAction extends BaseAction {
 				sb.append(langtyp[j] + ",");
 			}
 		}
-		article.setArticleType(request.getParameter("checkboxType"));
+		String checkboxType = BasicUtil.getString("checkboxType");
+		//如果选择一个属性不做排序操作
+		if(!StringUtils.isEmpty(checkboxType) && checkboxType.length()>2){
+			// 文章类型排序
+			Arrays.sort(checkboxType.split(","),String.CASE_INSENSITIVE_ORDER);
+			article.setArticleType(checkboxType);
+		}else{
+			article.setArticleType(checkboxType);
+		}
 		// 问题:由于上传的图片路径后面可能带有｜符合。所以要进行将“｜”替换空
 		// 空值判断
 		if (!StringUtil.isBlank(article.getBasicThumbnails())) {
@@ -388,7 +397,15 @@ public class ArticleAction extends BaseAction {
 		int appId = this.getAppId(request);
 		article.setBasicUpdateTime(new Timestamp(System.currentTimeMillis()));
 		// 文章类型
-		article.setArticleType(request.getParameter("checkboxType"));
+		String checkboxType = BasicUtil.getString("checkboxType");
+		//如果选择一个属性不做排序操作
+		if(!StringUtils.isEmpty(checkboxType) && checkboxType.length()>2){
+			// 文章类型排序
+			Arrays.sort(checkboxType.split(","),String.CASE_INSENSITIVE_ORDER);
+			article.setArticleType(checkboxType);
+		}else{
+			article.setArticleType(checkboxType);
+		}
 		// 问题:由于上传的图片路径后面可能带有｜符合。所以要进行将“｜”替换空
 		// 空值判断
 		if (!StringUtil.isBlank(article.getBasicThumbnails())) {
