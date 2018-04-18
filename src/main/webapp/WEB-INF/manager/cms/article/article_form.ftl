@@ -23,7 +23,7 @@
 	            <#if categoryTitle=="">
 	            	<@ms.treeInput treeId="inputTree" json="${listColumn?default('')}" jsonId="categoryId" jsonPid="categoryCategoryId" jsonName="categoryTitle" inputName="basicCategoryId" inputValue="${categoryId}" buttonText="选择栏目" clickZtreeId="clickZtreeId(event,treeId,treeNode);" expandAll="true"  showIcon="true"/>
 	            <#else>
-	            	<@ms.treeInput treeId="inputTree" json="${listColumn?default('')}" jsonId="categoryId" jsonPid="categoryCategoryId" jsonName="categoryTitle" inputName="basicCategoryId" inputValue="${categoryId}" buttonText="${categoryTitle}" clickZtreeId="clickZtreeId(event,treeId,treeNode);" expandAll="true"  showIcon="true"/>
+	            	<@ms.treeInput treeId="inputTree" json="${listColumn?default('')}" jsonId="categoryId" jsonPid="categoryCategoryId" jsonName="categoryTitle" inputName="basicCategoryId" inputValue="${categoryId}" buttonText="${(categoryTitle)!}" clickZtreeId="clickZtreeId(event,treeId,treeNode);" expandAll="true"  showIcon="true"/>
 				</#if>
 				</@ms.formRow>
             </#if>
@@ -231,7 +231,6 @@ function clickZtreeId(event,treeId,treeNode){
 	$(this).request({url:url,data:basicId,method:"post",func:function(data) {
 		$("#addFieldForm").html("");
 		$("#addFieldForm").html(data);
-		$("select").select2();
 	}});
 } 
 </script>
