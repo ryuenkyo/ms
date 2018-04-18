@@ -231,7 +231,6 @@ function clickZtreeId(event,treeId,treeNode){
 	$(this).request({url:url,data:basicId,method:"post",func:function(data) {
 		$("#addFieldForm").html("");
 		$("#addFieldForm").html(data);
-		$("select").select2();
 	}});
 } 
 </script>
