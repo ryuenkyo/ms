@@ -8,7 +8,7 @@
 			</#if>
 			<@ms.text label="文章标题"  name="basicTitle" value="" title="请输入文章标题"  placeholder="请输入文章标题" />
 			<@ms.searchFormButton>
-				<@ms.queryButton id="submitSearch"/>								
+				<@ms.queryButton id="submitSearch" onclick="query()" />								
 			</@ms.searchFormButton>
 	</@ms.searchForm>
 	<div id="toolbar">
@@ -40,7 +40,17 @@
  	</@ms.modalButton>
 </@ms.modal>			
 <script>
-	$(function(){	
+	//查询文章标题
+	function query(){
+		var search = $("form[name='searchForm']").serializeJSON();
+		var params = $('#articleListTable').bootstrapTable('getOptions');
+		params.queryParams = function(params) {  
+		 	$.extend(params,search);
+	        	return params;  
+			}  
+		$("#articleListTable").bootstrapTable('refresh', {query:$("form[name='searchForm']").serializeJSON()});
+	}
+	$(function(){
 		$("#articleListTable").bootstrapTable({
 		url:"${managerPath}/cms/article/${categoryId}/list.do",
 		contentType : "application/x-www-form-urlencoded",
@@ -80,6 +90,7 @@
 	        align: 'center'
 	    }]
 	});
+	query();
 	//添加文章
 	$("#addButton").click(function(){
 		if(${isParent}==true){
@@ -88,16 +99,6 @@
 		}
 		location.href = base+"${baseManager}/cms/article/add.do?categoryId=${categoryId?default(0)}&modelId=${Session.model_id_session?default(0)}&categoryTitle=${categoryTitle?default('')}"; 
 	});	
-	//查询文章标题
-	$("#submitSearch").click(function(){
-		var search = $("form[name='searchForm']").serializeJSON();
-		var params = $('#articleListTable').bootstrapTable('getOptions');
-		params.queryParams = function(params) {  
-		 	$.extend(params,search);
-	        	return params;  
-			}  
-		$("#articleListTable").bootstrapTable('refresh', {query:$("form[name='searchForm']").serializeJSON()});
-	});
 	//点击重置按钮
 	$(".reset").click(function(){
 		$("input[name=basicTitle]").val("");
