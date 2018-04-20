@@ -22,6 +22,7 @@ The MIT License (MIT) * Copyright (c) 2016 铭飞科技(mingsoft.net)
 package com.mingsoft.cms.entity;
 
 import java.io.File;
+import java.util.Arrays;
 
 import com.mingsoft.base.constant.Const;
 import com.mingsoft.basic.entity.AppEntity;
@@ -29,6 +30,8 @@ import com.mingsoft.basic.entity.BasicEntity;
 import com.mingsoft.basic.entity.ColumnEntity;
 import com.mingsoft.parser.IParserRegexConstant;
 import com.mingsoft.util.StringUtil;
+
+import cn.hutool.core.util.ArrayUtil;
 
 /**
  * 
@@ -60,6 +63,11 @@ public class ArticleEntity extends BasicEntity{
 	 * 文章属性
 	 */
 	private String articleType ;
+	
+	/**
+	 * 文章属性,排序后的字符串，不参与表结构
+	 */
+	private String articleTypeStr;
 	
 	/**
 	 * 文章的来源

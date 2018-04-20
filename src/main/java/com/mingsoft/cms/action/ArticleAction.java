@@ -47,6 +47,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.mingsoft.basic.action.BaseAction;
@@ -64,12 +65,16 @@ import com.mingsoft.mdiy.biz.IContentModelFieldBiz;
 import com.mingsoft.basic.constant.e.CookieConstEnum;
 import com.mingsoft.cms.constant.ModelCode;
 import com.mingsoft.cms.entity.ArticleEntity;
+import com.mingsoft.cms.util.ArrysUtil;
 import com.mingsoft.basic.entity.ColumnEntity;
 import com.mingsoft.mdiy.entity.ContentModelEntity;
 import com.mingsoft.mdiy.entity.ContentModelFieldEntity;
 import com.mingsoft.parser.IParserRegexConstant;
 import com.mingsoft.util.PageUtil;
 import com.mingsoft.util.StringUtil;
+
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.ArrayUtil;
 import net.mingsoft.basic.bean.EUListBean;
 import net.mingsoft.basic.util.BasicUtil;
 
@@ -160,8 +165,14 @@ public class ArticleAction extends BaseAction {
 			HttpServletResponse response, @PathVariable int categoryId) {
 		String articleType = request.getParameter("articleType");
 		String isParent = BasicUtil.getString("isParent", "false");
+		List types = articleType();
+		Map map = new HashMap<>();
+		//映射一个文章的全部属性
+		map.put("a","全部");
+		types.add((Map.Entry<String, String>)map.entrySet().iterator().next());
 		mode.addAttribute("isParent", isParent);
-		mode.addAttribute("articleTypeList", articleType());
+		//使用糊涂工具排序使全部属性排在第一个
+		mode.addAttribute("articleTypeList", CollUtil.sortEntryToList(types));
 		mode.addAttribute("articleType", articleType);
  		mode.addAttribute("categoryId", categoryId);
 		//返回文章页面显示地址
@@ -179,6 +190,12 @@ public class ArticleAction extends BaseAction {
 			HttpServletResponse response, @PathVariable int categoryId) {
 		int[] basicCategoryIds = null;
 		String articleType = article.getArticleType();
+		if(StringUtils.isEmpty(articleType)){
+			articleType = BasicUtil.getString("articleTypeStr");
+		}
+		if(!StringUtils.isEmpty(articleType) && articleType.equals("a")){
+			articleType = null;
+		}
 		if(categoryId > 0){
 			 basicCategoryIds = columnBiz.queryChildrenCategoryIds(categoryId, BasicUtil.getAppId(),
 					BasicUtil.getModelCodeId(ModelCode.CMS_COLUMN));
@@ -269,8 +286,7 @@ public class ArticleAction extends BaseAction {
 		//如果选择一个属性不做排序操作
 		if(!StringUtils.isEmpty(checkboxType) && checkboxType.length()>2){
 			// 文章类型排序
-			Arrays.sort(checkboxType.split(","),String.CASE_INSENSITIVE_ORDER);
-			article.setArticleType(checkboxType);
+			article.setArticleType(ArrysUtil.sort(checkboxType, ",")+",");
 		}else{
 			article.setArticleType(checkboxType);
 		}
@@ -400,8 +416,7 @@ public class ArticleAction extends BaseAction {
 		//如果选择一个属性不做排序操作
 		if(!StringUtils.isEmpty(checkboxType) && checkboxType.length()>2){
 			// 文章类型排序
-			Arrays.sort(checkboxType.split(","),String.CASE_INSENSITIVE_ORDER);
-			article.setArticleType(checkboxType);
+			article.setArticleType(ArrysUtil.sort(checkboxType, ",")+",");
 		}else{
 			article.setArticleType(checkboxType);
 		}
