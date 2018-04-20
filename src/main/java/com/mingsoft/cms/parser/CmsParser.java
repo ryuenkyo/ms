@@ -260,15 +260,8 @@ public class CmsParser extends IGeneralParser {
 			int size = StringUtil.string2Int(property.get(ListParser.LIST_SIZE));
 			// 显示文章的形式flag属性
 			String flag = property.get(ListParser.LIST_FLAG);
-			if(!StringUtils.isEmpty(flag)){
-				flag = ArrysUtil.sort(flag, ",")+",";
-			}
 			// 显示文章的形式noflag属性
 			String noFlag = property.get(ListParser.LIST_NOFLAG);
-			//可能列表中没有noflag属性
-			if(!StringUtils.isEmpty(noFlag)){
-				noFlag = ArrysUtil.sort(noFlag, ",")+",";
-			}
 			// 数据库中该栏目下文章的总数
 			;
 			int articleCount = articleBiz.count(website.getAppId(), columnIds, flag, noFlag, null);
@@ -310,15 +303,8 @@ public class CmsParser extends IGeneralParser {
 			int size = StringUtil.string2Int(property.get(ListParser.LIST_SIZE));
 			// 显示文章的形式flag属性
 			String flag = property.get(ListParser.LIST_FLAG);
-			if(!StringUtils.isEmpty(flag)){
-				flag = ArrysUtil.sort(flag, ",")+",";
-			}
 			// 显示文章的形式noflag属性
 			String noFlag = property.get(ListParser.LIST_NOFLAG);
-			//可能列表中没有noflag属性
-			if(!StringUtils.isEmpty(noFlag)){
-				noFlag = ArrysUtil.sort(noFlag, ",")+",";
-			}
 			// 排序
 			String orderBy = property.get(ListParser.LIST_ORDERBY);
 			String order = property.get(ListParser.LIST_ORDER);
@@ -663,16 +649,8 @@ public class CmsParser extends IGeneralParser {
 				int size = StringUtil.string2Int(property.get(ListParser.LIST_SIZE));
 				// 显示文章的形式flag属性
 				String flag = property.get(ListParser.LIST_FLAG);
-				if(!StringUtils.isEmpty(flag)){
-					//article文章实体是null
-					flag = ArrysUtil.sort(flag, ",")+",";
-				}
 				// 显示文章的形式noflag属性
 				String noFlag = property.get(ListParser.LIST_NOFLAG);
-				//可能列表中没有noflag属性
-				if(!StringUtils.isEmpty(noFlag)){
-					noFlag = ArrysUtil.sort(noFlag, ",")+",";
-				}
 				// 排序
 				String orderBy = property.get(ListParser.LIST_ORDERBY);
 				String order = property.get(ListParser.LIST_ORDER);
