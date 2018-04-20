@@ -259,14 +259,15 @@ public class CmsParser extends IGeneralParser {
 			int size = StringUtil.string2Int(property.get(ListParser.LIST_SIZE));
 			// 显示文章的形式flag属性
 			String flag = property.get(ListParser.LIST_FLAG);
+			ArticleEntity articleEntity = new ArticleEntity();
 			if(!StringUtils.isEmpty(flag)){
-				Arrays.sort(flag.split(","),String.CASE_INSENSITIVE_ORDER);
+				flag = articleEntity.getArticleTypeStr(flag);
 			}
 			// 显示文章的形式noflag属性
 			String noFlag = property.get(ListParser.LIST_NOFLAG);
 			//可能列表中没有noflag属性
 			if(!StringUtils.isEmpty(noFlag)){
-				Arrays.sort(noFlag.split(","),String.CASE_INSENSITIVE_ORDER);
+				noFlag = articleEntity.getArticleTypeStr(noFlag);
 			}
 			// 数据库中该栏目下文章的总数
 			;
@@ -309,14 +310,15 @@ public class CmsParser extends IGeneralParser {
 			int size = StringUtil.string2Int(property.get(ListParser.LIST_SIZE));
 			// 显示文章的形式flag属性
 			String flag = property.get(ListParser.LIST_FLAG);
+			ArticleEntity articleEntity = new ArticleEntity();
 			if(!StringUtils.isEmpty(flag)){
-				Arrays.sort(flag.split(","),String.CASE_INSENSITIVE_ORDER);
+				flag = articleEntity.getArticleTypeStr(flag);
 			}
 			// 显示文章的形式noflag属性
 			String noFlag = property.get(ListParser.LIST_NOFLAG);
 			//可能列表中没有noflag属性
 			if(!StringUtils.isEmpty(noFlag)){
-				Arrays.sort(noFlag.split(","),String.CASE_INSENSITIVE_ORDER);
+				noFlag = articleEntity.getArticleTypeStr(noFlag);
 			}
 			// 排序
 			String orderBy = property.get(ListParser.LIST_ORDERBY);
@@ -662,14 +664,16 @@ public class CmsParser extends IGeneralParser {
 				int size = StringUtil.string2Int(property.get(ListParser.LIST_SIZE));
 				// 显示文章的形式flag属性
 				String flag = property.get(ListParser.LIST_FLAG);
+				ArticleEntity articleEntity = new ArticleEntity();
 				if(!StringUtils.isEmpty(flag)){
-					Arrays.sort(flag.split(","),String.CASE_INSENSITIVE_ORDER);
+					//article文章实体是null
+					flag = articleEntity.getArticleTypeStr(flag);
 				}
 				// 显示文章的形式noflag属性
 				String noFlag = property.get(ListParser.LIST_NOFLAG);
 				//可能列表中没有noflag属性
 				if(!StringUtils.isEmpty(noFlag)){
-					Arrays.sort(noFlag.split(","),String.CASE_INSENSITIVE_ORDER);
+					noFlag = articleEntity.getArticleTypeStr(noFlag);
 				}
 				// 排序
 				String orderBy = property.get(ListParser.LIST_ORDERBY);

@@ -189,6 +189,9 @@ public class ArticleAction extends BaseAction {
 			HttpServletResponse response, @PathVariable int categoryId) {
 		int[] basicCategoryIds = null;
 		String articleType = article.getArticleType();
+		if(StringUtils.isEmpty(articleType)){
+			articleType = BasicUtil.getString("articleTypeStr");
+		}
 		if(!StringUtils.isEmpty(articleType) && articleType.equals("a")){
 			articleType = null;
 		}
@@ -283,8 +286,7 @@ public class ArticleAction extends BaseAction {
 		//如果选择一个属性不做排序操作
 		if(!StringUtils.isEmpty(checkboxType) && checkboxType.length()>2){
 			// 文章类型排序
-			Arrays.sort(checkboxType.split(","),String.CASE_INSENSITIVE_ORDER);
-			article.setArticleType(checkboxType);
+			article.setArticleType(article.getArticleTypeStr(checkboxType));
 		}else{
 			article.setArticleType(checkboxType);
 		}
@@ -412,13 +414,7 @@ public class ArticleAction extends BaseAction {
 		// 文章类型
 		String checkboxType = BasicUtil.getString("checkboxType");
 		//如果选择一个属性不做排序操作
-		if(!StringUtils.isEmpty(checkboxType) && checkboxType.length()>2){
-			// 文章类型排序
-			Arrays.sort(checkboxType.split(","),String.CASE_INSENSITIVE_ORDER);
-			article.setArticleType(checkboxType);
-		}else{
-			article.setArticleType(checkboxType);
-		}
+		article.setArticleType(article.getArticleTypeStr(checkboxType));
 		// 问题:由于上传的图片路径后面可能带有｜符合。所以要进行将“｜”替换空
 		// 空值判断
 		if (!StringUtil.isBlank(article.getBasicThumbnails())) {

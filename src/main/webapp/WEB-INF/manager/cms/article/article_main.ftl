@@ -8,7 +8,7 @@
 			</#if>
 			<@ms.text label="文章标题"  name="basicTitle" value="" title="请输入文章标题"  placeholder="请输入文章标题" />
 			<@ms.searchFormButton>
-				<@ms.queryButton id="submitSearch" onclick="query()" />								
+				<@ms.queryButton id="submitSearch" />								
 			</@ms.searchFormButton>
 	</@ms.searchForm>
 	<div id="toolbar">
@@ -40,19 +40,13 @@
  	</@ms.modalButton>
 </@ms.modal>			
 <script>
-	//查询文章标题
-	function query(){
-		var search = $("form[name='searchForm']").serializeJSON();
-		var params = $('#articleListTable').bootstrapTable('getOptions');
-		params.queryParams = function(params) {  
-		 	$.extend(params,search);
-	        	return params;  
-			}  
-		$("#articleListTable").bootstrapTable('refresh', {query:$("form[name='searchForm']").serializeJSON()});
-	}
+	
+	
 	$(function(){
+		var search = $("form[name='searchForm']").serializeJSON();
+		var articleType = search.articleType; 
 		$("#articleListTable").bootstrapTable({
-		url:"${managerPath}/cms/article/${categoryId}/list.do",
+		url:"${managerPath}/cms/article/${categoryId}/list.do?articleTypeStr="+articleType,
 		contentType : "application/x-www-form-urlencoded",
 		queryParamsType : "undefined",
 		toolbar: "#toolbar",
@@ -90,7 +84,27 @@
 	        align: 'center'
 	    }]
 	});
-	query();
+	//添加文章
+	$("#addButton").click(function(){
+		var isParent = ${isParent}+"";
+		if(isParent != ""){
+			if(isParent==true+""){
+				<@ms.notify msg="不能选择父级栏目" />
+				return false;
+			}
+		}
+		location.href = base+"${baseManager}/cms/article/add.do?categoryId=${categoryId?default(0)}&modelId=${Session.model_id_session?default(0)}&categoryTitle=${categoryTitle?default('')}"; 
+	});	
+	//查询文章标题
+	$("#submitSearch").click(function(){
+		var search = $("form[name='searchForm']").serializeJSON();
+		var params = $('#articleListTable').bootstrapTable('getOptions');
+		params.queryParams = function(params) {  
+		 	$.extend(params,search);
+	        	return params;  
+			}  
+		$("#articleListTable").bootstrapTable('refresh', {query:$("form[name='searchForm']").serializeJSON()});
+	});
 	//添加文章
 	$("#addButton").click(function(){
 		if(${isParent}==true){
