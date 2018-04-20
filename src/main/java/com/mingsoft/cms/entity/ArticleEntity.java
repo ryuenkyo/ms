@@ -65,11 +65,6 @@ public class ArticleEntity extends BasicEntity{
 	private String articleType ;
 	
 	/**
-	 * 文章属性,排序后的字符串，不参与表结构
-	 */
-	private String articleTypeStr;
-	
-	/**
 	 * 文章的来源
 	 */
 	private String articleSource;
