@@ -283,13 +283,7 @@ public class ArticleAction extends BaseAction {
 			}
 		}
 		String checkboxType = BasicUtil.getString("checkboxType");
-		//如果选择一个属性不做排序操作
-		if(!StringUtils.isEmpty(checkboxType) && checkboxType.length()>2){
-			// 文章类型排序
-			article.setArticleType(ArrysUtil.sort(checkboxType, ",")+",");
-		}else{
-			article.setArticleType(checkboxType);
-		}
+		article.setArticleType(checkboxType);
 		// 问题:由于上传的图片路径后面可能带有｜符合。所以要进行将“｜”替换空
 		// 空值判断
 		if (!StringUtil.isBlank(article.getBasicThumbnails())) {
@@ -413,13 +407,7 @@ public class ArticleAction extends BaseAction {
 		article.setBasicUpdateTime(new Timestamp(System.currentTimeMillis()));
 		// 文章类型
 		String checkboxType = BasicUtil.getString("checkboxType");
-		//如果选择一个属性不做排序操作
-		if(!StringUtils.isEmpty(checkboxType) && checkboxType.length()>2){
-			// 文章类型排序
-			article.setArticleType(ArrysUtil.sort(checkboxType, ",")+",");
-		}else{
-			article.setArticleType(checkboxType);
-		}
+		article.setArticleType(checkboxType);
 		// 问题:由于上传的图片路径后面可能带有｜符合。所以要进行将“｜”替换空
 		// 空值判断
 		if (!StringUtil.isBlank(article.getBasicThumbnails())) {
