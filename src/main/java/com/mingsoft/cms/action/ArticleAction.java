@@ -65,6 +65,7 @@ import com.mingsoft.mdiy.biz.IContentModelFieldBiz;
 import com.mingsoft.basic.constant.e.CookieConstEnum;
 import com.mingsoft.cms.constant.ModelCode;
 import com.mingsoft.cms.entity.ArticleEntity;
+import com.mingsoft.cms.util.ArrysUtil;
 import com.mingsoft.basic.entity.ColumnEntity;
 import com.mingsoft.mdiy.entity.ContentModelEntity;
 import com.mingsoft.mdiy.entity.ContentModelFieldEntity;
@@ -286,7 +287,7 @@ public class ArticleAction extends BaseAction {
 		//如果选择一个属性不做排序操作
 		if(!StringUtils.isEmpty(checkboxType) && checkboxType.length()>2){
 			// 文章类型排序
-			article.setArticleType(article.getArticleTypeStr(checkboxType));
+			article.setArticleType(ArrysUtil.sort(checkboxType, ",")+",");
 		}else{
 			article.setArticleType(checkboxType);
 		}
@@ -414,7 +415,12 @@ public class ArticleAction extends BaseAction {
 		// 文章类型
 		String checkboxType = BasicUtil.getString("checkboxType");
 		//如果选择一个属性不做排序操作
-		article.setArticleType(article.getArticleTypeStr(checkboxType));
+		if(!StringUtils.isEmpty(checkboxType) && checkboxType.length()>2){
+			// 文章类型排序
+			article.setArticleType(ArrysUtil.sort(checkboxType, ",")+",");
+		}else{
+			article.setArticleType(checkboxType);
+		}
 		// 问题:由于上传的图片路径后面可能带有｜符合。所以要进行将“｜”替换空
 		// 空值判断
 		if (!StringUtil.isBlank(article.getBasicThumbnails())) {

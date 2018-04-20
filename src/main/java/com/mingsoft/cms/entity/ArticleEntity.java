@@ -295,14 +295,4 @@ public class ArticleEntity extends BasicEntity{
 		}
 		return app.getAppHostUrl()+Const.SEPARATOR+IParserRegexConstant.HTML_SAVE_PATH+Const.SEPARATOR+this.getArticleUrl();
 	}
-	/**
-	 * 返回排序后的文章属性
-	 * @return
-	 */
-	public String getArticleTypeStr(String articleTypeBeforeSorting) {
-		String[] articleTypeArrays = articleTypeBeforeSorting.split(",");
-		Arrays.sort(articleTypeArrays);
-		return ArrayUtil.join(articleTypeArrays, ",")+",";
-	}
-	
 }
