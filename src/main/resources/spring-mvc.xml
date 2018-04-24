@@ -66,6 +66,7 @@
 		<property name="suffix" value=".ftl" />
 		<property name="contentType" value="text/html;charset=utf-8" />
 		<property name="allowRequestOverride" value="true" />
+		<property name="allowSessionOverride" value="true"/>
 		<property name="exposeRequestAttributes" value="true" />
 		<property name="exposeSessionAttributes" value="true" />
 		<property name="exposeSpringMacroHelpers" value="true" />
