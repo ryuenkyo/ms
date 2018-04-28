@@ -23,6 +23,7 @@ package com.mingsoft.cms.parser;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +31,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import com.mingsoft.base.entity.BaseEntity;
 import com.mingsoft.basic.biz.IColumnBiz;
@@ -57,6 +59,7 @@ import com.mingsoft.cms.parser.impl.ArticleTypeTitleParser;
 import com.mingsoft.cms.parser.impl.ChannelParser;
 import com.mingsoft.cms.parser.impl.ColumnParser;
 import com.mingsoft.cms.parser.impl.HitParser;
+import com.mingsoft.cms.util.ArrysUtil;
 import com.mingsoft.mdiy.biz.IContentModelBiz;
 import com.mingsoft.mdiy.biz.IContentModelFieldBiz;
 import com.mingsoft.mdiy.entity.ContentModelEntity;
@@ -257,8 +260,15 @@ public class CmsParser extends IGeneralParser {
 			int size = StringUtil.string2Int(property.get(ListParser.LIST_SIZE));
 			// 显示文章的形式flag属性
 			String flag = property.get(ListParser.LIST_FLAG);
+			if(!StringUtils.isEmpty(flag)){
+				flag = ArrysUtil.sort(flag, ",")+",";
+			}
 			// 显示文章的形式noflag属性
 			String noFlag = property.get(ListParser.LIST_NOFLAG);
+			//可能列表中没有noflag属性
+			if(!StringUtils.isEmpty(noFlag)){
+				noFlag = ArrysUtil.sort(noFlag, ",")+",";
+			}
 			// 数据库中该栏目下文章的总数
 			;
 			int articleCount = articleBiz.count(website.getAppId(), columnIds, flag, noFlag, null);
@@ -300,8 +310,15 @@ public class CmsParser extends IGeneralParser {
 			int size = StringUtil.string2Int(property.get(ListParser.LIST_SIZE));
 			// 显示文章的形式flag属性
 			String flag = property.get(ListParser.LIST_FLAG);
+			if(!StringUtils.isEmpty(flag)){
+				flag = ArrysUtil.sort(flag, ",")+",";
+			}
 			// 显示文章的形式noflag属性
 			String noFlag = property.get(ListParser.LIST_NOFLAG);
+			//可能列表中没有noflag属性
+			if(!StringUtils.isEmpty(noFlag)){
+				noFlag = ArrysUtil.sort(noFlag, ",")+",";
+			}
 			// 排序
 			String orderBy = property.get(ListParser.LIST_ORDERBY);
 			String order = property.get(ListParser.LIST_ORDER);
@@ -530,7 +547,7 @@ public class CmsParser extends IGeneralParser {
 			if (tempColumnId == 0 && column != null) {
 				tempColumnId = column.getCategoryId();
 			}
-			List<ColumnEntity> categoryList = null;
+			List<ColumnEntity> categoryList = new ArrayList();
 			//指定要显示的栏目数量
 			String size = mapProperty.get(ChannelParser.CHANNEL_TYPE_SIZE);
 			Integer _size = null;
@@ -565,6 +582,9 @@ public class CmsParser extends IGeneralParser {
 					categoryList = columnBiz.queryTopSiblingListByColumnId(tempColumnId,_size);
 				} else if (type.equals(ChannelParser.CHANNEL_TYPE_LEVEL)) {
 					categoryList = columnBiz.querySibling(tempColumnId,_size);
+				} else if (type.equals(ChannelParser.CHANNEL_TYPE_SELF)) {
+					ColumnEntity columnEntiy = (ColumnEntity) columnBiz.getEntity(tempColumnId);
+					categoryList.add(columnEntiy);
 				}
 				// 替换栏目标签
 				htmlContent = new ChannelParser(channel, categoryList, this.getWebsiteUrl(), column != null ? column.getCategoryId() : 0, mapProperty.get(ChannelParser.CHANNEL_CLASS)).parse();
@@ -643,8 +663,16 @@ public class CmsParser extends IGeneralParser {
 				int size = StringUtil.string2Int(property.get(ListParser.LIST_SIZE));
 				// 显示文章的形式flag属性
 				String flag = property.get(ListParser.LIST_FLAG);
+				if(!StringUtils.isEmpty(flag)){
+					//article文章实体是null
+					flag = ArrysUtil.sort(flag, ",")+",";
+				}
 				// 显示文章的形式noflag属性
 				String noFlag = property.get(ListParser.LIST_NOFLAG);
+				//可能列表中没有noflag属性
+				if(!StringUtils.isEmpty(noFlag)){
+					noFlag = ArrysUtil.sort(noFlag, ",")+",";
+				}
 				// 排序
 				String orderBy = property.get(ListParser.LIST_ORDERBY);
 				String order = property.get(ListParser.LIST_ORDER);

@@ -37,6 +37,7 @@ import com.mingsoft.basic.biz.ICategoryBiz;
 import com.mingsoft.basic.biz.IColumnBiz;
 import com.mingsoft.basic.biz.IModelBiz;
 import com.mingsoft.basic.biz.impl.BasicBizImpl;
+import com.mingsoft.basic.entity.CategoryEntity;
 import com.mingsoft.basic.entity.ColumnEntity;
 import com.mingsoft.cms.biz.IArticleBiz;
 import com.mingsoft.cms.constant.ModelCode;
@@ -46,6 +47,8 @@ import com.mingsoft.mdiy.biz.IContentModelBiz;
 import com.mingsoft.mdiy.entity.ContentModelEntity;
 import com.mingsoft.util.PageUtil;
 import com.mingsoft.util.StringUtil;
+
+import cn.hutool.core.util.ArrayUtil;
 
 /**
  * 
@@ -326,5 +329,7 @@ public class ArticleBizImpl extends BasicBizImpl implements IArticleBiz {
 		// TODO Auto-generated method stub
 		return articleDao.getCountByWebsiteId(webId);
 	}
+	
+
 
 }

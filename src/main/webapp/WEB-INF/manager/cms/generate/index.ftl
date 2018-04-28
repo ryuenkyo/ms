@@ -93,9 +93,12 @@
 		$(this).request({url:URL,data:DATA,type:"json",method:"post",func:function(msg) {
 			$("#updateIndex").html("更新主页").removeAttr("disabled");
 			if(msg.result){
-				<@ms.notify msg="更新成功" type="warning"/>
+				<@ms.notify msg="更新成功" type="success"/>
 			}else{
-				alert(msg.resultMsg);
+				$('.ms-notifications').offset({top:43}).notify({
+			    	type:'warning',
+			    	message: { text:msg.resultMsg }
+			 	}).show();
 			}
 			$("#updateIndex").html("更新主页")
 		}});
@@ -103,7 +106,19 @@
 	//点击预览时，进行预览
 	$("#viewIndex").click(function(){
 		var position =$("input[name='position']").val();
-		window.open("${managerPath}/cms/generate/"+position+"/viewIndex.do");
+		var urlStr = '${managerPath}/cms/generate/'+position+'/viewIndex.do';
+		$.ajax({
+			type: "get",
+			url: urlStr,
+			success : function(msg) {//返回数据根据结果进行相应的处理 
+     			if(msg.result){
+     				var url=msg.resultMsg;
+     				window.open(url,"_blank");
+     			}else{
+     			<@ms.notify msg="请先生成主页，再次访问" type="warning"/>
+     			}
+     		}
+		})
 	});
 </script>
 
@@ -120,9 +135,12 @@
 			$("#updateColumn").html("更新栏目").removeAttr("disabled");
 			//回调处理方式
 			if(msg.result){
-				<@ms.notify msg="更新成功" type="warning"/>
+				<@ms.notify msg="更新成功" type="success"/>
 			}else{
-				alert(msg.resultMsg);
+				$('.ms-notifications').offset({top:43}).notify({
+			    	type:'warning',
+			    	message: { text:msg.resultMsg }
+			 	}).show();
 			}
 		}});
 	});
@@ -143,9 +161,12 @@
 			$("#updateArticle").html("更新文档").removeAttr("disabled");
 			//回调处理方式
 			if(msg.result){
-				<@ms.notify msg="更新成功" type="warning"/>
+				<@ms.notify msg="更新成功" type="success"/>
 			}else{
-				alert(msg.resultMsg);
+				$('.ms-notifications').offset({top:43}).notify({
+			    	type:'warning',
+			    	message: { text:msg.resultMsg }
+			 	}).show();
 			}
 		}});
 	});

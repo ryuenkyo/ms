@@ -68,7 +68,7 @@
 		<property name="allowRequestOverride" value="true" />
 		<property name="allowSessionOverride" value="true"/>
 		<property name="exposeRequestAttributes" value="true" />
-		<property name="exposeSessionAttributes" value="true" />
+		<property name="exposeSessionAttributes" value="false" />
 		<property name="exposeSpringMacroHelpers" value="true" />
 	</bean>
 

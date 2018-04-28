@@ -86,6 +86,8 @@ public class ListParser extends com.mingsoft.mdiy.parser.ListParser {
 	 */
 	
 	protected final static String FIELD_FLAG="\\[field.flag/\\]";
+	
+	
 	/**
 	 * 新增字段业务层
 	 */
@@ -176,8 +178,8 @@ public class ListParser extends com.mingsoft.mdiy.parser.ListParser {
 					htmlList = tabContent(htmlList, StringUtil.null2String(article.getArticleAuthor()),AUTHOR_FIELD_LIST);
 					// 文章来源。
 					htmlList = tabContent(htmlList, StringUtil.null2String(article.getArticleSource()),SOURCE_FIELD_LIST);
-					// 文章来源。
-					htmlList = tabContent(htmlList, "<script src='"+app.getAppHostUrl()+"/basic/"+article.getBasicId()+"/hit.do?isShow=true'></script>",FIELD_HIT);
+					// 文章点击数。
+					htmlList = tabContent(htmlList, article.getBasicHit(),FIELD_HIT);
 					// 文章发布时间(非必填),
 					htmlList = new DateParser(htmlList,article.getBasicDateTime()).parse();//tabContent(htmlList, date(article.getBasicUpdateTime(), htmlList),DATE_FIELD_LIST);
 					// 文章关键字

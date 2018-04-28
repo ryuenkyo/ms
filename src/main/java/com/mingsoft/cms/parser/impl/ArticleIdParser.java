@@ -35,7 +35,7 @@ import com.mingsoft.parser.IParser;
 public class ArticleIdParser extends IParser {
 	
 	/**
-	 * 文章标题标签
+	 * 文章id标签
 	 */
 	private final static String ARTICLE_TITLE_FIELD="\\{ms:field.id/\\}";
 	

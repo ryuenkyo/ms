@@ -1077,3 +1077,15 @@ body .select2-container {
   border: none;
   padding: 0;
 }
+body .select2-container .select2-container--default {  
+ 	height: 34px;  
+} 
+body .select2-container .select2-selection--single{
+	font: inherit;
+	border: 1px solid #ccc;
+    display: block;
+    height: 34px;
+    padding: 2px 3px;
+	font-size: 14px;
+	color: rgb(85, 85, 85);
+}

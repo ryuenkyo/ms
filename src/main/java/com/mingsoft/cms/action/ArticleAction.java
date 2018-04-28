@@ -24,6 +24,7 @@ package com.mingsoft.cms.action;
 import java.io.File;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -39,12 +40,14 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.mingsoft.basic.action.BaseAction;
@@ -62,12 +65,16 @@ import com.mingsoft.mdiy.biz.IContentModelFieldBiz;
 import com.mingsoft.basic.constant.e.CookieConstEnum;
 import com.mingsoft.cms.constant.ModelCode;
 import com.mingsoft.cms.entity.ArticleEntity;
+import com.mingsoft.cms.util.ArrysUtil;
 import com.mingsoft.basic.entity.ColumnEntity;
 import com.mingsoft.mdiy.entity.ContentModelEntity;
 import com.mingsoft.mdiy.entity.ContentModelFieldEntity;
 import com.mingsoft.parser.IParserRegexConstant;
 import com.mingsoft.util.PageUtil;
 import com.mingsoft.util.StringUtil;
+
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.ArrayUtil;
 import net.mingsoft.basic.bean.EUListBean;
 import net.mingsoft.basic.util.BasicUtil;
 
@@ -157,9 +164,17 @@ public class ArticleAction extends BaseAction {
 	public String main(@ModelAttribute ArticleEntity article, HttpServletRequest request, ModelMap mode,
 			HttpServletResponse response, @PathVariable int categoryId) {
 		String articleType = request.getParameter("articleType");
-		mode.addAttribute("articleTypeList", articleType());
+		String isParent = BasicUtil.getString("isParent", "false");
+		List types = articleType();
+		Map map = new HashMap<>();
+		//映射一个文章的全部属性
+		map.put("a","全部");
+		types.add((Map.Entry<String, String>)map.entrySet().iterator().next());
+		mode.addAttribute("isParent", isParent);
+		//使用糊涂工具排序使全部属性排在第一个
+		mode.addAttribute("articleTypeList", CollUtil.sortEntryToList(types));
 		mode.addAttribute("articleType", articleType);
-		mode.addAttribute("categoryId", categoryId);
+ 		mode.addAttribute("categoryId", categoryId);
 		//返回文章页面显示地址
 		return view("/cms/article/article_main");
 	}
@@ -175,6 +190,12 @@ public class ArticleAction extends BaseAction {
 			HttpServletResponse response, @PathVariable int categoryId) {
 		int[] basicCategoryIds = null;
 		String articleType = article.getArticleType();
+		if(StringUtils.isEmpty(articleType)){
+			articleType = BasicUtil.getString("articleTypeStr");
+		}
+		if(!StringUtils.isEmpty(articleType) && articleType.equals("a")){
+			articleType = null;
+		}
 		if(categoryId > 0){
 			 basicCategoryIds = columnBiz.queryChildrenCategoryIds(categoryId, BasicUtil.getAppId(),
 					BasicUtil.getModelCodeId(ModelCode.CMS_COLUMN));
@@ -199,19 +220,20 @@ public class ArticleAction extends BaseAction {
 	public String add(ModelMap mode, HttpServletRequest request) {
 		int categoryId = this.getInt(request, "categoryId", 0);
 		String categoryTitle = request.getParameter("categoryTitle");
+		String booleanParent = request.getParameter("booleanParent");
 		// 文章属性
 		mode.addAttribute("articleType", articleType());
-
 		// 站点ID
 		int appId = this.getAppId(request);
 		List<ColumnEntity> list = columnBiz.queryAll(appId, this.getModelCodeId(request, ModelCode.CMS_COLUMN));
 		mode.addAttribute("appId", appId);
 		mode.addAttribute("listColumn", JSONArray.toJSONString(list));
 		boolean isEditCategory = false; // 新增，不是单篇
+		int columnType=1;//新增，不是单篇
 		if(categoryId != 0){
 			// 获取栏目id
 			ColumnEntity column = (ColumnEntity) columnBiz.getEntity(categoryId);
-			int columnType = column.getColumnType();
+			columnType = column.getColumnType();
 			// 判断栏目是否为"",如果是"",就重新赋值
 			if (StringUtil.isBlank(categoryTitle)) {
 				categoryTitle = column.getCategoryTitle();
@@ -219,12 +241,14 @@ public class ArticleAction extends BaseAction {
 			// 判断栏目是否是单篇
 			if (column != null && column.getColumnType() == ColumnTypeEnum.COLUMN_TYPE_COVER.toInt()) {
 				isEditCategory = true; // 是单页
+				columnType = column.getColumnType();;
 			}
-			mode.addAttribute("columnType", columnType);
 		}
 		mode.addAttribute("categoryTitle", categoryTitle);
 		mode.addAttribute("isEditCategory", isEditCategory); // 新增状态
+		mode.addAttribute("columnType", columnType);
 		mode.addAttribute("categoryId", categoryId);
+		mode.addAttribute("articleImagesUrl", "/upload/"+BasicUtil.getAppId()+"/");
 		// 添加一个空的article实体
 		ArticleEntity article = new ArticleEntity();
 		mode.addAttribute("article", article);
@@ -244,13 +268,11 @@ public class ArticleAction extends BaseAction {
 		// 获取站点id
 		int appId = this.getAppId(request);
 		// 验证文章，文章自由排序，栏目id
-
 		if (!validateForm(article, response)) {
 			this.outJson(response, ModelCode.CMS_ARTICLE, false);
 
 		}
-		// 设置发布时间
-		article.setBasicDateTime(new Timestamp(System.currentTimeMillis()));
+		 
 		article.setBasicUpdateTime(new Timestamp(System.currentTimeMillis()));
 		// 文章类型
 		String langtyp[] = request.getParameterValues("articleType");
@@ -260,7 +282,14 @@ public class ArticleAction extends BaseAction {
 				sb.append(langtyp[j] + ",");
 			}
 		}
-		article.setArticleType(request.getParameter("checkboxType"));
+		String checkboxType = BasicUtil.getString("checkboxType");
+		//如果选择一个属性不做排序操作
+		if(!StringUtils.isEmpty(checkboxType) && checkboxType.length()>2){
+			// 文章类型排序
+			article.setArticleType(ArrysUtil.sort(checkboxType, ",")+",");
+		}else{
+			article.setArticleType(checkboxType);
+		}
 		// 问题:由于上传的图片路径后面可能带有｜符合。所以要进行将“｜”替换空
 		// 空值判断
 		if (!StringUtil.isBlank(article.getBasicThumbnails())) {
@@ -268,6 +297,7 @@ public class ArticleAction extends BaseAction {
 		}
 		ColumnEntity column = (ColumnEntity) columnBiz.getEntity(article.getBasicCategoryId());
 		article.setColumn(column);
+		
 		// 添加文章所属的站点id
 		article.setArticleWebId(appId);
 		// 绑定模块编号
@@ -300,7 +330,7 @@ public class ArticleAction extends BaseAction {
 		//
 
 		if (article.getColumn().getColumnType() == ColumnTypeEnum.COLUMN_TYPE_COVER.toInt()) {
-			this.outJson(response, ModelCode.CMS_ARTICLE, true, "" + article.getColumn().getCategoryId(), "");
+			this.outJson(response, ModelCode.CMS_ARTICLE, true, "" + article.getColumn().getCategoryId(), article.getBasicId());
 		} else {
 			this.outJson(response, ModelCode.CMS_ARTICLE, true, article.getColumn().getCategoryId()+"", "");
 		}
@@ -382,7 +412,14 @@ public class ArticleAction extends BaseAction {
 		int appId = this.getAppId(request);
 		article.setBasicUpdateTime(new Timestamp(System.currentTimeMillis()));
 		// 文章类型
-		article.setArticleType(request.getParameter("checkboxType"));
+		String checkboxType = BasicUtil.getString("checkboxType");
+		//如果选择一个属性不做排序操作
+		if(!StringUtils.isEmpty(checkboxType) && checkboxType.length()>2){
+			// 文章类型排序
+			article.setArticleType(ArrysUtil.sort(checkboxType, ",")+",");
+		}else{
+			article.setArticleType(checkboxType);
+		}
 		// 问题:由于上传的图片路径后面可能带有｜符合。所以要进行将“｜”替换空
 		// 空值判断
 		if (!StringUtil.isBlank(article.getBasicThumbnails())) {
@@ -487,6 +524,7 @@ public class ArticleAction extends BaseAction {
 		ArticleEntity articleEntity = null;
 		int appId = this.getAppId(request);
 		model.addAttribute("appId", appId);
+		model.addAttribute("articleImagesUrl", "/upload/"+BasicUtil.getAppId()+"/");
 		if (categoryId > 0) { // 分类获取文章
 			articleEntity = articleBiz.getByCategoryId(categoryId);
 			ColumnEntity column = articleEntity.getColumn();

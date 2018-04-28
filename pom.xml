@@ -4,7 +4,7 @@
 	<groupId>com.mingsoft</groupId>
 	<artifactId>ms-mcms</artifactId>
 	<packaging>war</packaging>
-	<version>4.6.2</version>
+	<version>4.6.3</version>
 	<name>铭飞MCMS开源系统</name>
 	<url>http://ms.mingsoft.net</url>
 	<repositories>
@@ -32,10 +32,10 @@
 		</repository>
 	</repositories>
 	<properties>
-		<ms.base.version>1.0.3</ms.base.version>
-		<ms.basic.version>1.0.4-SNAPSHOT</ms.basic.version>
-		<ms.mdiy.version>1.0.3-SNAPSHOT</ms.mdiy.version>
-		<ms.mpeople.version>1.0.3-SNAPSHOT</ms.mpeople.version>
+		<ms.base.version>1.0.4</ms.base.version>
+		<ms.basic.version>1.0.5</ms.basic.version>
+		<ms.mdiy.version>1.0.4</ms.mdiy.version>
+		<ms.mpeople.version>1.0.4</ms.mpeople.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -52,8 +52,16 @@
 			<version>${ms.basic.version}</version>
 			<type>war</type>
 		</dependency>
+		
 		<!-- ms-basic源码jar包 -->
-
+		<dependency>
+			<groupId>net.mingsoft</groupId>
+			<artifactId>ms-basic</artifactId>
+			<version>${ms.basic.version}</version>
+			<classifier>sources</classifier>
+			<scope>provided</scope>
+		</dependency>
+		
 		<!-- ms-basic开发依赖，主要方便业务开发 -->
 		<dependency>
 			<groupId>net.mingsoft</groupId>
@@ -94,6 +102,7 @@
 			<version>${ms.mpeople.version}</version>
 			<type>war</type>
 		</dependency>
+		
 		<!-- ms-mpeople用户模块源码 -->
 		<dependency>
 			<groupId>net.mingsoft</groupId>
@@ -102,6 +111,7 @@
 			<classifier>sources</classifier>
 			<scope>provided</scope>
 		</dependency>
+		
 		<!-- ms-mpeople开发依赖，主要方便业务开发 -->
 		<dependency>
 			<groupId>net.mingsoft</groupId>
@@ -147,6 +157,7 @@
 					<encoding>UTF-8</encoding>
 					<compilerArguments>
 						<verbose />
+						<!--bootclasspath路径分隔符平台差异：windows使用分号';'linux|mac os使用冒号':'-->
 						<bootclasspath>${java.home}/lib/rt.jar;${java.home}/lib/jce.jar</bootclasspath>
 					</compilerArguments>
 
