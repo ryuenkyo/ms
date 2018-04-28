@@ -93,12 +93,12 @@
 		$(this).request({url:URL,data:DATA,type:"json",method:"post",func:function(msg) {
 			$("#updateIndex").html("更新主页").removeAttr("disabled");
 			if(msg.result){
-				<@ms.notify msg="更新成功" type="warning"/>
+				<@ms.notify msg="更新成功" type="success"/>
 			}else{
 				$('.ms-notifications').offset({top:43}).notify({
-					    	type:'warning',
-					    	message: { text:msg.resultMsg }
-					 	}).show();
+			    	type:'warning',
+			    	message: { text:msg.resultMsg }
+			 	}).show();
 			}
 			$("#updateIndex").html("更新主页")
 		}});
@@ -135,9 +135,12 @@
 			$("#updateColumn").html("更新栏目").removeAttr("disabled");
 			//回调处理方式
 			if(msg.result){
-				<@ms.notify msg="更新成功" type="warning"/>
+				<@ms.notify msg="更新成功" type="success"/>
 			}else{
-				alert(msg.resultMsg);
+				$('.ms-notifications').offset({top:43}).notify({
+			    	type:'warning',
+			    	message: { text:msg.resultMsg }
+			 	}).show();
 			}
 		}});
 	});
@@ -158,9 +161,12 @@
 			$("#updateArticle").html("更新文档").removeAttr("disabled");
 			//回调处理方式
 			if(msg.result){
-				<@ms.notify msg="更新成功" type="warning"/>
+				<@ms.notify msg="更新成功" type="success"/>
 			}else{
-				alert(msg.resultMsg);
+				$('.ms-notifications').offset({top:43}).notify({
+			    	type:'warning',
+			    	message: { text:msg.resultMsg }
+			 	}).show();
 			}
 		}});
 	});
