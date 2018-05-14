@@ -192,11 +192,40 @@
 
 		<!-- 查询与关联表id相同的信息 -->
 
-		where a.ARTICLE_BASICID=#{basicId};
+		where a.ARTICLE_BASICID=#{basicId}
 	</select>
 	<!-- 查找文章管理的信息 结束 -->
-
-
+	
+	<!-- 标题字段 -->
+	<sql id="selectWhereBasicTitle" databaseId="mysql">
+		CONCAT('%',#{article.basicTitle},'%') 
+	</sql>
+	<sql id="selectWhereBasicTitle" databaseId="oracle">
+		'%'||#{ article.basicTitle}||'%'
+	</sql>
+	<sql id="selectWhereBasicTitle" databaseId="sqlServer">
+		'%'+#{ article.basicTitle}+'%'
+	</sql>
+	<!-- flag字段 -->
+	<sql id="selectWhereFlag" databaseId="mysql">
+		CONCAT('%',#{flag},'%') 
+	</sql>
+	<sql id="selectWhereFlag" databaseId="oracle">
+		'%'||#{ flag}||'%'
+	</sql>
+	<sql id="selectWhereFlag" databaseId="sqlServer">
+		'%'+#{ flag}+'%'
+	</sql>
+	<!-- noFlag字段 -->
+	<sql id="selectWhereNoFlag" databaseId="mysql">
+		CONCAT('%',#{noFlag},'%') 
+	</sql>
+	<sql id="selectWhereNoFlag" databaseId="oracle">
+		'%'||#{ noFlag}||'%'
+	</sql>
+	<sql id="selectWhereNoFlag" databaseId="sqlServer">
+		'%'+#{ noFlag}+'%'
+	</sql>
 	<select id="count" resultType="int">
 		select count(basic_id) FROM basic b
 		LEFT JOIN category c ON
@@ -210,7 +239,7 @@
 			<if test="article != null ">
 				<if test="article.basicTitle != null">
 					and b.BASIC_TITLE like
-					CONCAT('%',#{article.basicTitle},'%')
+					<include refid="selectWhereBasicTitle"></include>
 				</if>
 			</if>
 			<if test="basicCategoryIds != null">
@@ -220,8 +249,11 @@
 					#{categoryId}
 				</foreach>
 			</if>
-			<if test="flag != null">and a.ARTICLE_TYPE like CONCAT('%',#{flag},'%')</if>
-			<if test="noFlag != null">and a.ARTICLE_TYPE not like CONCAT('%',#{noFlag},'%')
+			<if test="flag != null">
+				and a.ARTICLE_TYPE like <include refid="selectWhereFlag"></include>
+			</if>
+			<if test="noFlag != null">
+				and a.ARTICLE_TYPE not like <include refid="selectWhereNoFlag"></include>
 			</if>
 		</where>
 	</select>
@@ -240,7 +272,7 @@
 		<if test="article != null ">
 			<if test="article.basicTitle != null">
 				and b.BASIC_TITLE like
-				CONCAT('%',#{article.basicTitle},'%')
+				<include refid="selectWhereBasicTitle"></include>
 			</if>
 		</if>
 		<if test="basicCategoryIds != null">
@@ -250,8 +282,12 @@
 				#{categoryId}
 			</foreach>
 		</if>
-		<if test="flag != null">and a.ARTICLE_TYPE like CONCAT('%',#{flag},'%')</if>
-		<if test="noFlag != null">and a.ARTICLE_TYPE not like CONCAT('%',#{noFlag},'%')</if>
+		<if test="flag != null">
+			and a.ARTICLE_TYPE like <include refid="selectWhereFlag"></include>
+		</if>
+		<if test="noFlag != null">
+			and a.ARTICLE_TYPE not like <include refid="selectWhereNoFlag"></include>
+		</if>
 		<if test="orderBy != null">
 			order by
 			<choose>
@@ -305,8 +341,12 @@
 				#{id}
 			</foreach>
 		</if>
-		<if test="flag != null">and a.ARTICLE_TYPE like CONCAT('%',#{flag},'%')</if>
-		<if test="noFlag != null">and a.ARTICLE_TYPE not like CONCAT('%',#{noFlag},'%')</if>
+		<if test="flag != null">
+			and a.ARTICLE_TYPE like <include refid="selectWhereFlag"></include>
+		</if>
+		<if test="noFlag != null">
+			and a.ARTICLE_TYPE not like <include refid="selectWhereNoFlag"></include>
+		</if>
 	</select>
 	<!-- 正则查询指定文章条数 结束 -->
 
@@ -335,15 +375,19 @@
 				#{id}
 			</foreach>
 		</if>
-		<if test="flag != null">and a.ARTICLE_TYPE like CONCAT('%',#{flag},'%')</if>
-		<if test="noFlag != null">and a.ARTICLE_TYPE not like CONCAT('%',#{noFlag},'%')</if>
+		<if test="flag != null">
+			and a.ARTICLE_TYPE like <include refid="selectWhereFlag"></include>
+		</if>
+		<if test="noFlag != null">
+			and a.ARTICLE_TYPE not like <include refid="selectWhereNoFlag"></include>
+		</if>
 		<if test="orderBy != null">order by ${orderBy}</if>
 		<if test="orderBy==null">
 			order by b.basic_id
 		</if>
 		<if test="order == true">desc</if>
 		<if test="order == false">asc</if>
-		limit #{begin},#{count};
+		<!-- limit #{begin},#{count}; -->
 	</select>
 	<!-- 根据文章列表id查找文章列表结束 -->
 
@@ -361,6 +405,27 @@
 
 
 	<!-- 根据字段条件查找文章实体开始 -->
+	<sql id="selectLike" databaseId="mysql">
+		like CONCAT("%",
+			<foreach item="val" index="index" collection="item[3]">
+				<if test="index==0">#{val}</if>
+			</foreach>
+			,"%")
+	</sql>
+	<sql id="selectLike" databaseId="oracle">
+		like '%'||
+			<foreach item="val" index="index" collection="item[3]">
+				<if test="index==0">#{val}</if>
+			</foreach>
+			||'%')
+	</sql>
+	<sql id="selectLike" databaseId="sqlServer">
+		like '%'+
+			<foreach item="val" index="index" collection="item[3]">
+				<if test="index==0">#{val}</if>
+			</foreach>
+			 +'%')
+	</sql>
 	<select id="queryListForSearch" resultMap="resultMap">
 		select
 		<include refid="column_list" />
@@ -412,11 +477,7 @@
 			<if test="item[1] == true">
 				<!--item[2]： 是采用模糊查询。false:不采用模糊 -->
 				<if test="item[2] == true">
-					like CONCAT("%",
-					<foreach item="val" index="index" collection="item[3]">
-						<if test="index==0">#{val}</if>
-					</foreach>
-					,"%")
+					<include refid="selectLike"></include>
 				</if>
 				<if test="item[2] == false">
 					=
@@ -429,9 +490,9 @@
 			order by ${sortMap.order} ${sortMap.by}
 		</if>
 
-		<if test="page!=null">
+		<!-- <if test="page!=null">
 			limit ${page.pageNo*page.pageSize},#{page.pageSize};
-		</if>
+		</if> -->
 	</select>
 	<!-- 根据字段条件查找文章实体结束 -->
 
@@ -489,11 +550,7 @@
 			<if test="item[1] == true">
 				<!--item[2]： 是采用模糊查询。false:不采用模糊 -->
 				<if test="item[2] == true">
-					like CONCAT("%",
-					<foreach item="val" index="index" collection="item[3]">
-						<if test="index==0">#{val}</if>
-					</foreach>
-					,"%")
+					<include refid="selectLike"></include>
 				</if>
 				<if test="item[2] == false">
 					=
@@ -513,7 +570,7 @@
 		(((basic JOIN cms_article ON (BASIC_ID = ARTICLE_BASICID))
 			JOIN basic_column ON (BASIC_CATEGORYID = COLUMN_CATEGORY_ID))
 			JOIN category ON (COLUMN_CATEGORY_ID = CATEGORY_ID))
-	 	where BASIC_CATEGORYID=#{categoryId};
+	 	where BASIC_CATEGORYID=#{categoryId}
 	</select>
 
 	<select id="getById" resultMap="viewResultMap">
@@ -572,11 +629,8 @@
 		model_code = #{modelCode} and basic_title=#{articleTitle}
 	</select>
 	<!-- 通过文章标题、应用ID、模块编号来查询文章集合结束 -->
-
-	<!-- 查找上一篇下一篇 -->
-	<select id="getNextOrPrevious" resultMap="resultMap">
-		select 
-		<include refid="basic_data_list" />
+<!-- 查找上一篇下一篇 -->
+	<sql id="selectOne">
 		from 
 		(((basic JOIN cms_article ON (BASIC_ID = ARTICLE_BASICID))
 			JOIN basic_column ON (BASIC_CATEGORYID = COLUMN_CATEGORY_ID))
@@ -587,7 +641,6 @@
 			and basic_id &lt; ${basicId}
 
 		</if>
-
 		<if test="flag==true">
 			and basic_id &gt; ${basicId}
 
@@ -595,6 +648,27 @@
 		<if test="categoryId!=null">
 			and BASIC_CATEGORYID = #{categoryId}
 		</if>
+	</sql>
+	
+	<select id="getNextOrPrevious" resultMap="resultMap" databaseId="mysql">
+		select 
+		<include refid="basic_data_list" />
+		<include refid="selectOne"></include>
+		<if test="flag==false">
+			order by basic_id desc
+		</if>
+		<if test="flag==true">
+			order by basic_id asc
+		</if>
+
+		limit 0,1
+	</select>
+	
+	<select id="getNextOrPrevious" resultMap="resultMap" databaseId="oracle">
+		select 
+		<include refid="basic_data_list" />
+		<include refid="selectOne"></include>
+		and rownum=1
 		<if test="flag==false">
 			order by basic_id desc
 
@@ -603,10 +677,31 @@
 			order by basic_id asc
 
 		</if>
-
-		limit 0,1;
 	</select>
-	<select id="queryListByTime" resultMap="resultMap">
+	
+	<select id="getNextOrPrevious" resultMap="resultMap" databaseId="sqlServer">
+		select top(1)
+		<include refid="basic_data_list" />
+		<include refid="selectOne"></include>
+		<if test="flag==false">
+			order by basic_id desc
+
+		</if>
+		<if test="flag==true">
+			order by basic_id asc
+
+		</if>
+	</select>
+	<sql id="selectTime" databaseId="oracle">
+		to_date(#{dateTime},'yyyy-MM-dd HH24:mi:ss')
+	</sql>
+	<sql id="selectTime" databaseId="mysql">
+		#{dateTime}
+	</sql>
+	<sql id="selectTime" databaseId="sqlServer">
+		#{dateTime}
+	</sql>
+	<select id="queryListByTime" resultMap="resultMap" >
 		select 
 		<include refid="basic_data_list" />
 		 from 
@@ -615,13 +710,12 @@
 			JOIN category ON (COLUMN_CATEGORY_ID = CATEGORY_ID))
 		 where article_webid=#{appId}
 		<if test="dateTime!=null">
-			and basic_updatetime > #{dateTime}
+			and basic_updatetime > <include refid="selectTime"></include>
 		</if>
 		<if test="basicCategoryId!=null">
 			and basic_categoryId = #{basicCategoryId}
 		</if>
 	</select>
-
 
 	<!--视图查询开始 -->
 	<select id="queryPageByCategoryId" resultMap="resultMap">
@@ -637,8 +731,8 @@
 		</if>
 		where BASIC_CATEGORYID=#{categoryId}
 		order by basic_id desc
-		limit
-		${page.pageNo*page.pageSize},#{page.pageSize};
+		<!-- limit
+		${page.pageNo*page.pageSize},#{page.pageSize}; -->
 		<if test="categoryIds!=null">
 			<foreach item="category" index="index" collection="categoryIds"
 				open="" separator="" close="">
@@ -649,8 +743,8 @@
 					JOIN basic_column ON (BASIC_CATEGORYID = COLUMN_CATEGORY_ID))
 					JOIN category ON (COLUMN_CATEGORY_ID = CATEGORY_ID)) 
 					where
-				BASIC_CATEGORYID=#{category.categoryId} order by basic_id desc limit
-				${page.pageNo*page.pageSize},#{page.pageSize})
+				BASIC_CATEGORYID=#{category.categoryId} order by basic_id desc <!-- limit
+				${page.pageNo*page.pageSize},#{page.pageSize}) -->
 			</foreach>
 		</if>
 	</select>
@@ -662,7 +756,7 @@
 		(((basic JOIN cms_article ON (BASIC_ID = ARTICLE_BASICID))
 			JOIN basic_column ON (BASIC_CATEGORYID = COLUMN_CATEGORY_ID))
 			JOIN category ON (COLUMN_CATEGORY_ID = CATEGORY_ID))
-		where basic_categoryId=#{categoryId} order by basic_id desc limit 1;
+		where basic_categoryId=#{categoryId} order by basic_id desc <!-- limit 1; -->
 	</select>
 
 	<!--根据分类id查询articleBean开始 -->
@@ -688,15 +782,15 @@
 					JOIN category ON (COLUMN_CATEGORY_ID = CATEGORY_ID))
 				where
 				BASIC_CATEGORYID=#{category.categoryId} order by
-				basic_id desc limit
-				${page.pageNo*page.pageSize},#{page.pageSize})
+				basic_id desc <!-- limit
+				${page.pageNo*page.pageSize},#{page.pageSize} -->)
 			</foreach>
 		</if>
 		order by basic_id desc
-		<if test="page!=null">
+		<!-- <if test="page!=null">
 			limit
 			${page.pageNo*page.pageSize},#{page.pageSize}
-		</if>
+		</if> -->
 	</select>
 
 	<!-- 根据basicID删除开始 -->
@@ -728,7 +822,7 @@
 		<if test="orderBy != null">order by ${orderBy}</if>
 		<if test="order == true">asc</if>
 		<if test="order == false">desc</if>
-		limit ${pageNo*pageSize},#{pageSize};
+		<!-- limit ${pageNo*pageSize},#{pageSize}; -->
 	</select>
 	<!-- 查询本站点下文章条数 并进行分页 结束 -->
 
