@@ -30,6 +30,8 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.springframework.util.StringUtils;
+
 import com.mingsoft.base.entity.BaseEntity;
 import com.mingsoft.basic.entity.AppEntity;
 import com.mingsoft.basic.entity.ColumnEntity;
@@ -187,7 +189,7 @@ public class ListParser extends com.mingsoft.mdiy.parser.ListParser {
 					// 文章flag属性
 					String articleType = article.getArticleType();
 					
-					if(!articleType.isEmpty()){
+					if(!StringUtils.isEmpty(articleType)){
 						String[] flags = articleType.split(",");
 						String flagStr = "";
 						for(int j=0;j<flags.length;j++){
