@@ -217,13 +217,13 @@
 		'%'+#{ flag}+'%'
 	</sql>
 	<!-- noFlag字段 -->
-	<sql id="queryWhereFlag" databaseId="mysql">
+	<sql id="queryWhereNoFlag" databaseId="mysql">
 		CONCAT('%',#{noFlag},'%') 
 	</sql>
-	<sql id="queryWhereFlag" databaseId="oracle">
+	<sql id="queryWhereNoFlag" databaseId="oracle">
 		'%'||#{ noFlag}||'%'
 	</sql>
-	<sql id="queryWhereFlag" databaseId="sqlServer">
+	<sql id="queryWhereNoFlag" databaseId="sqlServer">
 		'%'+#{ noFlag}+'%'
 	</sql>
 	<select id="count" resultType="int">
@@ -253,7 +253,7 @@
 				and a.ARTICLE_TYPE like <include refid="queryWhereFlag"></include>
 			</if>
 			<if test="noFlag != null">
-				and a.ARTICLE_TYPE not like <include refid="queryWhereFlag"></include>
+				and a.ARTICLE_TYPE not like <include refid="queryWhereNoFlag"></include>
 			</if>
 		</where>
 	</select>
@@ -286,7 +286,7 @@
 			and a.ARTICLE_TYPE like <include refid="queryWhereFlag"></include>
 		</if>
 		<if test="noFlag != null">
-			and a.ARTICLE_TYPE not like <include refid="queryWhereFlag"></include>
+			and a.ARTICLE_TYPE not like <include refid="queryWhereNoFlag"></include>
 		</if>
 		<if test="orderBy != null">
 			order by
@@ -345,7 +345,7 @@
 			and a.ARTICLE_TYPE like <include refid="queryWhereFlag"></include>
 		</if>
 		<if test="noFlag != null">
-			and a.ARTICLE_TYPE not like <include refid="queryWhereFlag"></include>
+			and a.ARTICLE_TYPE not like <include refid="queryWhereNoFlag"></include>
 		</if>
 	</select>
 	<!-- 正则查询指定文章条数 结束 -->
@@ -379,7 +379,7 @@
 			and a.ARTICLE_TYPE like <include refid="queryWhereFlag"></include>
 		</if>
 		<if test="noFlag != null">
-			and a.ARTICLE_TYPE not like <include refid="queryWhereFlag"></include>
+			and a.ARTICLE_TYPE not like <include refid="queryWhereNoFlag"></include>
 		</if>
 		<if test="orderBy != null">order by ${orderBy}</if>
 		<if test="orderBy==null">
