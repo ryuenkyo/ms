@@ -248,7 +248,8 @@ public class ArticleAction extends BaseAction {
 		mode.addAttribute("isEditCategory", isEditCategory); // 新增状态
 		mode.addAttribute("columnType", columnType);
 		mode.addAttribute("categoryId", categoryId);
-		mode.addAttribute("articleImagesUrl", "/upload/"+BasicUtil.getAppId()+"/");
+		mode.addAttribute("articleImagesUrl", com.mingsoft.basic.constant.Const.UPLOAD_PATH+com.mingsoft.base.constant.Const.SEPARATOR
+				+BasicUtil.getAppId()+com.mingsoft.base.constant.Const.SEPARATOR);
 		// 添加一个空的article实体
 		ArticleEntity article = new ArticleEntity();
 		mode.addAttribute("article", article);
