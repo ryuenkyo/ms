@@ -17607,12 +17607,9 @@ UE.plugins['video'] = function (){
                     ' wmode="transparent" play="true" loop="false" menu="false" allowscriptaccess="never" allowfullscreen="true" >';
                 break;
             case 'video':
-                var ext = url.substr(url.lastIndexOf('.') + 1);
-                if(ext == 'ogv') ext = 'ogg';
-                str = '<video' + (id ? ' id="' + id + '"' : '') + ' class="' + classname + ' video-js" ' + (align ? ' style="float:' + align + '"': '') +
-                    ' controls preload="none" width="' + width + '" height="' + height + '" src="' + url + '" data-setup="{}">' +
-                    '<source src="' + url + '" type="video/' + ext + '" /></video>';
-                break;
+            	str = '<embed src="' +  utils.html(url) + '" width="' + width  + '" height="' + height  + '"'  + (align ? ' style="float:' + align + '"': '') +
+                ' wmode="transparent" play="true" loop="false" menu="false" allowscriptaccess="never" allowfullscreen="true" >';
+            break;
         }
         return str;
     }
@@ -17715,12 +17712,12 @@ UE.plugins['video'] = function (){
             }
             me.execCommand("inserthtml",html.join(""),true);
             var rng = this.selection.getRange();
-            for(var i= 0,len=videoObjs.length;i<len;i++){
+          /*  for(var i= 0,len=videoObjs.length;i<len;i++){
                 var img = this.document.getElementById('tmpVedio'+i);
                 domUtils.removeAttributes(img,'id');
                 rng.selectNode(img).select();
                 me.execCommand('imagefloat',videoObjs[i].align)
-            }
+            }*/
         },
         queryCommandState : function(){
             var img = me.selection.getRange().getClosedNode(),
