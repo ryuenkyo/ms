@@ -584,7 +584,9 @@ public class CmsParser extends IGeneralParser {
 					categoryList = columnBiz.querySibling(tempColumnId,_size);
 				} else if (type.equals(ChannelParser.CHANNEL_TYPE_SELF)) {
 					ColumnEntity columnEntiy = (ColumnEntity) columnBiz.getEntity(tempColumnId);
-					categoryList.add(columnEntiy);
+					if(columnEntiy != null){
+					    categoryList.add(columnEntiy);
+					}
 				}
 				// 替换栏目标签
 				htmlContent = new ChannelParser(channel, categoryList, this.getWebsiteUrl(), column != null ? column.getCategoryId() : 0, mapProperty.get(ChannelParser.CHANNEL_CLASS)).parse();
