@@ -60,7 +60,7 @@
 	        <props>  
 	            <prop key="Oracle">oracle</prop>  
 	            <prop key="MySQL">mysql</prop>  
-	            <prop key="SQL Server">sqlserver</prop>
+	            <prop key="SQL Server">sqlServer</prop>
 	        </props>
 	    </property>  
 	</bean>  
