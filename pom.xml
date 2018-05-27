@@ -120,12 +120,23 @@
 			<classifier>classes</classifier>
 			<scope>provided</scope>
 		</dependency>
+		
+		<dependency>
+			<groupId>com.oracle</groupId>
+			<artifactId>ojdbc14</artifactId>
+			<version>10.2.0.4.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/ojdbc14-10.2.0.4.0.jar</systemPath>
+		</dependency>
+		
 		<!-- 铭飞升级器，如果不需要MStore的内容支持可以删除该依赖，这部为MStore客户端代码不提供开源jar包 -->
 		<dependency>
 			<groupId>net.mingsoft</groupId>
 			<artifactId>ms-upgrader</artifactId>
 			<version>1.0.4-SNAPSHOT</version>
 		</dependency>
+			
+		
 	</dependencies>
 
 	<build>
