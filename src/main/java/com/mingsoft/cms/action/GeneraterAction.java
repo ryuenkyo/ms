@@ -772,28 +772,11 @@ public class GeneraterAction extends BaseAction {
 	 * @return
 	 */
 	@RequestMapping("/{position}/viewIndex")
-	public void viewIndex(HttpServletRequest request, @PathVariable String position, HttpServletResponse response) {
-		//获取应用实体信息
-		AppEntity app = this.getApp(request);
+	public String viewIndex(HttpServletRequest request, @PathVariable String position, HttpServletResponse response) {
+		AppEntity app = BasicUtil.getApp();
 		//组织主页预览地址
-		String indexPosition = app.getAppHostUrl() + "/" + IParserRegexConstant.HTML_SAVE_PATH + "/" + app.getAppId() + "/" + position;
-		//请求更新后的主页，如果返回200就是是更新成功，可以访问，返回404，就是 更新不成功或者是没有更新主页，返回false
-		URL url;
-		HttpURLConnection huc;
-		try {
-			url = new URL(indexPosition);
-			huc = (HttpURLConnection) url.openConnection();
-			System.out.println(huc.getResponseCode());
-			huc.connect();
-			if(huc.getResponseCode()!=200){
-				this.outJson(response, false);
-			}
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		this.outJson(response, true, indexPosition);
+		String indexPosition = app.getAppHostUrl() +  File.separator + IParserRegexConstant.HTML_SAVE_PATH + File.separator + app.getAppId() + File.separator + position;
+		return "redirect:" + indexPosition;
 	}
 
 }
