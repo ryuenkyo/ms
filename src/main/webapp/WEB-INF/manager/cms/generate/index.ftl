@@ -106,19 +106,7 @@
 	//点击预览时，进行预览
 	$("#viewIndex").click(function(){
 		var position =$("input[name='position']").val();
-		var urlStr = '${managerPath}/cms/generate/'+position+'/viewIndex.do';
-		$.ajax({
-			type: "get",
-			url: urlStr,
-			success : function(msg) {//返回数据根据结果进行相应的处理 
-     			if(msg.result){
-     				var url=msg.resultMsg;
-     				window.open(url,"_blank");
-     			}else{
-     			<@ms.notify msg="请先生成主页，再次访问" type="warning"/>
-     			}
-     		}
-		})
+		window.open("${managerPath}/cms/generate/"+position+"/viewIndex.do");
 	});
 </script>
 
