@@ -1,3 +1,18 @@
+/*
+ Navicat Premium Data Transfer
+
+ Source Server         : localhost
+ Source Server Type    : MySQL
+ Source Server Version : 50716
+ Source Host           : localhost:3306
+ Source Schema         : db-mcms-open
+
+ Target Server Type    : MySQL
+ Target Server Version : 50716
+ File Encoding         : 65001
+
+ Date: 31/05/2018 15:31:51
+*/
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
@@ -16,9 +31,9 @@ CREATE TABLE `app`  (
   `app_style` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '站点风格',
   `app_managerid` int(11) NULL DEFAULT NULL COMMENT '站点对于管理员编号',
   `app_description` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '描述',
-  `app_datetime` datetime DEFAULT NULL COMMENT '创建时间',
+  `app_datetime` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   `app_mobile_style` varchar(11) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '移动端风格',
-  `app_pay_date` datetime DEFAULT NULL COMMENT '应用续费时间',
+  `app_pay_date` datetime(0) NULL DEFAULT NULL COMMENT '应用续费时间',
   `app_pay` varchar(300) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '费用清单',
   `app_state` int(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '0运行中 1已停止  ',
   `app_mobile_state` int(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '0启用 1停用',
@@ -43,8 +58,8 @@ CREATE TABLE `basic`  (
   `basic_thumbnails` varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '缩略图',
   `basic_hit` bigint(22) NULL DEFAULT NULL COMMENT '点击次数',
   `basic_sort` int(11) NULL DEFAULT NULL COMMENT '排序',
-  `basic_datetime` datetime DEFAULT NULL COMMENT ' 发布时间',
-  `basic_updatetime` datetime DEFAULT NULL COMMENT '更新时间',
+  `basic_datetime` datetime(0) NULL DEFAULT NULL COMMENT ' 发布时间',
+  `basic_updatetime` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `basic_peopleid` int(22) NULL DEFAULT NULL COMMENT '用户编号',
   `basic_categoryid` int(22) NULL DEFAULT NULL COMMENT '所属分类编号',
   `basic_appid` int(11) NOT NULL COMMENT '应用编号',
@@ -55,12 +70,12 @@ CREATE TABLE `basic`  (
   `basic_type` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '属性',
   PRIMARY KEY (`basic_id`) USING BTREE,
   UNIQUE INDEX `basic_id`(`basic_id`) USING BTREE,
-  INDEX `basic_title`(`basic_title`(255)) USING BTREE,
   INDEX `basic_appid`(`basic_appid`) USING BTREE,
   INDEX `basic_modelid`(`basic_modelid`) USING BTREE,
   INDEX `basic_categoryid`(`basic_categoryid`) USING BTREE,
-  CONSTRAINT `fk_basic_app_1` FOREIGN KEY (`basic_appid`) REFERENCES `app` (`app_id`) ON DELETE CASCADE ON UPDATE NO ACTION,
-  CONSTRAINT `fk_basic_category_1` FOREIGN KEY (`basic_categoryid`) REFERENCES `category` (`category_id`) ON DELETE CASCADE ON UPDATE NO ACTION
+  INDEX `basic_title`(`basic_title`) USING BTREE,
+  CONSTRAINT `fk_basic_app_id` FOREIGN KEY (`basic_appid`) REFERENCES `app` (`app_id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  CONSTRAINT `fk_basic_categoryid` FOREIGN KEY (`basic_categoryid`) REFERENCES `category` (`category_id`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE = InnoDB AUTO_INCREMENT = 220 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '基础表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -180,11 +195,11 @@ CREATE TABLE `basic_attention`  (
   `ba_app_id` int(11) NULL DEFAULT NULL COMMENT '用户应用id',
   `ba_basic_id` int(11) NULL DEFAULT NULL COMMENT '用户收藏关联的基础id',
   `ba_type` int(11) NULL DEFAULT NULL COMMENT '收藏类型 1： 收藏  2：顶',
-  `ba_datetime` datetime DEFAULT NULL COMMENT '用户收藏文章，帖子或商品时的时间',
+  `ba_datetime` datetime(0) NULL DEFAULT NULL COMMENT '用户收藏文章，帖子或商品时的时间',
   `ba_url` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '收藏的文章,帖子，商品的链接地址',
   PRIMARY KEY (`ba_id`) USING BTREE,
-  INDEX `ba_peopleid`(`ba_people_id`) USING BTREE,
   INDEX `fk_basic_attention_basic_1`(`ba_basic_id`) USING BTREE,
+  INDEX `ba_people_id`(`ba_people_id`) USING BTREE,
   CONSTRAINT `fk_basic_attention_basic_1` FOREIGN KEY (`ba_basic_id`) REFERENCES `basic` (`basic_id`) ON DELETE CASCADE ON UPDATE RESTRICT
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户收藏表' ROW_FORMAT = Dynamic;
 
@@ -202,9 +217,9 @@ CREATE TABLE `basic_column`  (
   `column_path` varchar(150) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '栏目路径',
   `column_cm_id` int(11) NULL DEFAULT NULL COMMENT '栏目管理的内容模型id',
   PRIMARY KEY (`column_category_id`) USING BTREE,
-  INDEX `fk_basic_column_1`(`column_cm_id`) USING BTREE,
-  CONSTRAINT `fk_basic_column` FOREIGN KEY (`column_category_id`) REFERENCES `category` (`category_id`) ON DELETE CASCADE ON UPDATE NO ACTION,
-  CONSTRAINT `fk_basic_column_1` FOREIGN KEY (`column_cm_id`) REFERENCES `mdiy_content_model` (`cm_id`) ON DELETE SET NULL ON UPDATE NO ACTION
+  INDEX `fk_basic_column_id`(`column_cm_id`) USING BTREE,
+  CONSTRAINT `fk_basic_column_id` FOREIGN KEY (`column_cm_id`) REFERENCES `mdiy_content_model` (`cm_id`) ON DELETE SET NULL ON UPDATE NO ACTION,
+  CONSTRAINT `fk_column_category_id` FOREIGN KEY (`column_category_id`) REFERENCES `category` (`category_id`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '栏目表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -268,7 +283,7 @@ CREATE TABLE `basic_log`  (
   PRIMARY KEY (`bl_id`) USING BTREE,
   INDEX `fk_basic_log_basic_1`(`bl_basic_id`) USING BTREE,
   CONSTRAINT `fk_basic_log_basic_1` FOREIGN KEY (`bl_basic_id`) REFERENCES `basic` (`basic_id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '信息访问日志' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '信息访问日志' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of basic_log
@@ -296,7 +311,7 @@ CREATE TABLE `category`  (
   `category_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '类别ID',
   `category_title` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '类别标题',
   `category_sort` int(10) NULL DEFAULT NULL COMMENT '类别排序',
-  `category_datetime` datetime DEFAULT NULL COMMENT '类别发布时间',
+  `category_datetime` datetime(0) NULL DEFAULT NULL COMMENT '类别发布时间',
   `category_managerid` int(22) NULL DEFAULT NULL COMMENT '发布用户id',
   `category_modelid` int(11) NULL DEFAULT NULL COMMENT '所属模块id',
   `category_categoryid` int(11) NULL DEFAULT NULL COMMENT '父类别编号',
@@ -306,17 +321,17 @@ CREATE TABLE `category`  (
   `category_parent_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '父类型编号',
   `category_dict_id` int(11) NULL DEFAULT 0 COMMENT '字典对应编号',
   `create_by` int(11) NULL DEFAULT 0 COMMENT '创建人',
-  `create_date` datetime DEFAULT NULL COMMENT '创建时间',
+  `create_date` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   `update_by` int(11) NULL DEFAULT 0 COMMENT '更新人',
-  `update_date` datetime DEFAULT NULL COMMENT '更新时间',
+  `update_date` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `del` int(11) NOT NULL DEFAULT 0 COMMENT '删除状态',
   PRIMARY KEY (`category_id`) USING BTREE,
   INDEX `category_appid`(`category_appid`) USING BTREE,
   INDEX `category_managerid`(`category_managerid`) USING BTREE,
   INDEX `category_modelid`(`category_modelid`) USING BTREE,
   INDEX `category_categoryid`(`category_categoryid`) USING BTREE,
-  CONSTRAINT `fk_category` FOREIGN KEY (`category_categoryid`) REFERENCES `category` (`category_id`) ON DELETE CASCADE ON UPDATE NO ACTION,
-  CONSTRAINT `fk_category_1` FOREIGN KEY (`category_appid`) REFERENCES `app` (`app_id`) ON DELETE CASCADE ON UPDATE NO ACTION
+  CONSTRAINT `fk_category_app_id` FOREIGN KEY (`category_appid`) REFERENCES `app` (`app_id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  CONSTRAINT `fk_category_category_id` FOREIGN KEY (`category_categoryid`) REFERENCES `category` (`category_id`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE = InnoDB AUTO_INCREMENT = 149 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '分类表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -538,7 +553,7 @@ CREATE TABLE `manager`  (
   `manager_password` varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '管理员密码',
   `manager_roleid` int(11) NULL DEFAULT NULL COMMENT '角色编号',
   `manager_peopleid` bigint(22) NULL DEFAULT 0 COMMENT '用户编号即商家编号',
-  `manager_time` datetime DEFAULT NULL COMMENT '管理员创建时间',
+  `manager_time` datetime(0) NULL DEFAULT NULL COMMENT '管理员创建时间',
   `manager_system_skin_id` int(11) NULL DEFAULT 0 COMMENT '管理员主界面样式',
   PRIMARY KEY (`manager_id`) USING BTREE,
   INDEX `fk_manager_role_1`(`manager_roleid`) USING BTREE,
@@ -562,7 +577,7 @@ CREATE TABLE `manager_model_page`  (
   INDEX `fk_manager_model_page_model_1`(`mmp_model_id`) USING BTREE,
   CONSTRAINT `fk_manager_model_page_manager_1` FOREIGN KEY (`mmp_manager_id`) REFERENCES `manager` (`manager_id`) ON DELETE CASCADE ON UPDATE NO ACTION,
   CONSTRAINT `fk_manager_model_page_model_1` FOREIGN KEY (`mmp_model_id`) REFERENCES `model` (`model_id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '管理员对应的每个模块的主界面自定义' ROW_FORMAT = Compact;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '管理员对应的每个模块的主界面自定义' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for mdiy_content_mode_field
@@ -580,9 +595,9 @@ CREATE TABLE `mdiy_content_mode_field`  (
   `field_issearch` int(255) NULL DEFAULT NULL COMMENT '字段是否支持后台搜索0：不支持，1：支持',
   `field_length` int(11) NULL DEFAULT 1 COMMENT '字段长度',
   `create_by` int(11) NULL DEFAULT NULL,
-  `create_date` datetime DEFAULT NULL,
+  `create_date` datetime(0) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(0),
   `update_by` int(11) NULL DEFAULT NULL,
-  `update_date` datetime DEFAULT NULL,
+  `update_date` datetime(0) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(0),
   `del` int(1) NULL DEFAULT NULL,
   PRIMARY KEY (`field_id`) USING BTREE,
   INDEX `fk_mdiy_content_mode_field_mdiy_content_model_1`(`field_cmid`) USING BTREE,
@@ -611,9 +626,9 @@ CREATE TABLE `mdiy_content_model`  (
   `cm_model_id` int(11) NULL DEFAULT NULL COMMENT '模块编号',
   `cm_app_id` int(11) NULL DEFAULT NULL COMMENT '应用编号',
   `create_by` int(11) NULL DEFAULT NULL,
-  `creaet_date` datetime DEFAULT NULL,
+  `creaet_date` datetime(0) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(0),
   `update_by` int(11) NULL DEFAULT NULL,
-  `update_date` datetime DEFAULT NULL,
+  `update_date` datetime(0) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(0),
   PRIMARY KEY (`cm_id`) USING BTREE,
   INDEX `fk_mdiy_content_model`(`cm_app_id`) USING BTREE,
   CONSTRAINT `fk_mdiy_content_model` FOREIGN KEY (`cm_app_id`) REFERENCES `app` (`app_id`) ON DELETE CASCADE ON UPDATE NO ACTION
@@ -633,22 +648,24 @@ DROP TABLE IF EXISTS `mdiy_dict`;
 CREATE TABLE `mdiy_dict`  (
   `dict_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '编号',
   `app_id` int(11) NULL DEFAULT NULL COMMENT '应用编号',
-  `dict_value` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '数据值',
-  `dict_label` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '标签名',
-  `dict_type` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '类型',
-  `dict_description` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '描述',
+  `dict_value` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '数据值',
+  `dict_label` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '标签名',
+  `dict_type` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '类型',
+  `dict_description` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '描述',
   `dict_sort` int(10) NOT NULL DEFAULT 0 COMMENT '排序（升序）',
-  `dict_parent_id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '0' COMMENT '父级编号',
-  `dict_remarks` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '备注信息',
+  `dict_parent_id` varchar(64) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT '0' COMMENT '父级编号',
+  `dict_remarks` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '备注信息',
   `create_by` int(64) NULL DEFAULT 0 COMMENT '创建者',
-  `create_date` datetime DEFAULT NULL COMMENT '创建时间',
+  `create_date` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   `update_by` int(64) NULL DEFAULT 0 COMMENT '更新者',
-  `update_date` datetime DEFAULT NULL COMMENT '更新时间',
+  `update_date` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `del` int(1) NOT NULL DEFAULT 0 COMMENT '删除标记',
   PRIMARY KEY (`dict_id`) USING BTREE,
   INDEX `fk_mdiy_dict`(`app_id`) USING BTREE,
+  INDEX `dict_value`(`dict_value`) USING BTREE,
+  INDEX `dict_label`(`dict_label`) USING BTREE,
   CONSTRAINT `fk_mdiy_dict` FOREIGN KEY (`app_id`) REFERENCES `app` (`app_id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '字典表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = '字典表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for mdiy_form
@@ -657,12 +674,12 @@ DROP TABLE IF EXISTS `mdiy_form`;
 CREATE TABLE `mdiy_form`  (
   `form_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增长id',
   `form_tips_name` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '自定义表单提示文字',
-  `form_table_name` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `form_table_name` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '自定义表单表名',
   `form_app_id` int(11) NOT NULL COMMENT '自定义表单关联的应用编号',
   `create_by` int(11) NULL DEFAULT NULL,
-  `create_date` datetime DEFAULT NULL,
+  `create_date` datetime(0) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(0),
   `update_by` int(11) NULL DEFAULT NULL,
-  `update_date` datetime DEFAULT NULL,
+  `update_date` datetime(0) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(0),
   PRIMARY KEY (`form_id`) USING BTREE,
   INDEX `fk_mdiy_form`(`form_app_id`) USING BTREE,
   CONSTRAINT `fk_mdiy_form` FOREIGN KEY (`form_app_id`) REFERENCES `app` (`app_id`) ON DELETE CASCADE ON UPDATE NO ACTION
@@ -675,7 +692,7 @@ DROP TABLE IF EXISTS `mdiy_form_field`;
 CREATE TABLE `mdiy_form_field`  (
   `ff_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '字段自增长id',
   `ff_tipsname` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '字段提示文字',
-  `ff_fieldname` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `ff_fieldname` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '字段名称',
   `ff_type` int(11) NULL DEFAULT NULL COMMENT '字段类型（如1.单行，2.多行，3.图片，等）',
   `ff_default` varchar(250) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '字段的默认值',
   `ff_isnull` int(11) NULL DEFAULT NULL COMMENT '字段是否为空',
@@ -729,12 +746,12 @@ CREATE TABLE `mdiy_page`  (
   `page_path` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '自定义页面绑定模板的路径',
   `page_title` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '自定义页面标题',
   `page_key` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '自定义页面访问路径',
-  `create_date` datetime DEFAULT NULL,
+  `create_date` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`page_id`) USING BTREE,
   INDEX `index_page_key`(`page_key`) USING BTREE,
   INDEX `index_page_app_id`(`page_app_id`) USING BTREE,
   INDEX `index_page_model_id`(`page_model_id`) USING BTREE,
-  CONSTRAINT `fk_model_template_app_1` FOREIGN KEY (`page_app_id`) REFERENCES `app` (`app_id`) ON DELETE CASCADE ON UPDATE NO ACTION
+  CONSTRAINT `fk_page_app_id` FOREIGN KEY (`page_app_id`) REFERENCES `app` (`app_id`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '自定义页面表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -776,7 +793,7 @@ CREATE TABLE `model`  (
   `model_code` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '模块编码',
   `model_modelid` int(22) NULL DEFAULT NULL COMMENT '模块的父模块id',
   `model_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '模块连接地址',
-  `model_datetime` datetime DEFAULT NULL,
+  `model_datetime` datetime(0) NULL DEFAULT NULL,
   `model_icon` varchar(120) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '模块图标',
   `model_modelmanagerid` int(11) NULL DEFAULT NULL COMMENT '模块关联的关联员id',
   `model_sort` int(11) NULL DEFAULT NULL COMMENT '模块的排序',
@@ -786,7 +803,7 @@ CREATE TABLE `model`  (
   UNIQUE INDEX `sys_c009201`(`model_id`) USING BTREE,
   INDEX `model_modelid`(`model_modelid`) USING BTREE,
   INDEX `model_code`(`model_code`) USING BTREE,
-  CONSTRAINT `model_ibfk_1` FOREIGN KEY (`model_modelid`) REFERENCES `model` (`model_id`) ON DELETE CASCADE ON UPDATE NO ACTION
+  CONSTRAINT `fk_model_model_id` FOREIGN KEY (`model_modelid`) REFERENCES `model` (`model_id`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE = InnoDB AUTO_INCREMENT = 152 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '模块表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -872,12 +889,12 @@ CREATE TABLE `people`  (
   `people_phone` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '手机号码',
   `people_name` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '账号',
   `people_password` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '密码',
-  `people_datetime` datetime DEFAULT NULL COMMENT '注册时间',
+  `people_datetime` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '注册时间',
   `people_app_id` int(11) NOT NULL COMMENT '应用编号',
   `people_mail` varchar(120) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户邮箱',
   `people_state` int(2) NULL DEFAULT 0 COMMENT '用户状态',
   `people_code` varchar(15) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '随机验证码',
-  `people_codesenddate` datetime DEFAULT NULL COMMENT '发送验证码时间',
+  `people_codesenddate` datetime(0) NULL DEFAULT NULL COMMENT '发送验证码时间',
   `people_phonecheck` int(1) NULL DEFAULT 0 COMMENT '1手机验证通过',
   `people_maillcheck` int(1) NULL DEFAULT 0 COMMENT '1邮箱验证通过',
   PRIMARY KEY (`people_id`) USING BTREE,
@@ -916,7 +933,10 @@ CREATE TABLE `role`  (
   `role_name` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '角色名',
   `role_managerid` int(11) NULL DEFAULT 0 COMMENT '角色管理员编号',
   `app_id` int(11) NOT NULL COMMENT '应用编号',
-  PRIMARY KEY (`role_id`) USING BTREE
+  PRIMARY KEY (`role_id`) USING BTREE,
+  INDEX `role_managerid`(`role_managerid`) USING BTREE,
+  INDEX `fk_role_app_id`(`app_id`) USING BTREE,
+  CONSTRAINT `fk_role_app_id` FOREIGN KEY (`app_id`) REFERENCES `app` (`app_id`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE = InnoDB AUTO_INCREMENT = 49 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '角色表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -1021,12 +1041,13 @@ CREATE TABLE `system_skin`  (
   `ss_backgroundimg` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '背景图片',
   `ss_color` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '字体颜色',
   `ss_css` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '样式',
-  `ss_datetime` datetime DEFAULT NULL COMMENT '生成时间',
+  `ss_datetime` datetime(0) NULL DEFAULT NULL COMMENT '生成时间',
   `ss_app_id` int(11) NULL DEFAULT NULL COMMENT '0后台发布大于０表示是应用自定义',
   `ss_category_id` int(11) NULL DEFAULT NULL COMMENT '主题分类',
   PRIMARY KEY (`ss_id`) USING BTREE,
-  INDEX `fk_system_skin_app_1`(`ss_app_id`) USING BTREE,
-  CONSTRAINT `fk_system_skin_app_1` FOREIGN KEY (`ss_app_id`) REFERENCES `app` (`app_id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '后台皮肤管理表' ROW_FORMAT = Compact;
+  INDEX `ss_app_id`(`ss_app_id`) USING BTREE,
+  INDEX `ss_category_id`(`ss_category_id`) USING BTREE,
+  CONSTRAINT `fk_system_skin_app_id` FOREIGN KEY (`ss_app_id`) REFERENCES `app` (`app_id`) ON DELETE CASCADE ON UPDATE NO ACTION
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '后台皮肤管理表' ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;
