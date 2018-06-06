@@ -1,0 +1,10 @@
+请选择对应分支进行编辑    
+demo-top：演示站头部分享模板管理分支    
+mdiy：自定义页面管理分支    
+manager：后台UI页面模板管理分支    
+www：平台官网页面模板管理分支    
+mpm：pm页面模板管理分支    
+ms：社区页面模板管理分支    
+mcode：mcode页面模板管理分支    
+mstore：mstore模板管理分支    
+mall-people：通用会员中心页面模板管理分支
