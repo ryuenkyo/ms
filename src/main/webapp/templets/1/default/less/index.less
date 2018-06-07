@@ -16,22 +16,30 @@ body{
     /*网站案例*/
     .ms-content-template {
         .ms-index-tabs {
+        	
             text-align: center;
             border: none;
             margin-bottom: 3px;
             li {
+            	a:hover{
+            		color: #333;
+            	}
+            	margin-right: 15px;
                 float: none;
                 display: inline-block;
                 font-size: 2.4rem;
                 a {
                     border: none !important;
-                    color: #777 !important;
+                    color: #777;
                     background-color: white;
+                    padding: 10px 0px;
+                    font-size: 20px;
                 }
             }
             .active {
                 a {
                     border-bottom: 2px solid #00b0ff !important;
+                    color:#333;
                 }
             }
         }
@@ -52,10 +60,12 @@ body{
                     .ms-model-list {
                         .ms-model-more {
                             width: 385px;
-                            height: 364px;
+                            height: 347px;
                             background-color: white;
                             line-height: 364px;
                             text-align: center;
+                            background-size:100% 100%;  
+                            background-image: url(../images/查看更多.png);
                             div {
                                 border: 1px solid #aaa;
                                 color: #666;
@@ -98,7 +108,7 @@ body{
                         .ms-model-img {
                             overflow: hidden;
                             position: relative;
-                            height: 255px;
+                            height: 235px;
                             z-index: 2;
                             display: block;
                             img {
@@ -146,7 +156,7 @@ body{
                 overflow: hidden;
                 border-bottom: 1px solid #eee;
                 padding-bottom: 20px;
-                padding-top: 40px;
+                padding-top: 20px;
                 .ms-content-case-title-words {
                     float: left;
                     font-size: 20px;
@@ -258,7 +268,7 @@ body{
                 .ms-content-product-title-words {
                     font-size: 20px;
                 }
-                padding: 0 0 20px 0;
+                padding: 20px 0;
                 font-size: 18px;
                 text-align: center;
                 border-bottom: 1px solid #eee;
@@ -304,9 +314,14 @@ body{
             }
         }
     }
+    .ms-content-news-main-title-more,.ms-content-case-more{
+    	a:hover{
+    		color: #0099ff !important;
+    	}
+    }
     /*公司动态*/
     .ms-content-news {
-        margin-bottom: 21px;
+        margin-bottom: 40px;
         background-color: #fff;
         .ms-content-news-main {
             width: 1200px;
