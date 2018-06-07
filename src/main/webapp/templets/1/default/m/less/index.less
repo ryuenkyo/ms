@@ -1,5 +1,8 @@
  .ms-content-template {
      .ms-index-tabs {
+     	#ms-plug{
+     		margin-left: 2rem;
+     	}
          text-align: center;
          border: none;
          margin: 20px 0 3px 0;
@@ -12,7 +15,8 @@
                  border: none !important;
                  color: #777 !important;
                  background-color: white;
-                 padding: 6px 35px;
+                 padding: 6px 0px;
+                 font-size: 1.6rem;
              }
          }
          .active {
@@ -46,7 +50,7 @@
                          text-align: center;
                          div {
                              border: 1px solid #aaa;
-                             color: #666;
+                             color: #999;
                              padding: 6px 18px;
                              display: inline-block;
                              line-height: 1;
@@ -130,6 +134,12 @@
  }
  
  .ms-case {
+ 	.ms-case-div{
+ 		margin-bottom: 2.2rem;
+	    margin-left: 10px;
+	    margin-right: 10px;
+	    margin-top: 10px;
+ 	}
      .ms-case-title {
          border-bottom: 1px solid #ddd;
          .ms-case-title-h2 {
@@ -153,10 +163,16 @@
  }
  
  .ms-product {
+ 	.ms-product-container{
+ 		padding-right: 0;
+	    padding-left: 0;
+	    margin-right: 0;
+	    margin-left: 0;
+ 	}
      background-color: #fafafa;
      .container {
          .slide {
-             height: 27rem;
+             /*height: 27rem;*/
              h2 {
                  font-size: 1.6rem;
                  margin-top: 1rem;
@@ -170,7 +186,7 @@
  
  .ms-news {
      .ms-news-title {
-         /*border-bottom: 1px solid #ddd;*/
+         border-bottom: 1px solid #fafafa;
          .ms-news-title-h2 {
              color: #000;
          }
@@ -179,8 +195,12 @@
          }
      }
      .ms-product-news-list {
+     	.ms-product-news-list{
+     		/*border: none;*/
+     	}
          ul {
              li {
+             	border: none;
                  a {
                      font-size: 1.5rem;
                      color: #555;

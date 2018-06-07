@@ -973,6 +973,10 @@ div.ms-cart-goods .ms-cart-btn .ms-buttom-margin {
 .ms-login .ms-login-form {
   margin-top: 1.6em;
 }
+.ms-login-form	input::-webkit-input-placeholder{
+	color: #ccc;
+	font-size:1.3rem;
+}
 .ms-login .ms-logBtn {
   background-color: #009aff;
   border-color: #009aff;
@@ -1297,6 +1301,9 @@ div.ms-cart-goods .ms-cart-btn .ms-buttom-margin {
 .ms-register .ms-health {
   margin: 0 auto;
   margin-top: 1em;
+}
+.ms-health a{
+	color: #009aff;
 }
 .ms-register .ms-health .iconfont {
   font-size: inherit;
