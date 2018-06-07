@@ -166,6 +166,10 @@ textarea:focus {
         justify-content: space-between;
         .head-menu-flex-center {
             .head-menu-list {
+            	.head-active{
+            		color: #ffb800;
+                    background-color: #2b3442;
+            	}
                 .head-menu-list-li:hover {
                     background-color: #202833;
                     color: #ffb800;
@@ -238,6 +242,10 @@ textarea:focus {
             .head-menu-right-search {
                 padding-right: 12px;
                 position: relative;
+                input:-webkit-autofill {
+			        -webkit-box-shadow: 0 0 0px 1000px #2b3442 inset !important;//关于解决输入框背景颜色
+			        -webkit-text-fill-color: rgba(255,255,255,1)!important;//关于接输入框文字颜色
+			    }
                 .ms-search-click {
                     background-image: url(../images/search.png);
                     width: 14px;

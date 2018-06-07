@@ -35,19 +35,6 @@ $(function(){
     $('.ms-footer-right-img-weixin').hover(function(){
     	$('.ms-footer-right-weixin').toggle();
     });
-    
-    /* 左侧菜单栏选中样式 */
-    var href = location.href;
-    if(href.match("19")){
-    	$(".ms-content-left-ul a").removeClass("ms-content-left-li-first");
-    	$(".ms-content-left-ul a:eq(4)").addClass("ms-content-left-li-first");
-    }else if(href.match("59")){
-    	$(".ms-content-left-ul a").removeClass("ms-content-left-li-first");
-    	$(".ms-content-left-ul a:eq(1)").addClass("ms-content-left-li-first");
-    }else if(href.match("53")){
-    	$(".ms-content-left-ul a").removeClass("ms-content-left-li-first");
-    	$(".ms-content-left-ul a:eq(0)").addClass("ms-content-left-li-first");
-    }
 });
 
 </script>
