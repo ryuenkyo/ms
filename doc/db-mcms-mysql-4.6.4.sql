@@ -11,7 +11,7 @@
  Target Server Version : 50716
  File Encoding         : 65001
 
- Date: 31/05/2018 15:31:51
+ Date: 08/06/2018 15:47:41
 */
 
 SET NAMES utf8mb4;
@@ -45,7 +45,7 @@ CREATE TABLE `app`  (
 -- ----------------------------
 -- Records of app
 -- ----------------------------
-INSERT INTO `app` VALUES (1, 'MCMS-OPEN', 'http://localhost:8080/ms-mcms\r\n', '', '', '', 'mooc', 50, '', NULL, 'm', NULL, '', 0, 0);
+INSERT INTO `app` VALUES (1, 'MCMS-OPEN', 'http://localhost:8080/ms-mcms\r\n', '', '', '', 'default', 50, '', NULL, 'm', NULL, '', 0, 0);
 
 -- ----------------------------
 -- Table structure for basic
@@ -760,7 +760,7 @@ CREATE TABLE `mdiy_page`  (
 INSERT INTO `mdiy_page` VALUES (1, 1, 0, 'people/register.htm', '注册', 'register', NULL);
 INSERT INTO `mdiy_page` VALUES (2, 1, 0, 'people/login.htm', '登录', 'login', NULL);
 INSERT INTO `mdiy_page` VALUES (3, 1, 0, 'people/center.htm', '个人中心', 'people/center', NULL);
-INSERT INTO `mdiy_page` VALUES (4, 1, 0, 'people/change-passWord.htm', '修改密码', 'people/changePassWord', NULL);
+INSERT INTO `mdiy_page` VALUES (4, 1, 0, 'people/password-change.htm', '修改密码', 'people/password-change', NULL);
 
 -- ----------------------------
 -- Table structure for mdiy_search
