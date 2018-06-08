@@ -16,7 +16,7 @@
                     <div class="ms-news-show-title">{ms:field.title/}</div>
                     <p class="am-article-meta">
                         <div class="ms-news-show-icon">
-                            <div class="ms-news-show-icon-source">来源：{ms:field.source/}
+                            <div class="ms-news-show-icon-source"><lable class="ms-news-show-icon-title">来源：</lable><lable class="ms-news-show-icon-con">{ms:field.source/}</lable>
                                 <span>|</span>
                             </div>
                             <div class="ms-news-show-icon-time">{ms:field.date fmt=yyyy-MM-dd/}
@@ -58,10 +58,10 @@
                                     <div class="ms-news-show-comment-list-content">
                                         <div class="ms-news-show-comment-list-top">
                                             <div class="ms-news-show-comment-list-name" v-text="comments.puNickname"></div>
-                                            <div class="ms-news-show-comment-list-right">
+                                            <!-- <div class="ms-news-show-comment-list-right">
                                                 <div class="ms-news-show-main-icon-Fabulous"></div>
                                                 <div class="ms-news-show-main-icon-num">28</div>
-                                            </div>
+                                            </div> -->
                                         </div>
                                         <div class="ms-news-show-comment-list-bottom">
                                             <div class="ms-news-show-comment-list-comment" v-html="vueAnalyticEmotion(comments.commentContent)"></div>
