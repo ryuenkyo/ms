@@ -28,11 +28,12 @@
         if(!flag) {
             $.ajax({
                 type: "POST",
-                url: "{ms:global.host/}/mdiy/diyForm/f2c131968438246e885e0feed7256dbc.do",
+                url: "{ms:global.host/}/form/mdiy/diyForm/f2c131968438246e885e0feed7256dbc.do",
                 data: $("#postForm").serialize(),
                 success: function(msg) {
                     flag = true;
                     alert("提交成功");
+                    location.reload();
                 }
             });
         } else {
@@ -42,7 +43,7 @@
 
     /* 表单验证 */
     function verification() {
-        if($('input[name="name"]').val().length >= 1 && $('input[name="phone"]').val().length >= 1 && $('.ms-content-form-message').val().length >= 1) {
+        if($('input[name="name"]').val().length > 0 && $('input[name="phone"]').val().length > 0 && $('.ms-content-form-message').val().length > 0) {
             $('.ms-login-button').css("background-color", "#009aff");
             $('.ms-login-button').css("pointer-events", 'visible');
             $('.ms-login-button').css("color", "#fff");

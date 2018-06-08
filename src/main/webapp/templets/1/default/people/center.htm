@@ -109,7 +109,8 @@
                     mpeople.people.user.update($("#ms-center-form").serialize(), function(returnJson) { //更新用户信息
                         if(returnJson.result) {
                             alert("修改成功");
-                            target.getPeopleInfo();
+                            location.reload();
+                            //target.getPeopleInfo();
                         } else {
                             alert(returnJson.resultMsg);
                         }
