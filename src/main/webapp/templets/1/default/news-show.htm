@@ -202,12 +202,12 @@
                 //登录状态
                 $.ajax({
                     type: "POST",
-                    data: "basicAttentionBasicId={ms:field.id/}&basicAttentionType=2",
-                    url: "{ms:global.host/}/people/attention/isExists.do",
+                    url: "{ms:global.host/}/checkLoginStatus.do",
                     success: function(msg) {
                         obj.loginStatus = msg.result;
                     }
                 })
+
                 //关注数
                 $.ajax({
                     type: "POST",
