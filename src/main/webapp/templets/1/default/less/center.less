@@ -36,6 +36,9 @@
                     color: #999;
                     text-decoration: none
                 }
+                a:hover{
+                  color: #0099ff;
+                }
                 .ms-content-left-list-info {
                     margin-top: 20px;
                     cursor: pointer;
@@ -63,6 +66,9 @@
             .ms-content-right-form {
                 .ms-content-old-password,
                 .ms-content-data {
+                	.span{
+                		display: inline-block; 
+                	}
                     font-size: 14px;
                     color: #999999;
                     .ms-error-hide {
@@ -76,8 +82,9 @@
                     span {
                         min-width: 70px;
                         max-width: 300px;
-                        display: inline-block;
+                        /*display: inline-block;*/
                     }
+                    
                     img {
                         vertical-align: middle;
                     }
@@ -95,12 +102,12 @@
                     margin-left: 67px;
                 }
                 .ms-content-click {
-                	/*pointer-events:none;
-                    background-color:#fafafa;
-                    color:#ddd;*/
-                    color: white;
+                	pointer-events:none;
+ 	                background-color:#fafafa;
+ 	                color:#ddd;
+                    /*color: white;*/
                     width: 120px;
-                    background-color: #0099ff;
+                    /*background-color: #0099ff;*/
                     padding: 6px 0;
                     border-radius: 4px;
                     text-align: center;
@@ -114,7 +121,6 @@
                 }
                 .ms-content-click-password {
                     margin-left: 141px;
-                    
                 }
             }
             /*基本资料*/
@@ -153,6 +159,7 @@
                             width: 100%;
                             height: 100%;
                             border-radius: 50%;
+                            background: white;
                         }
                         .ms-content-head-upload {
                             width: 100%;
@@ -189,28 +196,16 @@
         height: 64px;
         display: block !important;
     }
+    span {
+        display: none ;
+    }
     &:hover {
         #browse {
-            opacity: .36;
-        }
-        span {
             opacity: 1;
-            min-width: 64px !important;
-            max-width: 64px !important;
-            width: 64px;
-            height: 64px;
-            border-radius: 50%;
-            transition: .3s;
-            position: absolute;
-            z-index: 5;
-            top: 0;
-            left: 0;
-            background: rgba(89, 89, 89, 0.7);
         }
     }
     #browse {
         background: rgba(89, 89, 89, 0.5);
-        opacity: 0;
         min-width: 64px;
         width: 64px;
         height: 64px;
@@ -220,5 +215,6 @@
         top: 0;
         left: 0;
         border-radius: 50%;
+        opacity: 0;
     }
 }

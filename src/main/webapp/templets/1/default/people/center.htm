@@ -37,14 +37,14 @@
                                 </div>
                             </div>
                             <div class="ms-content-data">
-                                <span class="ms-content-nickname">昵称</span>
-                                <input type="text" name="puNickname" v-model="peopleInfo.puNickname">
+                                <span class="ms-content-nickname span">昵称</span>
+                                <input @keyup="chanageBackgroundColor" type="text" name="puNickname" v-model="peopleInfo.puNickname">
                                 <img class="ms-error-hide" src="{ms:globalskin.url/}/images/error.png" :class="{'ms-error-show':errorText[0] != ''}" />
                                 <span class="ms-error-hide" v-text="errorText[0]" :class="{'ms-error-show':errorText[0] != ''}"></span>
                             </div>
                             <div class="ms-content-data">
-                                <span class="ms-content-mailbox">邮箱</span>
-                                <input type="text" name="peopleMail" v-model="peopleInfo.peopleMail">
+                                <span class="ms-content-mailbox span">邮箱</span>
+                                <input @keyup="chanageBackgroundColor" type="text" name="peopleMail" v-model="peopleInfo.peopleMail">
                                 <img class="ms-error-hide" src="{ms:globalskin.url/}/images/error.png" :class="{'ms-error-show':errorText[1] != ''}" />
                                 <span class="ms-error-hide" v-text="errorText[1]" :class="{'ms-error-show':errorText[1] != ''}"></span>
                             </div>
@@ -106,7 +106,8 @@
                         return;
                     }
                     this.butState = '提交中...';
-                    mpeople.people.user.update($("#ms-center-form").serialize(), function(returnJson) { //更新用户信息
+                    var data = "puIcon=" + $("input[name=puIcon]").eq($("input[name=puIcon]").length - 1).val() + "&puNickname=" + $("input[name=puNickname]").val() + "&peopleMail=" + $("input[name=peopleMail]").val();
+                    mpeople.people.user.update(data, function(returnJson) { //更新用户信息
                         if(returnJson.result) {
                             alert("修改成功");
                             location.reload();
@@ -137,16 +138,33 @@
                         }, date
                     )
                 },
+                chanageBackgroundColor: function() {
+                    if($('input[name="puNickname"]').val().length > 0 && 　$('input[name="peopleMail"]').val().length > 0) {
+                        $('.ms-content-click').css("background-color", "#009aff");
+                        $('.ms-content-click').css("pointer-events", 'visible');
+                        $('.ms-content-click').css("color", "#fff");
+                    } else {
+                        $('.ms-content-click').css("background-color", "#fafafa");
+                        $('.ms-content-click').css('pointer-events', "none");
+                        $('.ms-content-click').css("color", "#ddd");
+                    }
+                },
+
             },
             mounted: function() {
                 this.getPeopleInfo();
+                var target = this;
                 upload.init("browse", "puIcon", "/peopleIcon/", {
                     "domClass": "display-img",
                     "size": "3000",
-                    "afterMsg": "添加图片",
+                    "afterMsg": "修改头像",
                     success: function(msg) {
-                    	centerVue.peopleInfo.puIcon = msg;
-                    	centerVue.peopleInfo = centerVue.peopleInfo;
+                        var data = "puIcon=" + $("input[name=puIcon]").eq($("input[name=puIcon]").length - 1).val();
+                        mpeople.people.user.update(data, function(returnJson) { //更新用户信息
+                            target.peopleInfo.puIcon = $("input[name=puIcon]").eq($("input[name=puIcon]").length - 1).val();
+                            alert("上传成功");
+                            location.reload();
+                        });
                     }
                 });
             },
