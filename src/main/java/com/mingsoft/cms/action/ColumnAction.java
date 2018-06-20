@@ -70,7 +70,8 @@ public class ColumnAction extends BaseAction{
 	 */
 	@RequestMapping("/index")
 	@RequiresPermissions("cms:column:view")
-	public String index(HttpServletResponse response,HttpServletRequest request){
+	public String index(HttpServletResponse response,HttpServletRequest request,ModelMap model){
+		model.addAttribute("model", "cms");
 		return view ("/column/index");
 	}
 	/**
@@ -89,6 +90,7 @@ public class ColumnAction extends BaseAction{
 		model.addAttribute("columnSuper", columnSuper);
 		model.addAttribute("column",new ColumnEntity());
 		model.addAttribute("listColumn", JSONArray.toJSONString(list));
+		model.addAttribute("model", "cms");
 		return view("/column/form");
 	}
 
@@ -213,6 +215,7 @@ public class ColumnAction extends BaseAction{
 		}
 		model.addAttribute("columnSuper", columnSuper);
 		model.addAttribute("listColumn", JSONArray.toJSONString(list));
+		model.addAttribute("model", "cms");
 		return view("/column/form");
 	}
 	
