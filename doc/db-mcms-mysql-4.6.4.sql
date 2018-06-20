@@ -1,18 +1,3 @@
-/*
- Navicat Premium Data Transfer
-
- Source Server         : localhost
- Source Server Type    : MySQL
- Source Server Version : 50716
- Source Host           : localhost:3306
- Source Schema         : db-mcms-open
-
- Target Server Type    : MySQL
- Target Server Version : 50716
- File Encoding         : 65001
-
- Date: 08/06/2018 15:47:41
-*/
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
@@ -804,7 +789,7 @@ CREATE TABLE `model`  (
   INDEX `model_modelid`(`model_modelid`) USING BTREE,
   INDEX `model_code`(`model_code`) USING BTREE,
   CONSTRAINT `fk_model_model_id` FOREIGN KEY (`model_modelid`) REFERENCES `model` (`model_id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE = InnoDB AUTO_INCREMENT = 152 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '模块表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 155 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '模块表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of model
@@ -812,7 +797,7 @@ CREATE TABLE `model`  (
 INSERT INTO `model` VALUES (1, '内容管理', '02000000', NULL, '', '2014-08-01 16:19:50', '&#xe77a;', 0, 0, 1, NULL);
 INSERT INTO `model` VALUES (4, '管理员管理', '01020000', 23, 'basic/manager/index.do', '2014-08-03 09:15:02', '', 0, 0, 1, '23');
 INSERT INTO `model` VALUES (5, '角色管理', '01010000', 23, 'basic/role/index.do', '2014-08-03 09:15:14', '', 0, 0, 1, '23');
-INSERT INTO `model` VALUES (7, '栏目管理', '02990000', 1, 'column/index.do', '2014-08-03 09:16:29', '', 0, 0, 1, '1');
+INSERT INTO `model` VALUES (7, '栏目管理', '02990000', 1, 'cms/column/index.do', '2014-08-03 09:16:29', '', 0, 0, 1, '1');
 INSERT INTO `model` VALUES (8, '文章管理', '02980000', 1, 'cms/article/index.do', '2014-08-03 09:17:10', '', 0, 0, 1, '1');
 INSERT INTO `model` VALUES (22, '会员中心', '07000000', NULL, '', '2014-09-08 08:11:28', '&#xe6b6;', 0, 0, 1, NULL);
 INSERT INTO `model` VALUES (23, '权限管理', '01000000', NULL, '', '2014-09-08 08:12:22', '&#xe950;', 0, 0, 1, NULL);
@@ -879,6 +864,9 @@ INSERT INTO `model` VALUES (148, '新增', '20040002', 108, 'mdiy:search:save', 
 INSERT INTO `model` VALUES (149, '删除', '20050003', 109, 'mdiy:dict:del', '2017-09-04 14:28:00', '', 0, 0, 0, '104,109');
 INSERT INTO `model` VALUES (150, '修改', '20050003', 109, 'mdiy:dict:update', '2017-09-04 14:28:17', '', 0, 0, 0, '104,109');
 INSERT INTO `model` VALUES (151, '新增', '20050002', 109, 'mdiy:dict:save', '2017-09-04 14:28:41', '', 0, 0, 0, '104,109');
+INSERT INTO `model` VALUES (152, '删除', '02990002', 7, 'cms:column:del', '2018-06-20 17:53:51', '', 0, 0, 0, '1,7');
+INSERT INTO `model` VALUES (153, '修改', '02990003', 7, 'cms:column:update', '2018-06-20 17:54:43', NULL, 0, 0, 0, '1,7');
+INSERT INTO `model` VALUES (154, '新增', '02990004', 7, 'cms:column:save', '2018-06-20 17:55:26', NULL, 0, 0, 0, '1,7');
 
 -- ----------------------------
 -- Table structure for people
@@ -1031,6 +1019,9 @@ INSERT INTO `role_model` VALUES (148, 48);
 INSERT INTO `role_model` VALUES (149, 48);
 INSERT INTO `role_model` VALUES (150, 48);
 INSERT INTO `role_model` VALUES (151, 48);
+INSERT INTO `role_model` VALUES (152, 48);
+INSERT INTO `role_model` VALUES (153, 48);
+INSERT INTO `role_model` VALUES (154, 48);
 
 -- ----------------------------
 -- Table structure for system_skin
