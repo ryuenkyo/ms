@@ -202,6 +202,7 @@ public class ArticleAction extends BaseAction {
 		}
 		int appId = BasicUtil.getAppId();
 		BasicUtil.startPage();
+		article.setBasicDisplay(-1);
 		//查询文章列表
 		List<ArticleEntity> articleList = articleBiz.query(appId, basicCategoryIds, articleType, null, null, true, article);
 		EUListBean _list = new EUListBean(articleList, (int) BasicUtil.endPage(articleList).getTotal());

@@ -289,7 +289,7 @@
 		<if test="noFlag != null">
 			and a.ARTICLE_TYPE not like <include refid="queryWhereNoFlag"></include>
 		</if>
-		<if test="article !=null and article.basicDisplay>-1">
+		<if test="article !=null and article.basicDisplay &gt; -1">
 			and b.basic_display = #{article.basicDisplay}
 		</if>
 		<if test="orderBy != null">
