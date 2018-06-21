@@ -33,6 +33,7 @@
 		<result column="BASIC_PEOPLEID" property="basicPeopleId" />		<!-- 文章发布者id -->
 		<result column="BASIC_CATEGORYID" property="basicCategoryId" />	<!-- 文章所属主栏目id -->
 		<result column="BASIC_SORT" property="basicSort" />
+		<result column="BASIC_DISPLAY" property="basicDisplay" />
 		<!-- 一对一关联栏目 -->
 		<association property="column" column="COLUMN_CATEGORY_ID"
 			javaType="com.mingsoft.basic.entity.ColumnEntity">
@@ -288,6 +289,9 @@
 		<if test="noFlag != null">
 			and a.ARTICLE_TYPE not like <include refid="queryWhereNoFlag"></include>
 		</if>
+		<if test="article !=null and article.basicDisplay>-1">
+			and b.basic_display = #{article.basicDisplay}
+		</if>
 		<if test="orderBy != null">
 			order by
 			<choose>
@@ -301,7 +305,6 @@
 				</otherwise>
 			</choose>
 		</if>
-
 		<if test="orderBy==null">
 			order by b.basic_id
 		</if>
