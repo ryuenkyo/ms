@@ -69,6 +69,7 @@
 		<result column="BASIC_UPDATETIME" property="basicUpdateTime" />	<!-- 文章更新时间 -->
 		<result column="BASIC_CATEGORYID" property="basicCategoryId" />	<!-- 文章所属主栏目id -->
 		<result column="BASIC_SORT" property="basicSort" />
+		<result column="BASIC_DISPLAY" property="basicDisplay" />
 		<!-- 一对一关联栏目 -->
 		<association property="column"
 			javaType="com.mingsoft.basic.entity.ColumnEntity">
@@ -84,13 +85,13 @@
 	<!-- 文章bean返回数据列表 开始 -->
 	<sql id="bean_column_list">
 		BASIC_ID,ARTICLE_AUTHOR,ARTICLE_TYPE,ARTICLE_SOURCE,ARTICLE_URL,ARTICLE_KEYWORD,ARTICLE_FREEORDER,
-		BASIC_TITLE,BASIC_DESCRIPTION,BASIC_THUMBNAILS,BASIC_HIT,BASIC_DATETIME,BASIC_UPDATETIME,BASIC_PEOPLEID,BASIC_CATEGORYID,BASIC_SORT
+		BASIC_DISPLAY,BASIC_TITLE,BASIC_DESCRIPTION,BASIC_THUMBNAILS,BASIC_HIT,BASIC_DATETIME,BASIC_UPDATETIME,BASIC_PEOPLEID,BASIC_CATEGORYID,BASIC_SORT
 	</sql>
 	<!-- 表栏目名结束 -->
 	
 	<!-- 文章基础数据返回数据列表 开始 -->
 	<sql id="basic_data_list">
-		BASIC_ID,BASIC_CATEGORYID,BASIC_TITLE,BASIC_DESCRIPTION,BASIC_THUMBNAILS,BASIC_HIT,BASIC_DATETIME,BASIC_UPDATETIME,BASIC_PEOPLEID,BASIC_SORT,
+		BASIC_DISPLAY,BASIC_ID,BASIC_CATEGORYID,BASIC_TITLE,BASIC_DESCRIPTION,BASIC_THUMBNAILS,BASIC_HIT,BASIC_DATETIME,BASIC_UPDATETIME,BASIC_PEOPLEID,BASIC_SORT,
 		ARTICLE_BASICID,ARTICLE_AUTHOR,ARTICLE_CONTENT,ARTICLE_TYPE,ARTICLE_SOURCE,ARTICLE_URL,ARTICLE_KEYWORD,ARTICLE_FREEORDER,ARTICLE_WEBID,
 		COLUMN_KEYWORD,COLUMN_DESCRIP,COLUMN_TYPE,COLUMN_URL,COLUMN_LISTURL,COLUMN_PATH,COLUMN_CM_ID,COLUMN_CATEGORY_ID,
 		CATEGORY_TITLE,CATEGORY_APPID,CATEGORY_ID
@@ -116,6 +117,7 @@
 		<result column="BASIC_DATETIME" property="articleDateTime" />		<!-- 文章发布时间 -->
 		<result column="BASIC_UPDATETIME" property="articleUpdateTime" />	<!-- 文章更新时间 -->
 		<result column="BASIC_CATEGORYID" property="articleCategoryId" />	<!-- 文章所属主栏目id -->
+		<result column="BASIC_DISPLAY" property="basicDisplay" />
 	</resultMap>
 	<!-- 通过查询文章bean结束 -->
 

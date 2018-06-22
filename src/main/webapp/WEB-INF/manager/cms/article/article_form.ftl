@@ -38,7 +38,7 @@
 			<@ms.editor colSm="2" name="articleContent" label="文章内容" content="${article.articleContent?default('')}"  appId="${appId?default(0)}"/>			
 			<@ms.hidden name="modelId"  value="${Session.model_id_session?default('0')}" />
 			<@ms.radio name="basicDisplay" 
-			    list=[{"id":"0","value":"是"},{"id":"1","value":"否"}] value="${article.basicDisplay?c?default(1)}" 
+			    list=[{"id":"0","value":"是"},{"id":"1","value":"否"}] value="${article.basicDisplay?c?default()}" 
 			    listKey="id" listValue="value" label="是否显示" help="选择否后前端将不显示，需要重新生成才有效果"
 			/>		
 		</@ms.form>
