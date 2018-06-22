@@ -199,6 +199,9 @@ public class ArticleBizImpl extends BasicBizImpl implements IArticleBiz {
 	public List<ArticleEntity> query(int webId, int[] basicCategoryIds, String flag, String noFlag, String orderBy,
 			boolean order, ArticleEntity article) {
 		// TODO Auto-generated method stub
+		if(article == null) {
+			article = new ArticleEntity();
+		}
 		return articleDao.query(webId, basicCategoryIds, flag, noFlag, orderBy, order, article);
 	}
 
