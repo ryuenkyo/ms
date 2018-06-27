@@ -1,3 +1,18 @@
+/*
+ Navicat Premium Data Transfer
+
+ Source Server         : localhost
+ Source Server Type    : MySQL
+ Source Server Version : 50716
+ Source Host           : localhost:3306
+ Source Schema         : db-mcms-open
+
+ Target Server Type    : MySQL
+ Target Server Version : 50716
+ File Encoding         : 65001
+
+ Date: 27/06/2018 15:08:55
+*/
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
@@ -868,119 +883,6 @@ INSERT INTO `model` VALUES (151, '新增', '20050002', 109, 'mdiy:dict:save', '2
 INSERT INTO `model` VALUES (152, '删除', '02990002', 7, 'cms:column:del', '2018-06-20 17:53:51', '', 0, 0, 0, '1,7');
 INSERT INTO `model` VALUES (153, '修改', '02990003', 7, 'cms:column:update', '2018-06-20 17:54:43', NULL, 0, 0, 0, '1,7');
 INSERT INTO `model` VALUES (154, '新增', '02990004', 7, 'cms:column:save', '2018-06-20 17:55:26', NULL, 0, 0, 0, '1,7');
-
--- ----------------------------
--- Table structure for mpay_log
--- ----------------------------
-DROP TABLE IF EXISTS `mpay_log`;
-CREATE TABLE `mpay_log`  (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增长ID',
-  `people_id` int(11) NULL DEFAULT NULL COMMENT '用户id',
-  `order_no` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '订单id',
-  `app_id` int(11) NULL DEFAULT NULL COMMENT '应用ID',
-  `log_title` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '交易标题',
-  `log_balance` double(20, 3) NULL DEFAULT NULL COMMENT '用户当前余额',
-  `log_money` double(20, 3) NULL DEFAULT NULL COMMENT '用户交易额',
-  `log_remain_balance` double(20, 3) NULL DEFAULT NULL COMMENT '用户交易后剩余余额',
-  `log_date` datetime(0) NULL DEFAULT NULL COMMENT '交易时间',
-  `log_type` int(255) NULL DEFAULT NULL COMMENT '交易类型，1=支出，2=收入',
-  `log_pay_type` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '支付类型',
-  `create_by` int(11) NULL DEFAULT NULL COMMENT '创建人编号',
-  `create_date` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` int(11) NULL DEFAULT NULL COMMENT '更新人员编号',
-  `update_date` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
-  `del` int(1) NULL DEFAULT NULL COMMENT '删除标记',
-  `log_status` int(1) NULL DEFAULT NULL COMMENT '交易状态',
-  `log_transacation_id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '流水账号',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 191 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '交易记录' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Table structure for mpay_pay
--- ----------------------------
-DROP TABLE IF EXISTS `mpay_pay`;
-CREATE TABLE `mpay_pay`  (
-  `pay_id` int(11) NOT NULL AUTO_INCREMENT,
-  `app_id` int(11) NOT NULL COMMENT '应用编号',
-  `pay_type` varchar(11) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '支付类型',
-  `pay_no` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '支付宝账号',
-  `pay_apitype` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '接口类型，例如支付宝即时倒帐与担保接口',
-  `pay_partner` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '合作身份者ID',
-  `pay_key` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '交易安全检验码',
-  `pay_date` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
-  `pay_enable` int(11) NULL DEFAULT 0 COMMENT '0启用 1禁用',
-  `pay_resource` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '微信资源文件：商户证书文件',
-  `pay_secret` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '微信appSecret',
-  `pay_app_private_key` varchar(3000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'APP支付应用私钥',
-  `pay_alipay_public_key` varchar(3000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'app支付支付宝公钥',
-  `pay_app_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'app支付支付宝分配给开发者的应用ID',
-  PRIMARY KEY (`pay_id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 12 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Table structure for msend_log
--- ----------------------------
-DROP TABLE IF EXISTS `msend_log`;
-CREATE TABLE `msend_log`  (
-  `log_id` int(11) NOT NULL AUTO_INCREMENT,
-  `app_id` int(11) NOT NULL COMMENT '应用编号',
-  `log_datetime` datetime(0) NULL DEFAULT NULL COMMENT '时间',
-  `log_content` varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '接收内容',
-  `log_receive` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '接收人',
-  `log_type` int(1) NULL DEFAULT NULL COMMENT '日志类型0邮件1短信',
-  PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 55 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '发送日志' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Table structure for msend_mail
--- ----------------------------
-DROP TABLE IF EXISTS `msend_mail`;
-CREATE TABLE `msend_mail`  (
-  `app_id` int(11) NOT NULL DEFAULT 0 COMMENT '应用编号',
-  `mail_type` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '邮件类型',
-  `mail_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '账号',
-  `mail_password` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
-  `mail_port` int(11) NULL DEFAULT NULL COMMENT '端口号',
-  `mail_server` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '服务器',
-  `mail_form` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
-  `mail_form_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
-  `mail_enable` int(11) NULL DEFAULT 0 COMMENT '0启用 1禁用',
-  PRIMARY KEY (`app_id`) USING BTREE
-) ENGINE = MyISAM CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Table structure for msend_sms
--- ----------------------------
-DROP TABLE IF EXISTS `msend_sms`;
-CREATE TABLE `msend_sms`  (
-  `app_id` int(11) NOT NULL COMMENT '应用编号',
-  `sms_type` varchar(150) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '短信接口类型',
-  `sms_username` varchar(20) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '账号',
-  `sms_password` varchar(60) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '密码',
-  `sms_send_url` varchar(500) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '发送地址',
-  `sms_account_url` varchar(500) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
-  `sms_manager_url` varchar(120) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '短信平台后台管理地址',
-  `sms_signature` varchar(20) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '签名',
-  `sms_enable` int(11) NULL DEFAULT 0 COMMENT '0启用 1禁用',
-  PRIMARY KEY (`app_id`) USING BTREE,
-  CONSTRAINT `msend_sms_ibfk_1` FOREIGN KEY (`app_id`) REFERENCES `app` (`app_id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Compact;
-
--- ----------------------------
--- Table structure for msend_template
--- ----------------------------
-DROP TABLE IF EXISTS `msend_template`;
-CREATE TABLE `msend_template`  (
-  `template_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '编号',
-  `model_id` int(11) NULL DEFAULT 0 COMMENT '模块编号',
-  `app_id` int(11) NOT NULL DEFAULT 0 COMMENT '应用编号',
-  `template_title` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '标题',
-  `template_mail` varchar(5000) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
-  `template_sms` varchar(5000) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
-  `template_code` varchar(50) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '邮件模块代码',
-  PRIMARY KEY (`template_id`) USING BTREE,
-  INDEX `mt_appID`(`app_id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 25 CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = '发送消息模板表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for people
