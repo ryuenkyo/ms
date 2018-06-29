@@ -1,18 +1,3 @@
-/*
- Navicat Premium Data Transfer
-
- Source Server         : localhost
- Source Server Type    : MySQL
- Source Server Version : 50716
- Source Host           : localhost:3306
- Source Schema         : db-mcms-open
-
- Target Server Type    : MySQL
- Target Server Version : 50716
- File Encoding         : 65001
-
- Date: 27/06/2018 15:08:55
-*/
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
@@ -37,6 +22,7 @@ CREATE TABLE `app`  (
   `app_pay` varchar(300) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '费用清单',
   `app_state` int(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '0运行中 1已停止  ',
   `app_mobile_state` int(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '0启用 1停用',
+  `app_login_page` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '自定义登录界面',
   PRIMARY KEY (`app_id`) USING BTREE,
   INDEX `fk_app_manager_1`(`app_managerid`) USING BTREE,
   CONSTRAINT `fk_app_manager_1` FOREIGN KEY (`app_managerid`) REFERENCES `manager` (`manager_id`) ON DELETE SET NULL ON UPDATE NO ACTION
@@ -45,7 +31,7 @@ CREATE TABLE `app`  (
 -- ----------------------------
 -- Records of app
 -- ----------------------------
-INSERT INTO `app` VALUES (1, 'MCMS-OPEN', 'http://localhost:8080/ms-mcms\r\n', '', '', '', 'default', 50, '', NULL, 'm', NULL, '', 0, 0);
+INSERT INTO `app` VALUES (1, 'MCMS-OPEN', 'http://localhost:8080/ms-mcms\r\n', '', '', '', 'default', 50, '', NULL, 'm', NULL, '', 0, 0, NULL);
 
 -- ----------------------------
 -- Table structure for basic
@@ -1038,23 +1024,5 @@ INSERT INTO `role_model` VALUES (151, 48);
 INSERT INTO `role_model` VALUES (152, 48);
 INSERT INTO `role_model` VALUES (153, 48);
 INSERT INTO `role_model` VALUES (154, 48);
-
--- ----------------------------
--- Table structure for system_skin
--- ----------------------------
-DROP TABLE IF EXISTS `system_skin`;
-CREATE TABLE `system_skin`  (
-  `ss_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增长id',
-  `ss_backgroundimg` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '背景图片',
-  `ss_color` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '字体颜色',
-  `ss_css` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '样式',
-  `ss_datetime` datetime(0) NULL DEFAULT NULL COMMENT '生成时间',
-  `ss_app_id` int(11) NULL DEFAULT NULL COMMENT '0后台发布大于０表示是应用自定义',
-  `ss_category_id` int(11) NULL DEFAULT NULL COMMENT '主题分类',
-  PRIMARY KEY (`ss_id`) USING BTREE,
-  INDEX `ss_app_id`(`ss_app_id`) USING BTREE,
-  INDEX `ss_category_id`(`ss_category_id`) USING BTREE,
-  CONSTRAINT `fk_system_skin_app_id` FOREIGN KEY (`ss_app_id`) REFERENCES `app` (`app_id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '后台皮肤管理表' ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;
