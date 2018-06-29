@@ -137,4 +137,5 @@ ALTER TABLE `basic_column` ADD CONSTRAINT `fk_column_category_id` FOREIGN KEY (`
 ALTER TABLE `basic_column` ADD CONSTRAINT `fk_basic_column_id` FOREIGN KEY (`column_cm_id`) REFERENCES `mdiy_content_model` (`cm_id`) ON DELETE SET NULL ON UPDATE NO ACTION;
 ALTER TABLE `app` ADD COLUMN `app_login_page` varchar(255) NULL COMMENT '自定义登录界面' AFTER `app_mobile_state`;
 DROP TABLE `system_skin`;
+UPDATE `model` SET `model_code` = '20050004' WHERE `model_id` = 150 and `model_modelid` = 109;
 SET FOREIGN_KEY_CHECKS=1;

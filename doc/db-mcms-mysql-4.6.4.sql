@@ -864,7 +864,7 @@ INSERT INTO `model` VALUES (146, '删除', '20040003', 108, 'mdiy:search:del', '
 INSERT INTO `model` VALUES (147, '修改', '20040004', 108, 'mdiy:search:update', '2017-09-04 14:27:13', '', 0, 0, 0, '104,108');
 INSERT INTO `model` VALUES (148, '新增', '20040002', 108, 'mdiy:search:save', '2017-09-04 14:27:33', '', 0, 0, 0, '104,108');
 INSERT INTO `model` VALUES (149, '删除', '20050003', 109, 'mdiy:dict:del', '2017-09-04 14:28:00', '', 0, 0, 0, '104,109');
-INSERT INTO `model` VALUES (150, '修改', '20050003', 109, 'mdiy:dict:update', '2017-09-04 14:28:17', '', 0, 0, 0, '104,109');
+INSERT INTO `model` VALUES (150, '修改', '20050004', 109, 'mdiy:dict:update', '2017-09-04 14:28:17', '', 0, 0, 0, '104,109');
 INSERT INTO `model` VALUES (151, '新增', '20050002', 109, 'mdiy:dict:save', '2017-09-04 14:28:41', '', 0, 0, 0, '104,109');
 INSERT INTO `model` VALUES (152, '删除', '02990002', 7, 'cms:column:del', '2018-06-20 17:53:51', '', 0, 0, 0, '1,7');
 INSERT INTO `model` VALUES (153, '修改', '02990003', 7, 'cms:column:update', '2018-06-20 17:54:43', NULL, 0, 0, 0, '1,7');
