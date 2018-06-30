@@ -37,6 +37,10 @@
 			<@ms.hidden name="articleTypeJson" />
 			<@ms.editor colSm="2" name="articleContent" label="文章内容" content="${article.articleContent?default('')}"  appId="${appId?default(0)}"/>			
 			<@ms.hidden name="modelId"  value="${Session.model_id_session?default('0')}" />
+			<@ms.radio name="basicDisplay" 
+			    list=[{"id":"0","value":"是"},{"id":"1","value":"否"}] value="${article.basicDisplay?c?default()}" 
+			    listKey="id" listValue="value" label="是否显示" help="选择否后前端将不显示，需要重新生成才有效果"
+			/>		
 		</@ms.form>
 	</@ms.panel>
 </@ms.html5>     
@@ -180,22 +184,22 @@ $(function(){
 					   			<#else>
 					   				<@ms.notify msg="保存文章成功，并已生成" type="success"/>
 					   			</#if>
-					   			//更新并生成之后路径进行跳转
-								location.href=managerPath+"/cms/article/${categoryId?default(0)}/main.do";
+					   			var columnType = ${columnType?default(0)};
+				   			    if(columnType == 1){
+				   			    	//更新并生成之后路径进行跳转
+							    	location.href=managerPath+"/cms/article/${categoryId?default(0)}/main.do";
+				   			    }else{
+				   			    	var dataId = obj.resultData;
+				   			    	if(dataId!=""){
+				   			    		location.href = base+"${baseManager}/cms/article/"+dataId+"/edit.do";
+				   			    	}
+				   			    };
+				   			    $("#saveUpdate").button('reset');
 				   			}else{
 				   				//生成失败则将按钮信息返回默认
 				   				<@ms.notify msg="生成文件失败" type="warning"/>
 				   			}
-				   			var columnType = ${columnType?default(0)};
-				   			if(columnType == 1){
-				   				//更新并生成之后路径进行跳转
-								location.href=managerPath+"/cms/article/${categoryId?default(0)}/main.do";
-				   			}else{
-				   				var dataId = obj.resultData;
-				   				if(dataId!=""){
-				   					location.href = base+"${baseManager}/cms/article/"+dataId+"/edit.do";
-				   				}
-				   			}
+				   			
 						}});
 					}else{
 						$('.ms-notifications').offset({top:43}).notify({

@@ -304,7 +304,7 @@ public class ChannelParser extends IParser {
 	private String articleTypeList(String htmlCotent, List<ColumnEntity> articleTypeList, String webUrl) {
 		String tabHtml = tabHtml(htmlCotent);
 		String htmlList = "";
-		if (articleTypeList != null && articleTypeList.size() != 0) {
+		if (articleTypeList != null && articleTypeList.size() > 0){
 			for (int i = 0; i < articleTypeList.size(); i++) {
 				ColumnEntity articleType = articleTypeList.get(i);
 				// if (articleType.getCategoryCategoryId()==0) { //排除父节点
