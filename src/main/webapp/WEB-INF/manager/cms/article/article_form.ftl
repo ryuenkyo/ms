@@ -184,22 +184,22 @@ $(function(){
 					   			<#else>
 					   				<@ms.notify msg="保存文章成功，并已生成" type="success"/>
 					   			</#if>
-					   			//更新并生成之后路径进行跳转
-								location.href=managerPath+"/cms/article/${categoryId?default(0)}/main.do";
+					   			var columnType = ${columnType?default(0)};
+				   			    if(columnType == 1){
+				   			    	//更新并生成之后路径进行跳转
+							    	location.href=managerPath+"/cms/article/${categoryId?default(0)}/main.do";
+				   			    }else{
+				   			    	var dataId = obj.resultData;
+				   			    	if(dataId!=""){
+				   			    		location.href = base+"${baseManager}/cms/article/"+dataId+"/edit.do";
+				   			    	}
+				   			    };
+				   			    $("#saveUpdate").button('reset');
 				   			}else{
 				   				//生成失败则将按钮信息返回默认
 				   				<@ms.notify msg="生成文件失败" type="warning"/>
 				   			}
-				   			var columnType = ${columnType?default(0)};
-				   			if(columnType == 1){
-				   				//更新并生成之后路径进行跳转
-								location.href=managerPath+"/cms/article/${categoryId?default(0)}/main.do";
-				   			}else{
-				   				var dataId = obj.resultData;
-				   				if(dataId!=""){
-				   					location.href = base+"${baseManager}/cms/article/"+dataId+"/edit.do";
-				   				}
-				   			}
+				   			
 						}});
 					}else{
 						$('.ms-notifications').offset({top:43}).notify({
