@@ -138,4 +138,6 @@ ALTER TABLE `basic_column` ADD CONSTRAINT `fk_basic_column_id` FOREIGN KEY (`col
 ALTER TABLE `app` ADD COLUMN `app_login_page` varchar(255) NULL COMMENT '自定义登录界面' AFTER `app_mobile_state`;
 DROP TABLE `system_skin`;
 UPDATE `model` SET `model_code` = '20050004' WHERE `model_id` = 150 and `model_modelid` = 109;
+ALTER TABLE `basic` ADD COLUMN `basic_display` int(1) NULL DEFAULT 0 COMMENT '显示属性 0显示1不显示' AFTER `basic_type`;
+ALTER TABLE `a`.`model` ADD CONSTRAINT `fk_model_id` FOREIGN KEY (`model_modelid`) REFERENCES `a`.`model` (`model_id`) ON DELETE CASCADE ON UPDATE NO ACTION;
 SET FOREIGN_KEY_CHECKS=1;
