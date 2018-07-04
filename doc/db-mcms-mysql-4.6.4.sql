@@ -39,7 +39,7 @@ INSERT INTO `app` VALUES (1, 'MCMS-OPEN', 'http://localhost:9090/ms-mcms\r\n', '
 DROP TABLE IF EXISTS `basic`;
 CREATE TABLE `basic`  (
   `basic_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增长id',
-  `basic_title` varchar(300) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '标题',
+  `basic_title` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '标题',
   `basic_description` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '描述',
   `basic_thumbnails` varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '缩略图',
   `basic_hit` bigint(22) NULL DEFAULT NULL COMMENT '点击次数',
