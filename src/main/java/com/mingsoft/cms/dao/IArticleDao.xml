@@ -511,7 +511,7 @@
 		cl.COLUMN_CATEGORY_ID
 		<if test="tableName!=null">left join ${tableName} d on d.basicId=a.ARTICLE_BASICID
 		</if>
-		where a.ARTICLE_WEBID = #{websiteId}
+		where a.ARTICLE_WEBID = #{websiteId} and c.del=1
 
 		<if test="ids!=null">
 			and
