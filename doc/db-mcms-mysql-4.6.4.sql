@@ -1,17 +1,3 @@
-/*
-Navicat MySQL Data Transfer
-
-Source Server         : localhost
-Source Server Version : 50720
-Source Host           : 127.0.0.1:3306
-Source Database       : db-mcms-open
-
-Target Server Type    : MYSQL
-Target Server Version : 50720
-File Encoding         : 65001
-
-Date: 2018-07-09 11:32:22
-*/
 
 SET FOREIGN_KEY_CHECKS=0;
 
@@ -44,7 +30,7 @@ CREATE TABLE `app` (
 -- ----------------------------
 -- Records of app
 -- ----------------------------
-INSERT INTO `app` VALUES ('1', 'MCMS-OPEN', 'http://localhost:9090/ms-mcms\r\n', '', '', '', 'default', '50', '', null, 'm', null, '', '0', '0', null);
+INSERT INTO `app` VALUES ('1', 'MCMS-OPEN', 'http://localhost:8080/ms-mcms\r\n', '', '', '', 'default', '50', '', null, 'm', null, '', '0', '0', null);
 
 -- ----------------------------
 -- Table structure for basic
