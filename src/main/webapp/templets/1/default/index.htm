@@ -109,7 +109,7 @@
                             </div>
                         </div>
                         <div class="ms-content-case-list">
-                            {ms:arclist typeid=155 size=6}
+                            {ms:arclist typeid=149 size=6}
                             <div class="ms-content-main-case">
                                 <div class="ms-content-main-case-img">
                                     <img src="{ms:global.host/}[field.litpic/]">
@@ -181,7 +181,9 @@
                             </div>
                         </div>
                         <div class="ms-content-news-main-img-text">
-                            <img src="{ms:globalskin.url/}/images/company.png">
+	                        {ms:arclist typeid=59 size=1}
+	                            <img src="{ms:global.host/}[field.litpic/]">
+                            {/ms:arclist}
                             <ul class="ms-content-news-main-ul">
                                 {ms:arclist typeid=59 size=6}
                                 <li>
