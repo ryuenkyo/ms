@@ -38,17 +38,6 @@ INSERT INTO `app` VALUES ('1', 'MCMS-OPEN', 'http://localhost:8080/ms-mcms\r\n',
 DROP TABLE IF EXISTS `basic`;
 CREATE TABLE `basic` (
   `basic_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增长id',
-<<<<<<< HEAD
-  `basic_title` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '标题',
-  `basic_description` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '描述',
-  `basic_thumbnails` varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '缩略图',
-  `basic_hit` bigint(22) NULL DEFAULT NULL COMMENT '点击次数',
-  `basic_sort` int(11) NULL DEFAULT NULL COMMENT '排序',
-  `basic_datetime` datetime COMMENT ' 发布时间',
-  `basic_updatetime` datetime COMMENT '更新时间',
-  `basic_peopleid` int(22) NULL DEFAULT NULL COMMENT '用户编号',
-  `basic_categoryid` int(22) NULL DEFAULT NULL COMMENT '所属分类编号',
-=======
   `basic_title` varchar(200) DEFAULT NULL COMMENT '标题',
   `basic_description` text COMMENT '描述',
   `basic_thumbnails` varchar(1000) DEFAULT NULL COMMENT '缩略图',
@@ -58,7 +47,6 @@ CREATE TABLE `basic` (
   `basic_updatetime` datetime DEFAULT NULL COMMENT '更新时间',
   `basic_peopleid` int(22) DEFAULT NULL COMMENT '用户编号',
   `basic_categoryid` int(22) DEFAULT NULL COMMENT '所属分类编号',
->>>>>>> refs/remotes/origin/4.6.4
   `basic_appid` int(11) NOT NULL COMMENT '应用编号',
   `basic_modelid` int(11) DEFAULT NULL COMMENT '模块编号',
   `basic_comment` int(11) DEFAULT NULL COMMENT '评论次数',
