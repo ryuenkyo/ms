@@ -43,8 +43,6 @@
 
     /* 表单验证 */
     function verification() {
-    	var a = $('.ms-content-form-message').val();
-    	var b = $('.ms-content-form-message').val().length;
         if($('input[name="name"]').val().length > 0 && $('input[name="phone"]').val().length > 0 && $('.ms-content-form-message').val().length > 0) {
             $('.ms-login-button').css("background-color", "#009aff");
             $('.ms-login-button').css("pointer-events", 'visible');
@@ -56,10 +54,10 @@
         }
     }
 
-    $('input[name="NAME"]').keyup(function() {
+    $('input[name="name"]').keyup(function() {
         verification();
     })
-    $('input[name="PHONE"]').keyup(function() {
+    $('input[name="phone"]').keyup(function() {
         verification();
     })
     $('.ms-content-form-message').keyup(function() {
