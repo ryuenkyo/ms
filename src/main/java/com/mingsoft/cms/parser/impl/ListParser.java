@@ -154,7 +154,7 @@ public class ListParser extends com.mingsoft.mdiy.parser.ListParser {
 		tabHtml = tabHtml(tabHtmlContent);
 		List<String> parserHtml = new ArrayList<String>();
 		int countNoParser = 0;
-		if (articleList != null && tabHtml != null && articleList.size() != 0 && tabHtml != "") {
+		if (articleList != null && tabHtml != null && articleList.size() != 0 && tabHtml.length() != 0) {
 			for (int i = 0; i < articleList.size(); i++) {
 				
 				ArticleEntity article = (ArticleEntity)articleList.get(i);
