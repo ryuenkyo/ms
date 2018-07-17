@@ -646,9 +646,9 @@ public class GeneraterAction extends BaseAction {
 //		Proxy.get(this.getUrl(request) + managerPath + "/cms/generate/generateIndex.do", header, map);
 		Map parms = new HashMap();
 		parms.put("dateTime", StringUtil.getSimpleDateStr(new Date(), "yyyy-MM-dd"));
-		String cookie = "";
+		StringBuffer cookie = new StringBuffer();
 		for (Cookie c : request.getCookies()) {
-			cookie += c.getName() + "=" + c.getValue() + ";";
+			cookie.append(c.getName()).append("=").append(c.getValue()).append(";");
 		}
 		HttpUtil.get(this.getUrl(request) + managerPath + "/cms/generate/" + columnId + "/generateArticle.do",parms);
 		ColumnEntity column = (ColumnEntity) columnBiz.getEntity(columnId);

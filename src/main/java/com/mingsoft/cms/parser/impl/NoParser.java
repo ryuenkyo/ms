@@ -188,7 +188,7 @@ public class NoParser  extends IParser{
 		super.htmlCotent = htmlCotent;
 		super.newCotent = TAB_BEGIN_LIST;
 		htmlCotent = super.replaceFirst(regex);
-		if (htmlCotent.equals("")) {
+		if (htmlCotent.length() != 0) {
 			htmlCotent = IParserRegexConstant.REGEX_ERRO;
 		}
 		Pattern pattern = Pattern.compile(LIST_TEMP_TAB_END);
@@ -199,7 +199,7 @@ public class NoParser  extends IParser{
 			tmp = tmp.replaceAll(LIST_END,TAB_END_LIST);
 			htmlCotent = htmlCotent.replace(tmp2, tmp);
 		}
-		if (htmlCotent.equals("")) {
+		if (htmlCotent.length() != 0) {
 			htmlCotent = IParserRegexConstant.REGEX_ERRO;
 		}
 		return htmlCotent;
