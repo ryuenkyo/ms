@@ -226,26 +226,28 @@ public class SearchAction extends BaseAction {
 		String pageUrl = app.getAppHostUrl() + Const.SEPARATOR + modelName + Const.SEPARATOR + searchId
 				+ Const.SEPARATOR + "search.do";
 		// 遍历取字段集合
-		for (Entry<String, String[]> entry : field.entrySet()) {
-			if (entry != null) {
-				String value = entry.getValue()[0]; // 处理由get方法请求中文乱码问题
-				if (StringUtil.isBlank(value)) {
-					continue;
-				}
-				if (request.getMethod().equals(RequestMethod.GET)) { // 如果是get方法需要将请求地址参数转吗
-					value = StringUtil.isoToUTF8(value);
-				}
-				// 若为文章字段，则保存至文章字段集合；否则保存至自定义字段集合
-				if (!StringUtil.isBlank(basicField.get(entry.getKey())) && !StringUtil.isBlank(value)) {
-					articleFieldName.put(entry.getKey(), value);
-				} else {
-					if (!StringUtil.isBlank(value)) {
-						diyFieldName.put(entry.getKey(), value);
+		if (field != null) {
+			for (Entry<String, String[]> entry : field.entrySet()) {
+				if (entry != null) {
+					String value = entry.getValue()[0]; // 处理由get方法请求中文乱码问题
+					if (StringUtil.isBlank(value)) {
+						continue;
 					}
+					if (request.getMethod().equals(RequestMethod.GET)) { // 如果是get方法需要将请求地址参数转吗
+						value = StringUtil.isoToUTF8(value);
+					}
+					// 若为文章字段，则保存至文章字段集合；否则保存至自定义字段集合
+					if (!StringUtil.isBlank(basicField.get(entry.getKey())) && !StringUtil.isBlank(value)) {
+						articleFieldName.put(entry.getKey(), value);
+					} else {
+						if (!StringUtil.isBlank(value)) {
+							diyFieldName.put(entry.getKey(), value);
+						}
+
+					}
+					htmlContent = htmlContent.replaceAll("\\{ms:search." + entry.getKey() + "/\\}", value); // 将用户请求的值返回到页面上；
 
 				}
-				htmlContent = htmlContent.replaceAll("\\{ms:search." + entry.getKey() + "/\\}", value); // 将用户请求的值返回到页面上；
-
 			}
 		}
 
