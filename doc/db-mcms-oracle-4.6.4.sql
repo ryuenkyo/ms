@@ -1,19 +1,3 @@
-/*
- Navicat Premium Data Transfer
-
- Source Server         : MCMSOracle
- Source Server Type    : Oracle
- Source Server Version : 110200
- Source Host           : 192.168.0.112:1521
- Source Schema         : MCMS
-
- Target Server Type    : Oracle
- Target Server Version : 110200
- File Encoding         : 65001
-
- Date: 10/05/2018 17:07:28
-*/
-
 
 -- ----------------------------
 -- Table structure for APP
@@ -34,7 +18,8 @@ CREATE TABLE "APP" (
   "APP_PAY_DATE" DATE ,
   "APP_PAY" NVARCHAR2(300) ,
   "APP_STATE" NUMBER(1) DEFAULT 0  NOT NULL ,
-  "APP_MOBILE_STATE" NUMBER(1) DEFAULT 0  NOT NULL 
+  "APP_MOBILE_STATE" NUMBER(1) DEFAULT 0  NOT NULL ,
+  "APP_LOGIN_PAGE" NVARCHAR2(255)  
 )
 TABLESPACE "USERS"
 LOGGING
@@ -67,13 +52,14 @@ COMMENT ON COLUMN "APP"."APP_PAY_DATE" IS '应用续费时间';
 COMMENT ON COLUMN "APP"."APP_PAY" IS '费用清单';
 COMMENT ON COLUMN "APP"."APP_STATE" IS '0运行中 1已停止  ';
 COMMENT ON COLUMN "APP"."APP_MOBILE_STATE" IS '0启用 1停用';
+COMMENT ON COLUMN "APP"."APP_LOGIN_PAGE" IS '自定义登录界面';
 COMMENT ON TABLE "APP" IS '应用表';
 
 -- ----------------------------
 -- Records of "APP"
 -- ----------------------------
 INSERT INTO "APP" VALUES ('1', 'MCMS-OPEN', 'http://localhost:8080/ms-mcms
-', NULL, NULL, NULL, 'mooc', '50', NULL, NULL, 'm', NULL, NULL, '0', '0');
+', NULL, NULL, NULL, 'mooc', '50', NULL, NULL, 'm', NULL, NULL, '0', '0', NULL);
 
 -- ----------------------------
 -- Table structure for BASIC
@@ -95,7 +81,8 @@ CREATE TABLE "BASIC" (
   "BASIC_COMMENT" NUMBER(11) ,
   "BASIC_COLLECT" NUMBER(11) ,
   "BASIC_SHARE" NUMBER(11) ,
-  "BASIC_TYPE" NVARCHAR2(255) 
+  "BASIC_TYPE" NVARCHAR2(255),
+  "BASIC_DISPLAY" NUMBER(1) DEFAULT 0  NOT NULL  
 )
 TABLESPACE "USERS"
 LOGGING
@@ -129,155 +116,156 @@ COMMENT ON COLUMN "BASIC"."BASIC_COMMENT" IS '评论次数';
 COMMENT ON COLUMN "BASIC"."BASIC_COLLECT" IS '收藏次数';
 COMMENT ON COLUMN "BASIC"."BASIC_SHARE" IS '分享次数';
 COMMENT ON COLUMN "BASIC"."BASIC_TYPE" IS '属性';
+COMMENT ON COLUMN "BASIC"."BASIC_DISPLAY" IS '显示属性 0显示1不显示';
 COMMENT ON TABLE "BASIC" IS '基础表';
 
 -- ----------------------------
 -- Records of "BASIC"
 -- ----------------------------
-INSERT INTO "BASIC" VALUES ('218', '孙建东', '锐诚PPT培训部总监', '/upload/article/1638/1464860506257.png', '0', '0', TO_DATE('2016-06-02 17:41:47', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-03 15:47:30', 'SYYYY-MM-DD HH24:MI:SS'), '0', '115', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('219', '梅幸', '锐诚PPT金牌设计师', '/upload/article/1638/1464860570155.png', '0', '0', TO_DATE('2016-06-02 17:42:27', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-03 15:47:27', 'SYYYY-MM-DD HH24:MI:SS'), '0', '115', '1', '8', NULL, NULL, NULL, NULL);
+INSERT INTO "BASIC" VALUES ('218', '孙建东', '锐诚PPT培训部总监', '/upload/article/1638/1464860506257.png', '0', '0', TO_DATE('2016-06-02 17:41:47', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-03 15:47:30', 'SYYYY-MM-DD HH24:MI:SS'), '0', '115', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('219', '梅幸', '锐诚PPT金牌设计师', '/upload/article/1638/1464860570155.png', '0', '0', TO_DATE('2016-06-02 17:42:27', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-03 15:47:27', 'SYYYY-MM-DD HH24:MI:SS'), '0', '115', '1', N'8', NULL, NULL, NULL, NULL, 0);
 INSERT INTO "BASIC" VALUES ('24', '关于我们', '  公司于2012年3月8日，已正式向《景德镇市工商行政管理局》领取营业   执照。
   公司名称：景德镇铭飞科技有限公司
-  经营范围：计算机系统服务及技术开发、咨询服务', NULL, '0', '0', TO_DATE('2015-09-18 16:31:18', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 11:07:36', 'SYYYY-MM-DD HH24:MI:SS'), '0', '19', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('32', '为远行的人', NULL, NULL, '0', '0', TO_DATE('2016-03-16 17:26:37', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-05-19 17:50:56', 'SYYYY-MM-DD HH24:MI:SS'), '0', '146', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('33', '一生学做人', NULL, NULL, '0', '0', TO_DATE('2016-03-16 17:27:31', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 11:35:20', 'SYYYY-MM-DD HH24:MI:SS'), '0', '146', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('34', '何处惹尘埃', NULL, NULL, '0', '0', TO_DATE('2016-03-16 17:29:06', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-05-19 17:50:31', 'SYYYY-MM-DD HH24:MI:SS'), '0', '146', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('35', '雨夜，晚归人', NULL, NULL, '0', '0', TO_DATE('2016-03-16 17:31:11', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-05-19 17:50:10', 'SYYYY-MM-DD HH24:MI:SS'), '0', '146', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('36', '网站建设', '网站设计 网站制作 网站维护 网站改版', '/upload/article/1638/1464868285592.png', '0', '0', TO_DATE('2016-03-16 17:41:27', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 19:51:27', 'SYYYY-MM-DD HH24:MI:SS'), '0', '53', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('37', '人才招聘', '企业内部的竞聘、晋升机制，为员工提供了公平竞争的机会。通过挖掘企业内部的人才，调动内部人员的潜力和积极性，促进了优秀人才脱颖而出，实现人力资源的合理配置，把"合适的人放在合适的地方"。', NULL, '0', '0', TO_DATE('2016-03-16 17:48:38', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-04 11:08:08', 'SYYYY-MM-DD HH24:MI:SS'), '0', '146', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('52', '响应式Web设计的9项基本原则', '响应式web设计对于解决多类型屏幕问题来说是个', '/upload/article/1/1458980355125.png', '0', '0', TO_DATE('2016-03-26 14:43:40', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 15:00:26', 'SYYYY-MM-DD HH24:MI:SS'), '0', '65', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('53', '导航设计模式的重要意义', 'Gmai 就 是单页应用的一个很好的例子，其将多项', '/upload/article/1/1458981328236.jpeg', '0', '0', TO_DATE('2016-03-26 14:49:14', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 15:00:32', 'SYYYY-MM-DD HH24:MI:SS'), '0', '65', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('54', '如何进行可用性启发式评估', '用 户体验只有在渗透入从创意到开发测试等产品', '/upload/article/1/1458981122379.png', '0', '0', TO_DATE('2016-03-26 15:47:29', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 15:00:59', 'SYYYY-MM-DD HH24:MI:SS'), '0', '67', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('55', '响应式Web设计的9项基本原则', '想象一下走进一个狭小拥挤，遍地垃圾的商店。店', '/upload/article/1/1458981072779.jpg', '0', '0', TO_DATE('2016-03-26 15:50:20', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 15:00:54', 'SYYYY-MM-DD HH24:MI:SS'), '0', '67', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('56', '原生App切图的那些事儿', '最小的分辨率是320x480，我们把这个尺寸定为基', '/upload/article/1/1458981027610.png', '1', '0', TO_DATE('2016-03-26 15:51:39', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 15:00:48', 'SYYYY-MM-DD HH24:MI:SS'), '0', '66', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('57', '11个小妙招激发你的灵感', '感到自己深陷千篇一律的设计泥潭无法自拔？ Sty', '/upload/article/1/1458980990018.jpeg', '1', '0', TO_DATE('2016-03-26 15:52:27', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 15:00:37', 'SYYYY-MM-DD HH24:MI:SS'), '0', '65', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('58', '5项提高产品设计的交互模式', '在这个简短的移动端设计模式系列文章的前几篇中', '/upload/article/1/1458980956132.jpeg', '1', '0', TO_DATE('2016-03-26 15:53:20', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 15:00:43', 'SYYYY-MM-DD HH24:MI:SS'), '0', '65', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('59', '在网页设计中运用柔和色调', '网页中的柔和色调的使用，不止是近来的趋势，这', '/upload/article/1/1458980935362.jpg', '1', '0', TO_DATE('2016-03-26 15:54:17', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 15:00:19', 'SYYYY-MM-DD HH24:MI:SS'), '0', '65', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('60', '细数那些精彩纷呈的引导页', '随着苹果ios8的发布，可以看到App store货架上', '/upload/article/1/1458980789639.png', '0', '0', TO_DATE('2016-03-26 16:07:08', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 15:00:09', 'SYYYY-MM-DD HH24:MI:SS'), '0', '65', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('61', '从摄影的角度看设计', '一幅好照片要把观众的注意力吸引到趣味中心mdas', '/upload/article/1/1458980625909.jpg', '1', '0', TO_DATE('2016-03-26 16:07:55', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 14:59:55', 'SYYYY-MM-DD HH24:MI:SS'), '0', '65', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('62', '国内java开源商城系统', 'MCMS(http://ms.mingsoft.net)是企业创立初期很好的基础框架，不仅可以实现和现有系统的对接而且有大量的插件模版可以使用。', '/upload/article/1/1458980449738.jpeg', '1', '0', TO_DATE('2016-03-26 16:08:53', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 14:59:46', 'SYYYY-MM-DD HH24:MI:SS'), '0', '65', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('63', '国内java开源 cms系统', 'MCMS(http://ms.mingsoft.net)是企业创立初期很好的基础框架，不仅可以实现和现有系统的对接而且有大量的插件模版可以使用。', '/upload/article/1/1458980395756.jpg', '1', '0', TO_DATE('2016-03-26 16:09:27', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 14:59:39', 'SYYYY-MM-DD HH24:MI:SS'), '0', '65', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('70', '2015年 铭飞MCms获得最热门开源项目第40位', '自 Git@OSC 上线以来受到广大开源作者的喜爱。值此新年之际，开源中国整理出 Git@OSC 最热门开源项目 Top50，对 Git@OSC 的发展至今所取得的成绩进行总结。此榜单主要通过开源项目的 Watch、Star、Fork 数量来评定', '/upload/article/1/1461384072200.jpeg', '1', '0', TO_DATE('2016-03-27 09:34:58', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 19:38:12', 'SYYYY-MM-DD HH24:MI:SS'), '0', '69', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('71', '国内java开源 cms系统', 'MCMS(http://ms.mingsoft.net)是企业创立初期很好的基础框架，不仅可以实现和现有系统的对接而且有大量的插件模版可以使用。', '/upload/article/1638/1464847653084.jpeg', '0', '0', TO_DATE('2016-03-27 09:36:45', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-03 19:48:52', 'SYYYY-MM-DD HH24:MI:SS'), '0', '68', '1', '8', NULL, NULL, NULL, NULL);
+  经营范围：计算机系统服务及技术开发、咨询服务', NULL, '0', '0', TO_DATE('2015-09-18 16:31:18', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 11:07:36', 'SYYYY-MM-DD HH24:MI:SS'), '0', '19', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('32', '为远行的人', NULL, NULL, '0', '0', TO_DATE('2016-03-16 17:26:37', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-05-19 17:50:56', 'SYYYY-MM-DD HH24:MI:SS'), '0', '146', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('33', '一生学做人', NULL, NULL, '0', '0', TO_DATE('2016-03-16 17:27:31', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 11:35:20', 'SYYYY-MM-DD HH24:MI:SS'), '0', '146', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('34', '何处惹尘埃', NULL, NULL, '0', '0', TO_DATE('2016-03-16 17:29:06', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-05-19 17:50:31', 'SYYYY-MM-DD HH24:MI:SS'), '0', '146', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('35', '雨夜，晚归人', NULL, NULL, '0', '0', TO_DATE('2016-03-16 17:31:11', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-05-19 17:50:10', 'SYYYY-MM-DD HH24:MI:SS'), '0', '146', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('36', '网站建设', '网站设计 网站制作 网站维护 网站改版', '/upload/article/1638/1464868285592.png', '0', '0', TO_DATE('2016-03-16 17:41:27', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 19:51:27', 'SYYYY-MM-DD HH24:MI:SS'), '0', '53', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('37', '人才招聘', '企业内部的竞聘、晋升机制，为员工提供了公平竞争的机会。通过挖掘企业内部的人才，调动内部人员的潜力和积极性，促进了优秀人才脱颖而出，实现人力资源的合理配置，把"合适的人放在合适的地方"。', NULL, '0', '0', TO_DATE('2016-03-16 17:48:38', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-04 11:08:08', 'SYYYY-MM-DD HH24:MI:SS'), '0', '146', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('52', '响应式Web设计的9项基本原则', '响应式web设计对于解决多类型屏幕问题来说是个', '/upload/article/1/1458980355125.png', '0', '0', TO_DATE('2016-03-26 14:43:40', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 15:00:26', 'SYYYY-MM-DD HH24:MI:SS'), '0', '65', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('53', '导航设计模式的重要意义', 'Gmai 就 是单页应用的一个很好的例子，其将多项', '/upload/article/1/1458981328236.jpeg', '0', '0', TO_DATE('2016-03-26 14:49:14', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 15:00:32', 'SYYYY-MM-DD HH24:MI:SS'), '0', '65', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('54', '如何进行可用性启发式评估', '用 户体验只有在渗透入从创意到开发测试等产品', '/upload/article/1/1458981122379.png', '0', '0', TO_DATE('2016-03-26 15:47:29', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 15:00:59', 'SYYYY-MM-DD HH24:MI:SS'), '0', '67', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('55', '响应式Web设计的9项基本原则', '想象一下走进一个狭小拥挤，遍地垃圾的商店。店', '/upload/article/1/1458981072779.jpg', '0', '0', TO_DATE('2016-03-26 15:50:20', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 15:00:54', 'SYYYY-MM-DD HH24:MI:SS'), '0', '67', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('56', '原生App切图的那些事儿', '最小的分辨率是320x480，我们把这个尺寸定为基', '/upload/article/1/1458981027610.png', '1', '0', TO_DATE('2016-03-26 15:51:39', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 15:00:48', 'SYYYY-MM-DD HH24:MI:SS'), '0', '66', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('57', '11个小妙招激发你的灵感', '感到自己深陷千篇一律的设计泥潭无法自拔？ Sty', '/upload/article/1/1458980990018.jpeg', '1', '0', TO_DATE('2016-03-26 15:52:27', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 15:00:37', 'SYYYY-MM-DD HH24:MI:SS'), '0', '65', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('58', '5项提高产品设计的交互模式', '在这个简短的移动端设计模式系列文章的前几篇中', '/upload/article/1/1458980956132.jpeg', '1', '0', TO_DATE('2016-03-26 15:53:20', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 15:00:43', 'SYYYY-MM-DD HH24:MI:SS'), '0', '65', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('59', '在网页设计中运用柔和色调', '网页中的柔和色调的使用，不止是近来的趋势，这', '/upload/article/1/1458980935362.jpg', '1', '0', TO_DATE('2016-03-26 15:54:17', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 15:00:19', 'SYYYY-MM-DD HH24:MI:SS'), '0', '65', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('60', '细数那些精彩纷呈的引导页', '随着苹果ios8的发布，可以看到App store货架上', '/upload/article/1/1458980789639.png', '0', '0', TO_DATE('2016-03-26 16:07:08', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 15:00:09', 'SYYYY-MM-DD HH24:MI:SS'), '0', '65', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('61', '从摄影的角度看设计', '一幅好照片要把观众的注意力吸引到趣味中心mdas', '/upload/article/1/1458980625909.jpg', '1', '0', TO_DATE('2016-03-26 16:07:55', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 14:59:55', 'SYYYY-MM-DD HH24:MI:SS'), '0', '65', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('62', '国内java开源商城系统', 'MCMS(http://ms.mingsoft.net)是企业创立初期很好的基础框架，不仅可以实现和现有系统的对接而且有大量的插件模版可以使用。', '/upload/article/1/1458980449738.jpeg', '1', '0', TO_DATE('2016-03-26 16:08:53', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 14:59:46', 'SYYYY-MM-DD HH24:MI:SS'), '0', '65', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('63', '国内java开源 cms系统', 'MCMS(http://ms.mingsoft.net)是企业创立初期很好的基础框架，不仅可以实现和现有系统的对接而且有大量的插件模版可以使用。', '/upload/article/1/1458980395756.jpg', '1', '0', TO_DATE('2016-03-26 16:09:27', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 14:59:39', 'SYYYY-MM-DD HH24:MI:SS'), '0', '65', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('70', '2015年 铭飞MCms获得最热门开源项目第40位', '自 Git@OSC 上线以来受到广大开源作者的喜爱。值此新年之际，开源中国整理出 Git@OSC 最热门开源项目 Top50，对 Git@OSC 的发展至今所取得的成绩进行总结。此榜单主要通过开源项目的 Watch、Star、Fork 数量来评定', '/upload/article/1/1461384072200.jpeg', '1', '0', TO_DATE('2016-03-27 09:34:58', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 19:38:12', 'SYYYY-MM-DD HH24:MI:SS'), '0', '69', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('71', '国内java开源 cms系统', 'MCMS(http://ms.mingsoft.net)是企业创立初期很好的基础框架，不仅可以实现和现有系统的对接而且有大量的插件模版可以使用。', '/upload/article/1638/1464847653084.jpeg', '0', '0', TO_DATE('2016-03-27 09:36:45', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-03 19:48:52', 'SYYYY-MM-DD HH24:MI:SS'), '0', '68', '1', N'8', NULL, NULL, NULL, NULL, 0);
 INSERT INTO "BASIC" VALUES ('72', '2016年CMS开源系统排行榜', 'CMS（Content Management System),中文叫作整站系统、文章系统。
-大概2004以前，如果想进行网站内容管理,基本上都是靠手工维护,但千变万化的信息流，但没有好的程序支持，还继续靠手工完成是不可能的事。', '/upload/article/1/1461384142045.png', '0', '0', TO_DATE('2016-03-27 09:37:07', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-03 19:49:00', 'SYYYY-MM-DD HH24:MI:SS'), '0', '68', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('73', '国内java开源商城系统', 'MCMS(http://ms.mingsoft.net)是企业创立初期很好的基础框架，不仅可以实现和现有系统的对接而且有大量的插件模版可以使用。', '/upload/article/1/1461384035654.png', '2', '0', TO_DATE('2016-03-27 09:37:46', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-03 19:49:09', 'SYYYY-MM-DD HH24:MI:SS'), '0', '68', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('74', '国内java开源bbs系统', '当前版本:5.4.2 铭飞MS官网:http://ms.mingsoft.net官网同时提供一键运行版本下载，请步移官网....', '/upload/article/1/1461383961935.png', '1', '0', TO_DATE('2016-03-27 09:38:15', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 19:24:56', 'SYYYY-MM-DD HH24:MI:SS'), '0', '68', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('92', '建站资源共享学习平台', '专业提供网站模板，网页模板，教程培训，程序插件，网站素材等建站资源。我们致力于打造一个优秀的建站资源共享学习平台！从零开始系统全面的教你如何建立一个属于自己的网站。能够自己搭建一个网站，并通过优化推广实现盈利。0基础由浅入深的带您走进的世界。掌握程序的操作和使用，能独立开发模板并能运用进行仿站。专业提供网站模板，网页模板，教程培训，程序插件，网站素材等建站资源。', NULL, '0', '0', TO_DATE('2016-03-28 16:39:44', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 10:07:19', 'SYYYY-MM-DD HH24:MI:SS'), '0', '83', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('93', '从零开始系统全面的教你如何建立一个属于自己的网站', '专业提供网站模板，网页模板，教程培训，程序插件，网站素材等建站资源。我们致力于打造一个优秀的建站资源共享学习平台！从零开始系统全面的教你如何建立一个属于自己的网站。能够自己搭建一个网站，并通过优化推广实现盈利。0基础由浅入深的带您走进的世界。掌握程序的操作和使用，能独立开发模板并能运用进行仿站。专业提供网站模板，网页模板，教程培训，程序插件，网站素材等建站资源。', NULL, '0', '0', TO_DATE('2016-03-28 16:40:18', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 10:06:14', 'SYYYY-MM-DD HH24:MI:SS'), '0', '83', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('94', '0基础由浅入深的带您走进的世界', '专业提供网站模板，网页模板，教程培训，程序插件，网站素材等建站资源。我们致力于打造一个优秀的建站资源共享学习平台！从零开始系统全面的教你如何建立一个属于自己的网站。能够自己搭建一个网站，并通过优化推广实现盈利。0基础由浅入深的带您走进的世界。掌握程序的操作和使用，能独立开发模板并能运用进行仿站。专业提供网站模板，网页模板，教程培训，程序插件，网站素材等建站资源。', NULL, '0', '0', TO_DATE('2016-03-28 16:41:12', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 10:06:32', 'SYYYY-MM-DD HH24:MI:SS'), '0', '83', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('95', '网站模板', '专业提供网站模板，网页模板，教程培训，程序插件，网站素材等建站资源。', NULL, '0', '0', TO_DATE('2016-03-28 16:54:59', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 10:07:56', 'SYYYY-MM-DD HH24:MI:SS'), '0', '84', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('96', '建站培训', '专业提供网站模板，网页模板，教程培训，程序插件，网站素材等建站资源。', NULL, '0', '0', TO_DATE('2016-03-28 16:55:22', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 10:07:51', 'SYYYY-MM-DD HH24:MI:SS'), '0', '84', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('97', '模板', '专业提供网站模板，网页模板，教程培训，程序插件，网站素材等建站资源。', NULL, '0', '0', TO_DATE('2016-03-28 16:55:43', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 10:07:46', 'SYYYY-MM-DD HH24:MI:SS'), '0', '84', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('98', '视频课程', '专业提供网站模板，网页模板，教程培训，程序插件，网站素材等建站资源。', NULL, '0', '0', TO_DATE('2016-03-28 16:56:27', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 10:07:40', 'SYYYY-MM-DD HH24:MI:SS'), '0', '84', '1', '8', NULL, NULL, NULL, NULL);
+大概2004以前，如果想进行网站内容管理,基本上都是靠手工维护,但千变万化的信息流，但没有好的程序支持，还继续靠手工完成是不可能的事。', '/upload/article/1/1461384142045.png', '0', '0', TO_DATE('2016-03-27 09:37:07', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-03 19:49:00', 'SYYYY-MM-DD HH24:MI:SS'), '0', '68', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('73', '国内java开源商城系统', 'MCMS(http://ms.mingsoft.net)是企业创立初期很好的基础框架，不仅可以实现和现有系统的对接而且有大量的插件模版可以使用。', '/upload/article/1/1461384035654.png', '2', '0', TO_DATE('2016-03-27 09:37:46', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-03 19:49:09', 'SYYYY-MM-DD HH24:MI:SS'), '0', '68', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('74', '国内java开源bbs系统', '当前版本:5.4.2 铭飞MS官网:http://ms.mingsoft.net官网同时提供一键运行版本下载，请步移官网....', '/upload/article/1/1461383961935.png', '1', '0', TO_DATE('2016-03-27 09:38:15', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 19:24:56', 'SYYYY-MM-DD HH24:MI:SS'), '0', '68', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('92', '建站资源共享学习平台', '专业提供网站模板，网页模板，教程培训，程序插件，网站素材等建站资源。我们致力于打造一个优秀的建站资源共享学习平台！从零开始系统全面的教你如何建立一个属于自己的网站。能够自己搭建一个网站，并通过优化推广实现盈利。0基础由浅入深的带您走进的世界。掌握程序的操作和使用，能独立开发模板并能运用进行仿站。专业提供网站模板，网页模板，教程培训，程序插件，网站素材等建站资源。', NULL, '0', '0', TO_DATE('2016-03-28 16:39:44', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 10:07:19', 'SYYYY-MM-DD HH24:MI:SS'), '0', '83', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('93', '从零开始系统全面的教你如何建立一个属于自己的网站', '专业提供网站模板，网页模板，教程培训，程序插件，网站素材等建站资源。我们致力于打造一个优秀的建站资源共享学习平台！从零开始系统全面的教你如何建立一个属于自己的网站。能够自己搭建一个网站，并通过优化推广实现盈利。0基础由浅入深的带您走进的世界。掌握程序的操作和使用，能独立开发模板并能运用进行仿站。专业提供网站模板，网页模板，教程培训，程序插件，网站素材等建站资源。', NULL, '0', '0', TO_DATE('2016-03-28 16:40:18', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 10:06:14', 'SYYYY-MM-DD HH24:MI:SS'), '0', '83', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('94', '0基础由浅入深的带您走进的世界', '专业提供网站模板，网页模板，教程培训，程序插件，网站素材等建站资源。我们致力于打造一个优秀的建站资源共享学习平台！从零开始系统全面的教你如何建立一个属于自己的网站。能够自己搭建一个网站，并通过优化推广实现盈利。0基础由浅入深的带您走进的世界。掌握程序的操作和使用，能独立开发模板并能运用进行仿站。专业提供网站模板，网页模板，教程培训，程序插件，网站素材等建站资源。', NULL, '0', '0', TO_DATE('2016-03-28 16:41:12', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 10:06:32', 'SYYYY-MM-DD HH24:MI:SS'), '0', '83', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('95', '网站模板', '专业提供网站模板，网页模板，教程培训，程序插件，网站素材等建站资源。', NULL, '0', '0', TO_DATE('2016-03-28 16:54:59', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 10:07:56', 'SYYYY-MM-DD HH24:MI:SS'), '0', '84', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('96', '建站培训', '专业提供网站模板，网页模板，教程培训，程序插件，网站素材等建站资源。', NULL, '0', '0', TO_DATE('2016-03-28 16:55:22', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 10:07:51', 'SYYYY-MM-DD HH24:MI:SS'), '0', '84', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('97', '模板', '专业提供网站模板，网页模板，教程培训，程序插件，网站素材等建站资源。', NULL, '0', '0', TO_DATE('2016-03-28 16:55:43', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 10:07:46', 'SYYYY-MM-DD HH24:MI:SS'), '0', '84', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('98', '视频课程', '专业提供网站模板，网页模板，教程培训，程序插件，网站素材等建站资源。', NULL, '0', '0', TO_DATE('2016-03-28 16:56:27', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 10:07:40', 'SYYYY-MM-DD HH24:MI:SS'), '0', '84', '1', N'8', NULL, NULL, NULL, NULL, 0);
 INSERT INTO "BASIC" VALUES ('112', '新科科技', '在网上寻觅了很久很久。终于找到了这里。晃眼一看，好多漂亮的模板。下载了几个都很好用。希望越做越好，多提供些精品资源！找了好久啊，一直想有一个这样的网站，找来找去，老感觉么有合适的。偶然间来到这儿，爽。找到啦！对于网站建设新手来说，是一个最好的平台，你可以随心找到你最喜欢的网站模板，做出你喜欢的网站。
-专业提供网站模板，网页模板，模板教程，网页制作，程序插件，网站素材等建站资源，我们致为于打造优秀的建站资源共享平台！ ', '/upload/article/1/1459305011132.png', '0', '0', TO_DATE('2016-03-30 10:28:39', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 15:19:51', 'SYYYY-MM-DD HH24:MI:SS'), '0', '87', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('113', '联娱公司', '找模板找了很久了，于是找到了，觉的这里的模板很不错，下载了两套试试，果然可以用。于是充值了，希望站长以后多多指点啊！站长很友好，为我们这些新手站长提供这么多的模版。大家一起交流，才能成长得更快吧！感谢，感谢网友，你们辛苦了！对于网站建设新手来说，是一个最好的平台，你可以随心找到你最喜欢的网站模板，做出你喜欢的网站。专业提供网站模板，网页模板，模板教程，网页制作，程序插件，网站素材等建站资源，我们致为于打造优秀的建站资源共享平台！ ', '/upload/article/1/1459305021450.png', '0', '0', TO_DATE('2016-03-30 10:29:13', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 15:19:14', 'SYYYY-MM-DD HH24:MI:SS'), '0', '87', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('130', '关于我们', '广州城市规划设计有限公司是中欧国际旅游规划设计研究院（Sino-Europe Academy of Tourism Planning and Design）旗下之专业机构，公司专注于城市规...', '/upload/article/1/1460376794567.jpg', '0', '0', TO_DATE('2016-04-11 20:02:32', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 11:27:17', 'SYYYY-MM-DD HH24:MI:SS'), '0', '93', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('131', '主营业务', '互联网时代正在颠覆旅游业传统的商业模式。CEDAR积极应对这种变革，依托中欧国际旅游规划设计研究院（SEATPD）的资源优势，推动文化、地产与旅游业的横向联合发展，以此延伸到移动互联、绿色农业、金融资本、现代物流业等产业领域。', '/upload/article/1638/1464838231122.jpg', '0', '5', TO_DATE('2016-04-11 20:20:42', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-03 14:29:55', 'SYYYY-MM-DD HH24:MI:SS'), '0', '94', '1', '8', NULL, NULL, NULL, NULL);
+专业提供网站模板，网页模板，模板教程，网页制作，程序插件，网站素材等建站资源，我们致为于打造优秀的建站资源共享平台！ ', '/upload/article/1/1459305011132.png', '0', '0', TO_DATE('2016-03-30 10:28:39', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 15:19:51', 'SYYYY-MM-DD HH24:MI:SS'), '0', '87', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('113', '联娱公司', '找模板找了很久了，于是找到了，觉的这里的模板很不错，下载了两套试试，果然可以用。于是充值了，希望站长以后多多指点啊！站长很友好，为我们这些新手站长提供这么多的模版。大家一起交流，才能成长得更快吧！感谢，感谢网友，你们辛苦了！对于网站建设新手来说，是一个最好的平台，你可以随心找到你最喜欢的网站模板，做出你喜欢的网站。专业提供网站模板，网页模板，模板教程，网页制作，程序插件，网站素材等建站资源，我们致为于打造优秀的建站资源共享平台！ ', '/upload/article/1/1459305021450.png', '0', '0', TO_DATE('2016-03-30 10:29:13', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 15:19:14', 'SYYYY-MM-DD HH24:MI:SS'), '0', '87', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('130', '关于我们', '广州城市规划设计有限公司是中欧国际旅游规划设计研究院（Sino-Europe Academy of Tourism Planning and Design）旗下之专业机构，公司专注于城市规...', '/upload/article/1/1460376794567.jpg', '0', '0', TO_DATE('2016-04-11 20:02:32', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 11:27:17', 'SYYYY-MM-DD HH24:MI:SS'), '0', '93', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('131', '主营业务', '互联网时代正在颠覆旅游业传统的商业模式。CEDAR积极应对这种变革，依托中欧国际旅游规划设计研究院（SEATPD）的资源优势，推动文化、地产与旅游业的横向联合发展，以此延伸到移动互联、绿色农业、金融资本、现代物流业等产业领域。', '/upload/article/1638/1464838231122.jpg', '0', '5', TO_DATE('2016-04-11 20:20:42', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-03 14:29:55', 'SYYYY-MM-DD HH24:MI:SS'), '0', '94', '1', N'8', NULL, NULL, NULL, NULL, 0);
 INSERT INTO "BASIC" VALUES ('132', '合作伙伴', '让设计充满新奇和创造力，同时也饱含着和谐、力量与深意。
 "适度" 是一种幸福的生活态度。
 设计哲学 "合适的设计"，设计中最难的环节往往并非创新，而是在精确适配下的创造。
 打造令人灵感迸发及纵情享受的情绪空间。
-', '/upload/article/1638/1464838215050.jpg', '0', '0', TO_DATE('2016-04-11 20:21:45', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 17:38:19', 'SYYYY-MM-DD HH24:MI:SS'), '0', '95', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('133', '合作伙伴', '某某，中国知名室内设计师，2005年于北京创立筑邦臣设计公司，他擅长用东方哲学思考解决问题，关注各类空间形态对人的影响，同时注重设计的商业化表现。张海涛说：“希望在设计中融入丰富的文化表达，以打造可以令人思考的空间意境。”他一直坚信，中国拥有丰富的文化底蕴，在未来“中国设计”将充满无限可能！', '/upload/article/1569/1461506188829.jpg', '0', '0', TO_DATE('2016-04-11 20:23:48', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 17:59:19', 'SYYYY-MM-DD HH24:MI:SS'), '0', '97', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('134', '亚太旅游规划设计十大影响力品牌', '2009年12月13日由中国民族建筑研究会与中国 房地产 及住宅研究会共同主办，2009第六届中国人居典范建筑规划设计方案竞赛颁奖大会在北京京都信苑饭店隆重召开。经过九个多月来的精...', '/upload/article/1/1460377619458.jpg', '0', '0', TO_DATE('2016-04-11 20:27:43', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-04-12 19:56:40', 'SYYYY-MM-DD HH24:MI:SS'), '0', '96', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('135', '2009中国人居典范●最佳设计方案', '2009年12月13日由中国民族建筑研究会与中国 房地产 及住宅研究会共同主办，2009第六届中国人居典范建筑规划...', '/upload/article/1/1460377712056.png', '0', '0', TO_DATE('2016-04-11 20:28:48', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 14:16:45', 'SYYYY-MM-DD HH24:MI:SS'), '0', '96', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('136', '定制化项目金融孵化模式', '广州规划设计以金融资本为支撑，以规划设计为撬动点，协助旅游业开发高潜力项目，推动项目融资..', '/upload/article/1585/1462265098563.jpg', '0', '0', TO_DATE('2016-04-11 20:30:32', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-05-03 16:45:00', 'SYYYY-MM-DD HH24:MI:SS'), '0', '98', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('137', '幻灯一', NULL, '/upload/article/1638/1465808003859.jpg', '0', '0', TO_DATE('2016-04-11 20:59:07', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-13 16:53:24', 'SYYYY-MM-DD HH24:MI:SS'), '0', '147', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('138', '幻灯二', NULL, '/upload/article/1638/1465808020382.jpg', '0', '0', TO_DATE('2016-04-11 20:59:25', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-13 16:53:40', 'SYYYY-MM-DD HH24:MI:SS'), '0', '147', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('139', '幻灯三', NULL, '/upload/article/1638/1465808030831.jpg', '0', '0', TO_DATE('2016-04-11 21:00:16', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-13 16:53:51', 'SYYYY-MM-DD HH24:MI:SS'), '0', '147', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('140', '幻灯四', NULL, '/upload/article/1638/1464858626484.jpg', '0', '0', TO_DATE('2016-04-11 21:00:35', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 17:25:01', 'SYYYY-MM-DD HH24:MI:SS'), '0', '147', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('141', '城市规划', '城市商业综合体规划 -新城（新区）规划 -温城市更新与旧城改造 -小城镇建设规划 -历史文化名城/镇保护研究与规划 -产业园区规划...', '/upload/article/1/1460380106006.jpg', '0', '0', TO_DATE('2016-04-11 21:09:07', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-03 15:32:34', 'SYYYY-MM-DD HH24:MI:SS'), '0', '101', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('142', '环境艺术设计', 'CEDAR以美学与生态的双重视野开展环境艺术的探索与实践，营造健康、高雅、舒适、美观的现代生态环境，以此提升城市及旅游景区的软环境。...', '/upload/article/1/1460380199624.jpg', '0', '0', TO_DATE('2016-04-11 21:10:38', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 17:57:25', 'SYYYY-MM-DD HH24:MI:SS'), '0', '102', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('143', '旅游形象策划', '在把握好旅游地的地脉（地理根据）、文脉（文化根据）和商脉（市场根据）的基础上，为旅游地做好旅游形象定位，并开展理念基础（MI）、行为准则（BI）、视觉形象（VI）的系统策...', '/upload/article/1/1460380287863.jpg', '0', '0', TO_DATE('2016-04-11 21:11:33', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 17:57:30', 'SYYYY-MM-DD HH24:MI:SS'), '0', '103', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('144', '旅游企业管理', '目的地与景区管理： -发展战略规划 -营销管理体系咨询 -品牌管理体系咨询 -组织架构与流程再造 -投资运营与管理 -资源与环境保护 酒店管理： -酒店运营管理 -酒店物业管理 -酒店产品...', '/upload/article/1/1460380343199.jpg', '0', '0', TO_DATE('2016-04-11 21:12:42', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 17:57:33', 'SYYYY-MM-DD HH24:MI:SS'), '0', '104', '1', '8', NULL, NULL, NULL, NULL);
+', '/upload/article/1638/1464838215050.jpg', '0', '0', TO_DATE('2016-04-11 20:21:45', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 17:38:19', 'SYYYY-MM-DD HH24:MI:SS'), '0', '95', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('133', '合作伙伴', '某某，中国知名室内设计师，2005年于北京创立筑邦臣设计公司，他擅长用东方哲学思考解决问题，关注各类空间形态对人的影响，同时注重设计的商业化表现。张海涛说：“希望在设计中融入丰富的文化表达，以打造可以令人思考的空间意境。”他一直坚信，中国拥有丰富的文化底蕴，在未来“中国设计”将充满无限可能！', '/upload/article/1569/1461506188829.jpg', '0', '0', TO_DATE('2016-04-11 20:23:48', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 17:59:19', 'SYYYY-MM-DD HH24:MI:SS'), '0', '97', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('134', '亚太旅游规划设计十大影响力品牌', '2009年12月13日由中国民族建筑研究会与中国 房地产 及住宅研究会共同主办，2009第六届中国人居典范建筑规划设计方案竞赛颁奖大会在北京京都信苑饭店隆重召开。经过九个多月来的精...', '/upload/article/1/1460377619458.jpg', '0', '0', TO_DATE('2016-04-11 20:27:43', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-04-12 19:56:40', 'SYYYY-MM-DD HH24:MI:SS'), '0', '96', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('135', '2009中国人居典范●最佳设计方案', '2009年12月13日由中国民族建筑研究会与中国 房地产 及住宅研究会共同主办，2009第六届中国人居典范建筑规划...', '/upload/article/1/1460377712056.png', '0', '0', TO_DATE('2016-04-11 20:28:48', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 14:16:45', 'SYYYY-MM-DD HH24:MI:SS'), '0', '96', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('136', '定制化项目金融孵化模式', '广州规划设计以金融资本为支撑，以规划设计为撬动点，协助旅游业开发高潜力项目，推动项目融资..', '/upload/article/1585/1462265098563.jpg', '0', '0', TO_DATE('2016-04-11 20:30:32', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-05-03 16:45:00', 'SYYYY-MM-DD HH24:MI:SS'), '0', '98', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('137', '幻灯一', NULL, '/upload/article/1638/1465808003859.jpg', '0', '0', TO_DATE('2016-04-11 20:59:07', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-13 16:53:24', 'SYYYY-MM-DD HH24:MI:SS'), '0', '147', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('138', '幻灯二', NULL, '/upload/article/1638/1465808020382.jpg', '0', '0', TO_DATE('2016-04-11 20:59:25', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-13 16:53:40', 'SYYYY-MM-DD HH24:MI:SS'), '0', '147', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('139', '幻灯三', NULL, '/upload/article/1638/1465808030831.jpg', '0', '0', TO_DATE('2016-04-11 21:00:16', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-13 16:53:51', 'SYYYY-MM-DD HH24:MI:SS'), '0', '147', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('140', '幻灯四', NULL, '/upload/article/1638/1464858626484.jpg', '0', '0', TO_DATE('2016-04-11 21:00:35', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 17:25:01', 'SYYYY-MM-DD HH24:MI:SS'), '0', '147', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('141', '城市规划', '城市商业综合体规划 -新城（新区）规划 -温城市更新与旧城改造 -小城镇建设规划 -历史文化名城/镇保护研究与规划 -产业园区规划...', '/upload/article/1/1460380106006.jpg', '0', '0', TO_DATE('2016-04-11 21:09:07', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-03 15:32:34', 'SYYYY-MM-DD HH24:MI:SS'), '0', '101', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('142', '环境艺术设计', 'CEDAR以美学与生态的双重视野开展环境艺术的探索与实践，营造健康、高雅、舒适、美观的现代生态环境，以此提升城市及旅游景区的软环境。...', '/upload/article/1/1460380199624.jpg', '0', '0', TO_DATE('2016-04-11 21:10:38', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 17:57:25', 'SYYYY-MM-DD HH24:MI:SS'), '0', '102', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('143', '旅游形象策划', '在把握好旅游地的地脉（地理根据）、文脉（文化根据）和商脉（市场根据）的基础上，为旅游地做好旅游形象定位，并开展理念基础（MI）、行为准则（BI）、视觉形象（VI）的系统策...', '/upload/article/1/1460380287863.jpg', '0', '0', TO_DATE('2016-04-11 21:11:33', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 17:57:30', 'SYYYY-MM-DD HH24:MI:SS'), '0', '103', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('144', '旅游企业管理', '目的地与景区管理： -发展战略规划 -营销管理体系咨询 -品牌管理体系咨询 -组织架构与流程再造 -投资运营与管理 -资源与环境保护 酒店管理： -酒店运营管理 -酒店物业管理 -酒店产品...', '/upload/article/1/1460380343199.jpg', '0', '0', TO_DATE('2016-04-11 21:12:42', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 17:57:33', 'SYYYY-MM-DD HH24:MI:SS'), '0', '104', '1', N'8', NULL, NULL, NULL, NULL, 0);
 INSERT INTO "BASIC" VALUES ('146', '广东梅州市雁洋旅游服务区域城市规划', '项目地址：广东梅州市雁洋镇
 规划面积：1，281，863平方米
-项目委托：广东梅州市人民政府', '/upload/article/1/1460380700438.png', '0', '0', TO_DATE('2016-04-11 21:18:54', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 15:06:21', 'SYYYY-MM-DD HH24:MI:SS'), '0', '107', '1', '8', NULL, NULL, NULL, NULL);
+项目委托：广东梅州市人民政府', '/upload/article/1/1460380700438.png', '0', '0', TO_DATE('2016-04-11 21:18:54', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 15:06:21', 'SYYYY-MM-DD HH24:MI:SS'), '0', '107', '1', N'8', NULL, NULL, NULL, NULL, 0);
 INSERT INTO "BASIC" VALUES ('147', '海口湾酒店公寓第二期建筑设计', '项目地址：海南省海口市北部海口湾西部滨海地区
 总用地面积：47957.1平方米
 总建筑面积：116154.65平方米
-总地上建筑面积：94523.55平方米', '/upload/article/1/1460380774867.png', '0', '0', TO_DATE('2016-04-11 21:20:05', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 15:15:07', 'SYYYY-MM-DD HH24:MI:SS'), '0', '108', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('148', '昆山水月周庄旅游地产概念营销策划', '周庄拥有丰富的自然资源、人文资源及极具优势的地理位置，区域发展潜力巨大，古镇旅游品牌价值大，区域发展热点已经形成，旅游经济的发展为房地产市场提供了巨大的想象空间。', '/upload/article/1/1460380829450.jpg', '0', '0', TO_DATE('2016-04-11 21:21:01', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 15:06:16', 'SYYYY-MM-DD HH24:MI:SS'), '0', '107', '1', '8', NULL, NULL, NULL, NULL);
+总地上建筑面积：94523.55平方米', '/upload/article/1/1460380774867.png', '0', '0', TO_DATE('2016-04-11 21:20:05', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 15:15:07', 'SYYYY-MM-DD HH24:MI:SS'), '0', '108', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('148', '昆山水月周庄旅游地产概念营销策划', '周庄拥有丰富的自然资源、人文资源及极具优势的地理位置，区域发展潜力巨大，古镇旅游品牌价值大，区域发展热点已经形成，旅游经济的发展为房地产市场提供了巨大的想象空间。', '/upload/article/1/1460380829450.jpg', '0', '0', TO_DATE('2016-04-11 21:21:01', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 15:06:16', 'SYYYY-MM-DD HH24:MI:SS'), '0', '107', '1', N'8', NULL, NULL, NULL, NULL, 0);
 INSERT INTO "BASIC" VALUES ('149', '京杭大运河旅游形象研究与策划', '项目地址：浙江杭州、苏州
 项目委托：杭州市旅游局、苏州市旅游局
  
-运河文化，吴地风情', '/upload/article/1/1460380900751.png', '0', '0', TO_DATE('2016-04-11 21:22:08', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 15:14:43', 'SYYYY-MM-DD HH24:MI:SS'), '0', '107', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('150', '佛山某师军史馆设计', NULL, '/upload/article/1/1460380995728.jpg', '0', '0', TO_DATE('2016-04-11 21:23:19', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 15:14:45', 'SYYYY-MM-DD HH24:MI:SS'), '0', '107', '1', '8', NULL, NULL, NULL, NULL);
+运河文化，吴地风情', '/upload/article/1/1460380900751.png', '0', '0', TO_DATE('2016-04-11 21:22:08', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 15:14:43', 'SYYYY-MM-DD HH24:MI:SS'), '0', '107', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('150', '佛山某师军史馆设计', NULL, '/upload/article/1/1460380995728.jpg', '0', '0', TO_DATE('2016-04-11 21:23:19', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 15:14:45', 'SYYYY-MM-DD HH24:MI:SS'), '0', '107', '1', N'8', NULL, NULL, NULL, NULL, 0);
 INSERT INTO "BASIC" VALUES ('157', '旅游规划', '- 区域旅游发展规划
 - 历史文化区旅游开发规划
-- 风景名胜区旅游开发规划', '/upload/article/1/1460384875034.jpg', '0', '0', TO_DATE('2016-04-11 22:28:02', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 15:06:02', 'SYYYY-MM-DD HH24:MI:SS'), '0', '107', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('158', '旅游规划', '区域旅游发展规划 -历史文化区旅游开发规划 -风景名胜区旅游开发规划 -生态旅游区开发规划 -温泉滨海度假区旅游开发规划 -旅游地产开发规划 -乡村旅游开发', '/upload/article/1/1460385002423.jpg', '0', '0', TO_DATE('2016-04-11 22:30:21', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 17:58:24', 'SYYYY-MM-DD HH24:MI:SS'), '0', '101', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('163', '得品牌者得市场', '精益求精的网页制作人员、严谨的应用程序开发人员、尽善尽美的售后服务人员。这一切，是我们为您提供专业网站建设服务，也是让你在同行业中傲视群 雄', '/upload/article/1638/1464746921150.jpg', '0', '0', TO_DATE('2016-04-15 15:29:42', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-03 20:16:45', 'SYYYY-MM-DD HH24:MI:SS'), '0', '99', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('164', '海派卓越规划设计智业团队', '广州规划设计麾下聚集了众多从美国旧金山艺术大学、奥本大学、香港理工大学毕业的海派旅游规', '/upload/article/1585/1462265091247.jpg', '0', '0', TO_DATE('2016-04-15 15:39:48', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-05-03 16:44:52', 'SYYYY-MM-DD HH24:MI:SS'), '0', '98', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('165', '高质量行业交互平台', '广州规划设计创新构建协同式、交互式、大数据及系统式行业服务平台。。。', '/upload/article/1585/1462265083093.jpg', '0', '0', TO_DATE('2016-04-15 15:40:42', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 17:59:22', 'SYYYY-MM-DD HH24:MI:SS'), '0', '98', '1', '8', NULL, NULL, NULL, NULL);
+- 风景名胜区旅游开发规划', '/upload/article/1/1460384875034.jpg', '0', '0', TO_DATE('2016-04-11 22:28:02', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 15:06:02', 'SYYYY-MM-DD HH24:MI:SS'), '0', '107', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('158', '旅游规划', '区域旅游发展规划 -历史文化区旅游开发规划 -风景名胜区旅游开发规划 -生态旅游区开发规划 -温泉滨海度假区旅游开发规划 -旅游地产开发规划 -乡村旅游开发', '/upload/article/1/1460385002423.jpg', '0', '0', TO_DATE('2016-04-11 22:30:21', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 17:58:24', 'SYYYY-MM-DD HH24:MI:SS'), '0', '101', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('163', '得品牌者得市场', '精益求精的网页制作人员、严谨的应用程序开发人员、尽善尽美的售后服务人员。这一切，是我们为您提供专业网站建设服务，也是让你在同行业中傲视群 雄', '/upload/article/1638/1464746921150.jpg', '0', '0', TO_DATE('2016-04-15 15:29:42', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-03 20:16:45', 'SYYYY-MM-DD HH24:MI:SS'), '0', '99', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('164', '海派卓越规划设计智业团队', '广州规划设计麾下聚集了众多从美国旧金山艺术大学、奥本大学、香港理工大学毕业的海派旅游规', '/upload/article/1585/1462265091247.jpg', '0', '0', TO_DATE('2016-04-15 15:39:48', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-05-03 16:44:52', 'SYYYY-MM-DD HH24:MI:SS'), '0', '98', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('165', '高质量行业交互平台', '广州规划设计创新构建协同式、交互式、大数据及系统式行业服务平台。。。', '/upload/article/1585/1462265083093.jpg', '0', '0', TO_DATE('2016-04-15 15:40:42', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 17:59:22', 'SYYYY-MM-DD HH24:MI:SS'), '0', '98', '1', N'8', NULL, NULL, NULL, NULL, 0);
 INSERT INTO "BASIC" VALUES ('166', '01品牌创建', '品牌命名/品牌文化/品牌识别设计
 最初的品牌播种，决定了品牌是要长成野草还是参天大树。所谓三岁看大，品牌风格确立也要从萌芽开始，让品牌自始至终保持活力与竞争力，健康茁长的成长。
 服务项目：
 品牌文化理念挖掘 / 挖掘一种品牌文化，并力求这种文化与更多目标消费群相关品牌命名 /
 创造符合品牌精神的独特名称 / 品牌视觉识别（VIS）设计 /
-基于市场与设计角度创造严谨而实用的形象设计 /', '/upload/article/1/1460771365547.jpg', '0', '0', TO_DATE('2016-04-16 09:49:44', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-04-29 17:23:22', 'SYYYY-MM-DD HH24:MI:SS'), '0', '62', '1', '8', NULL, NULL, NULL, NULL);
+基于市场与设计角度创造严谨而实用的形象设计 /', '/upload/article/1/1460771365547.jpg', '0', '0', TO_DATE('2016-04-16 09:49:44', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-04-29 17:23:22', 'SYYYY-MM-DD HH24:MI:SS'), '0', '62', '1', N'8', NULL, NULL, NULL, NULL, 0);
 INSERT INTO "BASIC" VALUES ('167', '品牌改造设计', '品牌形象的改造与提升设计
 品牌发展到一定的阶段，因为企业发展模式及战略目标发生改变，其原有的形象已经不能承载企业未来发展的战略需求时，则需要创造更具生长气质的视觉形象，为未来打算，为未来改变！品牌改造设计正好填补着类客户的发展需求。
 服务项目：
 品牌形象改造设计 / 令形象更适合品牌定位，提升 / 完善品牌形象
 完善并继承优秀基因,为企业注入新鲜的视觉活力
-与客户品牌发展模式及战略目标相匹配', '/upload/article/1/1460771447978.jpg', '0', '0', TO_DATE('2016-04-16 09:51:22', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 19:12:58', 'SYYYY-MM-DD HH24:MI:SS'), '0', '138', '1', '8', NULL, NULL, NULL, NULL);
+与客户品牌发展模式及战略目标相匹配', '/upload/article/1/1460771447978.jpg', '0', '0', TO_DATE('2016-04-16 09:51:22', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 19:12:58', 'SYYYY-MM-DD HH24:MI:SS'), '0', '138', '1', N'8', NULL, NULL, NULL, NULL, 0);
 INSERT INTO "BASIC" VALUES ('168', '品牌推广设计', '形象画册 / 产品样本 / 招商手册 / 企业年报
 印刷品是企业最常用最有效的推广方式，也是挖掘潜在客户的钥匙。好的设计能循序渐进的引导读者，让读者更清楚的了解产品，从而择需购买。一本设计粗糙的画册，不等被翻开便会被丢弃。
 服务项目：
 印刷品设计 / 具有企业特色的形象画册设计、产品目录及年报设计.
-企业内刊策划设计 / 为大型企业策划设计品牌内部刊物', '/upload/article/1/1460771488365.jpg', '0', '0', TO_DATE('2016-04-16 09:52:35', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 15:18:14', 'SYYYY-MM-DD HH24:MI:SS'), '0', '138', '1', '8', NULL, NULL, NULL, NULL);
+企业内刊策划设计 / 为大型企业策划设计品牌内部刊物', '/upload/article/1/1460771488365.jpg', '0', '0', TO_DATE('2016-04-16 09:52:35', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 15:18:14', 'SYYYY-MM-DD HH24:MI:SS'), '0', '138', '1', N'8', NULL, NULL, NULL, NULL, 0);
 INSERT INTO "BASIC" VALUES ('172', '网络优化', '企业网站建设目的何在？如何充分挖掘互联网络的资源和优势，如何合理地组织网站内容与功能从而达到客户的需求？
-我们将根据市场分析、客户产品及服务的优势、竞争对手分析等等，有效的确立网站定位。根据相关需求分析获得相应网站运营策略，在网站建立之初我们就网站VI形象、网站营销手段、运营模式、网站发展前景等等进行定位。', '/upload/article/1/1460889312736.jpg', '0', '0', TO_DATE('2016-04-17 18:37:32', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-04 09:16:24', 'SYYYY-MM-DD HH24:MI:SS'), '0', '133', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('173', '网络营销', '互联网品牌推广有个新鲜名词叫数字营销，数字营销是新发展起来的一种营销模式，是利用互联网特性和技术，更加有效、高性价比地完成整合营销计划，达到传统 的IMC不能达到的高效客户关系管理等，从而精准地实施营销策略，实现企业营销的高效率、低成本、大影响。可以按两种意思来理解：网络整合营销是利用网络 技术和网络特性最大化、最快速、最有效、最精准的进行整合营销；网络整合营销是以为客户提供有价值的信息为基础，由客户创造、传播为主导的整合营销理念进 行的网络营销。', '/upload/article/1/1460889475526.jpg', '0', '0', TO_DATE('2016-04-17 18:38:12', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 17:15:23', 'SYYYY-MM-DD HH24:MI:SS'), '0', '134', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('174', '域名注册', '上网"已成为不少人的口头禅。但是，要想在网上建立服务器发布信息，则必须首先注册自己的域名，只有有了自己的域名才能让别人访问到自己。所以，域名注册是在互联网上建立任何服务的基础。同时，由于域名的唯一性，尽早注册又是十分必要的。', '/upload/article/1638/1464868329275.png', '0', '0', TO_DATE('2016-04-17 18:39:43', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-04 09:16:08', 'SYYYY-MM-DD HH24:MI:SS'), '0', '135', '1', '8', NULL, NULL, NULL, NULL);
+我们将根据市场分析、客户产品及服务的优势、竞争对手分析等等，有效的确立网站定位。根据相关需求分析获得相应网站运营策略，在网站建立之初我们就网站VI形象、网站营销手段、运营模式、网站发展前景等等进行定位。', '/upload/article/1/1460889312736.jpg', '0', '0', TO_DATE('2016-04-17 18:37:32', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-04 09:16:24', 'SYYYY-MM-DD HH24:MI:SS'), '0', '133', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('173', '网络营销', '互联网品牌推广有个新鲜名词叫数字营销，数字营销是新发展起来的一种营销模式，是利用互联网特性和技术，更加有效、高性价比地完成整合营销计划，达到传统 的IMC不能达到的高效客户关系管理等，从而精准地实施营销策略，实现企业营销的高效率、低成本、大影响。可以按两种意思来理解：网络整合营销是利用网络 技术和网络特性最大化、最快速、最有效、最精准的进行整合营销；网络整合营销是以为客户提供有价值的信息为基础，由客户创造、传播为主导的整合营销理念进 行的网络营销。', '/upload/article/1/1460889475526.jpg', '0', '0', TO_DATE('2016-04-17 18:38:12', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 17:15:23', 'SYYYY-MM-DD HH24:MI:SS'), '0', '134', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('174', '域名注册', '上网"已成为不少人的口头禅。但是，要想在网上建立服务器发布信息，则必须首先注册自己的域名，只有有了自己的域名才能让别人访问到自己。所以，域名注册是在互联网上建立任何服务的基础。同时，由于域名的唯一性，尽早注册又是十分必要的。', '/upload/article/1638/1464868329275.png', '0', '0', TO_DATE('2016-04-17 18:39:43', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-04 09:16:08', 'SYYYY-MM-DD HH24:MI:SS'), '0', '135', '1', N'8', NULL, NULL, NULL, NULL, 0);
 INSERT INTO "BASIC" VALUES ('177', '国内开源 java cms，铭飞MCms', 'MCMS是企业创立初期很好的基础框架，不仅可以实现和现有系统的对接而且有大量的插件模版可以使用。
 
-MS平台开发团队承诺MCMS内容管理系统永久完整开源免费(这真是极', '/upload/article/1/1461384090357.jpeg', '1', '0', TO_DATE('2016-04-23 11:51:21', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 19:39:13', 'SYYYY-MM-DD HH24:MI:SS'), '0', '70', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('178', '价值源自分享', 'MStore（铭飞商城）是铭飞（MS）平台为开发者提供模版与插件作品分享平台,为企业提供优质产品和服务我们致力于打造一个优秀的Java资源共享学习平台。', '/upload/article/1/1461383921888.jpeg', '1', '0', TO_DATE('2016-04-23 11:52:35', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 19:22:20', 'SYYYY-MM-DD HH24:MI:SS'), '0', '68', '1', '8', NULL, NULL, NULL, NULL);
+MS平台开发团队承诺MCMS内容管理系统永久完整开源免费(这真是极', '/upload/article/1/1461384090357.jpeg', '1', '0', TO_DATE('2016-04-23 11:51:21', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 19:39:13', 'SYYYY-MM-DD HH24:MI:SS'), '0', '70', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('178', '价值源自分享', 'MStore（铭飞商城）是铭飞（MS）平台为开发者提供模版与插件作品分享平台,为企业提供优质产品和服务我们致力于打造一个优秀的Java资源共享学习平台。', '/upload/article/1/1461383921888.jpeg', '1', '0', TO_DATE('2016-04-23 11:52:35', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 19:22:20', 'SYYYY-MM-DD HH24:MI:SS'), '0', '68', '1', N'8', NULL, NULL, NULL, NULL, 0);
 INSERT INTO "BASIC" VALUES ('179', '铭飞商城MStore——价值源自分享', 'MStore（铭飞商城）是铭飞（MS）平台为开发者提供模版与插件作品分享平台,为企业提供优质产品和服务我们致力于打造一个优秀的Java资源共享学习平台。
-', '/upload/article/1/1461383937683.jpeg', '1', '0', TO_DATE('2016-04-23 11:58:24', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 19:20:23', 'SYYYY-MM-DD HH24:MI:SS'), '0', '68', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('182', '人才理念', '网络营销是以互联网络为基础，通过数字化的信息和网络媒体的交互性来辅助营销目标实现的一种新型的市场营销方式。', '/upload/article/1584/1462521245856.jpg', '0', '0', TO_DATE('2016-04-29 14:49:03', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 11:17:43', 'SYYYY-MM-DD HH24:MI:SS'), '0', '52', '1', '8', NULL, NULL, NULL, NULL);
+', '/upload/article/1/1461383937683.jpeg', '1', '0', TO_DATE('2016-04-23 11:58:24', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 19:20:23', 'SYYYY-MM-DD HH24:MI:SS'), '0', '68', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('182', '人才理念', '网络营销是以互联网络为基础，通过数字化的信息和网络媒体的交互性来辅助营销目标实现的一种新型的市场营销方式。', '/upload/article/1584/1462521245856.jpg', '0', '0', TO_DATE('2016-04-29 14:49:03', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 11:17:43', 'SYYYY-MM-DD HH24:MI:SS'), '0', '52', '1', N'8', NULL, NULL, NULL, NULL, 0);
 INSERT INTO "BASIC" VALUES ('183', '联系我们', '这里是一个充满活力和梦想的企业，我们不反对个性，我们不安于现状，我们亲手创造价值，我们永远在进步……如果你也是名有梦想勇于尝试的人，那就赶快加入我们吧！
 
-我们面向全国招募有志之士，欢迎自荐或向周围的好友推荐。', NULL, '0', '0', TO_DATE('2016-04-29 14:49:25', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 11:17:55', 'SYYYY-MM-DD HH24:MI:SS'), '0', '136', '1', '8', NULL, NULL, NULL, NULL);
+我们面向全国招募有志之士，欢迎自荐或向周围的好友推荐。', NULL, '0', '0', TO_DATE('2016-04-29 14:49:25', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 11:17:55', 'SYYYY-MM-DD HH24:MI:SS'), '0', '136', '1', N'8', NULL, NULL, NULL, NULL, 0);
 INSERT INTO "BASIC" VALUES ('185', '联系我们', '这里是一个充满活力和梦想的企业，我们不反对个性，我们不安于现状，我们亲手创造价值，我们永远在进步……如果你也是名有梦想勇于尝试的人，那就赶快加入我们吧！
 
-我们面向全国招募有志之士，欢迎自荐或向周围的好友推荐。', '/upload/article/1638/1465720290023.jpg', '0', '4', TO_DATE('2016-05-04 14:49:32', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-12 16:31:31', 'SYYYY-MM-DD HH24:MI:SS'), '0', '141', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('190', '在线留言', NULL, NULL, '0', '0', TO_DATE('2016-06-02 11:17:01', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 11:17:01', 'SYYYY-MM-DD HH24:MI:SS'), '0', '142', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('191', '“绿色装饰”融入杭州市民中心装饰工程', '此外项目部还非常注重采取新工艺、新方法，不仅提高了工程的整体美观性和实用性，而且加快了施工进度，提升了工作效率。由于本工程是圆型结构的楼层施 工，特别是石材在圆弧和圆柱造型上用量大，大大增加了工程的施工难度。', '/upload/article/1638/1464861354733.jpg', '0', '0', TO_DATE('2016-06-02 14:52:40', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 17:55:55', 'SYYYY-MM-DD HH24:MI:SS'), '0', '84', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('192', '纽约时髦客手中那些让人尖叫的包', '对于时尚达人而言，包袋与衣服的混搭也是一种必杀技。休闲手提包可以搭配不同的造型，而搭配运动裤就是更加直接地表现出时尚休闲风的最佳配搭方案。', '/upload/article/1638/1464861380560.png', '0', '0', TO_DATE('2016-06-02 14:53:33', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-04 09:55:27', 'SYYYY-MM-DD HH24:MI:SS'), '0', '83', '1', '8', NULL, NULL, NULL, NULL);
+我们面向全国招募有志之士，欢迎自荐或向周围的好友推荐。', '/upload/article/1638/1465720290023.jpg', '0', '4', TO_DATE('2016-05-04 14:49:32', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-12 16:31:31', 'SYYYY-MM-DD HH24:MI:SS'), '0', '141', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('190', '在线留言', NULL, NULL, '0', '0', TO_DATE('2016-06-02 11:17:01', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 11:17:01', 'SYYYY-MM-DD HH24:MI:SS'), '0', '142', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('191', '“绿色装饰”融入杭州市民中心装饰工程', '此外项目部还非常注重采取新工艺、新方法，不仅提高了工程的整体美观性和实用性，而且加快了施工进度，提升了工作效率。由于本工程是圆型结构的楼层施 工，特别是石材在圆弧和圆柱造型上用量大，大大增加了工程的施工难度。', '/upload/article/1638/1464861354733.jpg', '0', '0', TO_DATE('2016-06-02 14:52:40', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 17:55:55', 'SYYYY-MM-DD HH24:MI:SS'), '0', '84', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('192', '纽约时髦客手中那些让人尖叫的包', '对于时尚达人而言，包袋与衣服的混搭也是一种必杀技。休闲手提包可以搭配不同的造型，而搭配运动裤就是更加直接地表现出时尚休闲风的最佳配搭方案。', '/upload/article/1638/1464861380560.png', '0', '0', TO_DATE('2016-06-02 14:53:33', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-04 09:55:27', 'SYYYY-MM-DD HH24:MI:SS'), '0', '83', '1', N'8', NULL, NULL, NULL, NULL, 0);
 INSERT INTO "BASIC" VALUES ('193', '宋朝华率队赴贵州招商洽谈推进重大项目', '市委副书记、市长宋朝华率队前往贵州省贵阳市，实地考察由中铁贵旅公司投资开发建设的中铁国际生态城项目，并与公司高层进行了深入友好座谈，洽谈推进重大项目落户我市仁寿县相关事宜。
- ', '/upload/article/1638/1464861385314.jpg', '0', '0', TO_DATE('2016-06-02 14:53:59', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 17:56:25', 'SYYYY-MM-DD HH24:MI:SS'), '0', '83', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('194', '红木市场是否低迷 消费者仍在', '内庭中央还展示着一辆豪华轿车，而周边则摆满红木家具，完全没有红木家具应该有的意境。更令人瞠目结舌的是，里面人流熙熙攘攘', '/upload/article/1638/1464861401214.jpg', '0', '0', TO_DATE('2016-06-02 14:54:54', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 17:56:42', 'SYYYY-MM-DD HH24:MI:SS'), '0', '83', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('195', '众多国宝级古典家具悉数亮相', '海南黄花梨圆包脚罗汉床、小叶紫檀云龙纹镶理石圆桌、富贵满堂多宝阁……昨日（12月13日）上午，第三届中国（江门）传统家具精品鉴赏会暨2014中国（江门）红木家具....', '/upload/article/1638/1464861408016.jpg', '0', '0', TO_DATE('2016-06-02 14:55:33', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-04 09:55:30', 'SYYYY-MM-DD HH24:MI:SS'), '0', '83', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('196', '戴为红木燃情成都，开启幸福之门', '近期，出于对中国传统文化的热爱，以及对红木艺术的执着、深情和追求，戴为红木携带“幸福之家”主题活动礼遇成都，使其鸿儒红木家居艺术馆隆重开业，为已进入寒冬的成都燃起了一把火，掀起了中式红木家具热潮！', '/upload/article/1638/1464861413861.jpg', '0', '0', TO_DATE('2016-06-02 14:56:00', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 17:56:54', 'SYYYY-MM-DD HH24:MI:SS'), '0', '83', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('197', '质检整治电商售假 红木家具市场良莠不齐', '质检总局执法督查司按照网上发现、源头追溯、落地查处的要求，组织开展电子商务产品专项执法打假活动，积极构建适应电子商务执法打假的全国执法协查工作机制...', '/upload/article/1638/1464861373394.png', '0', '0', TO_DATE('2016-06-02 14:56:35', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 17:56:16', 'SYYYY-MM-DD HH24:MI:SS'), '0', '83', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('198', '东西方两大甜妞聚首巴黎时装周头排', '巴黎时装周许晴倾力助阵，当天许晴身着黑色拼接装头排看秀，大秀美腿，加上干净利落的妆容，整体造型简洁率性，绿色的刺绣手包更添俏皮..', '/upload/article/1638/1464861364631.jpg', '0', '0', TO_DATE('2016-06-02 14:57:07', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 17:56:05', 'SYYYY-MM-DD HH24:MI:SS'), '0', '83', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('199', '宋朝华率队赴贵州招商洽谈推进重大项目', '市委副书记、市长宋朝华率队前往贵州省贵阳市，实地考察由中铁贵旅公司投资开发建设的中铁国际生态城项目，并与公司高层进行了深入友好座谈，洽谈推进重大项目落户我市仁寿县相关事宜。', '/upload/article/1638/1464861360036.png', '0', '0', TO_DATE('2016-06-02 14:57:40', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 17:56:01', 'SYYYY-MM-DD HH24:MI:SS'), '0', '83', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('200', '奔驰斯宾特A3 豪华版', '斯宾特系列(Sprinter)系列技术领先，动力强劲。座位数从10座到20座均可选择，跟据配置不同,价格也从95.8万178万可以选择。为您带来不同的商务体验。下面为.', '/upload/article/1638/1464851333470.jpg', '0', '0', TO_DATE('2016-06-02 15:09:12', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 15:14:48', 'SYYYY-MM-DD HH24:MI:SS'), '0', '107', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('201', '福特E350 游艇版', '其实商务车在人们眼里就是普通的客车，没有人会花时间去研究它，欣赏它。商务车给人的印象，就是整体的一箱车，发动机不是在驾驶与副驾驶的座椅下...', '/upload/article/1638/1464851477741.jpg', '0', '0', TO_DATE('2016-06-02 15:09:42', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 15:11:18', 'SYYYY-MM-DD HH24:MI:SS'), '0', '107', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('202', 'GMC3500 平顶舒适版', '对于这样一款外观霸气，承载性高的原装进口商务车和它实在的销售价格，都让这款车的性价比大大提升了不少。对于市场上一些追求个性的客户群来讲，...', '/upload/article/1638/1464851473102.jpg', '0', '0', TO_DATE('2016-06-02 15:10:17', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 15:11:14', 'SYYYY-MM-DD HH24:MI:SS'), '0', '107', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('203', '宾特奔驰斯A系列', '奔驰斯宾特系列礼宾车在豪华商务车系中，一向是高端、舒适的代名词。在秉承了奔驰的贵族气质的同时，其全新定制的奢华内饰让人感觉犹如进入了高档..', '/upload/article/1638/1465808166467.png', '0', '0', TO_DATE('2016-06-02 15:11:08', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-13 16:56:07', 'SYYYY-MM-DD HH24:MI:SS'), '0', '107', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('204', '1', NULL, '/upload/article/1638/1464859580381.jpg', '0', '0', TO_DATE('2016-06-02 17:26:21', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 17:26:21', 'SYYYY-MM-DD HH24:MI:SS'), '0', '148', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('205', '2', NULL, '/upload/article/1638/1464859585818.jpg', '0', '0', TO_DATE('2016-06-02 17:26:26', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 17:26:26', 'SYYYY-MM-DD HH24:MI:SS'), '0', '148', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('206', '3', NULL, '/upload/article/1638/1464859590366.jpg', '0', '0', TO_DATE('2016-06-02 17:26:31', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 17:26:31', 'SYYYY-MM-DD HH24:MI:SS'), '0', '148', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('207', '4', NULL, '/upload/article/1638/1464859595151.jpg', '0', '0', TO_DATE('2016-06-02 17:26:36', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 17:26:36', 'SYYYY-MM-DD HH24:MI:SS'), '0', '148', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('208', '5', NULL, '/upload/article/1638/1464859599849.jpg', '0', '0', TO_DATE('2016-06-02 17:26:40', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 17:26:40', 'SYYYY-MM-DD HH24:MI:SS'), '0', '148', '1', '8', NULL, NULL, NULL, NULL);
+ ', '/upload/article/1638/1464861385314.jpg', '0', '0', TO_DATE('2016-06-02 14:53:59', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 17:56:25', 'SYYYY-MM-DD HH24:MI:SS'), '0', '83', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('194', '红木市场是否低迷 消费者仍在', '内庭中央还展示着一辆豪华轿车，而周边则摆满红木家具，完全没有红木家具应该有的意境。更令人瞠目结舌的是，里面人流熙熙攘攘', '/upload/article/1638/1464861401214.jpg', '0', '0', TO_DATE('2016-06-02 14:54:54', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 17:56:42', 'SYYYY-MM-DD HH24:MI:SS'), '0', '83', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('195', '众多国宝级古典家具悉数亮相', '海南黄花梨圆包脚罗汉床、小叶紫檀云龙纹镶理石圆桌、富贵满堂多宝阁……昨日（12月13日）上午，第三届中国（江门）传统家具精品鉴赏会暨2014中国（江门）红木家具....', '/upload/article/1638/1464861408016.jpg', '0', '0', TO_DATE('2016-06-02 14:55:33', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-04 09:55:30', 'SYYYY-MM-DD HH24:MI:SS'), '0', '83', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('196', '戴为红木燃情成都，开启幸福之门', '近期，出于对中国传统文化的热爱，以及对红木艺术的执着、深情和追求，戴为红木携带“幸福之家”主题活动礼遇成都，使其鸿儒红木家居艺术馆隆重开业，为已进入寒冬的成都燃起了一把火，掀起了中式红木家具热潮！', '/upload/article/1638/1464861413861.jpg', '0', '0', TO_DATE('2016-06-02 14:56:00', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 17:56:54', 'SYYYY-MM-DD HH24:MI:SS'), '0', '83', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('197', '质检整治电商售假 红木家具市场良莠不齐', '质检总局执法督查司按照网上发现、源头追溯、落地查处的要求，组织开展电子商务产品专项执法打假活动，积极构建适应电子商务执法打假的全国执法协查工作机制...', '/upload/article/1638/1464861373394.png', '0', '0', TO_DATE('2016-06-02 14:56:35', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 17:56:16', 'SYYYY-MM-DD HH24:MI:SS'), '0', '83', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('198', '东西方两大甜妞聚首巴黎时装周头排', '巴黎时装周许晴倾力助阵，当天许晴身着黑色拼接装头排看秀，大秀美腿，加上干净利落的妆容，整体造型简洁率性，绿色的刺绣手包更添俏皮..', '/upload/article/1638/1464861364631.jpg', '0', '0', TO_DATE('2016-06-02 14:57:07', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 17:56:05', 'SYYYY-MM-DD HH24:MI:SS'), '0', '83', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('199', '宋朝华率队赴贵州招商洽谈推进重大项目', '市委副书记、市长宋朝华率队前往贵州省贵阳市，实地考察由中铁贵旅公司投资开发建设的中铁国际生态城项目，并与公司高层进行了深入友好座谈，洽谈推进重大项目落户我市仁寿县相关事宜。', '/upload/article/1638/1464861360036.png', '0', '0', TO_DATE('2016-06-02 14:57:40', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 17:56:01', 'SYYYY-MM-DD HH24:MI:SS'), '0', '83', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('200', '奔驰斯宾特A3 豪华版', '斯宾特系列(Sprinter)系列技术领先，动力强劲。座位数从10座到20座均可选择，跟据配置不同,价格也从95.8万178万可以选择。为您带来不同的商务体验。下面为.', '/upload/article/1638/1464851333470.jpg', '0', '0', TO_DATE('2016-06-02 15:09:12', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 15:14:48', 'SYYYY-MM-DD HH24:MI:SS'), '0', '107', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('201', '福特E350 游艇版', '其实商务车在人们眼里就是普通的客车，没有人会花时间去研究它，欣赏它。商务车给人的印象，就是整体的一箱车，发动机不是在驾驶与副驾驶的座椅下...', '/upload/article/1638/1464851477741.jpg', '0', '0', TO_DATE('2016-06-02 15:09:42', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 15:11:18', 'SYYYY-MM-DD HH24:MI:SS'), '0', '107', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('202', 'GMC3500 平顶舒适版', '对于这样一款外观霸气，承载性高的原装进口商务车和它实在的销售价格，都让这款车的性价比大大提升了不少。对于市场上一些追求个性的客户群来讲，...', '/upload/article/1638/1464851473102.jpg', '0', '0', TO_DATE('2016-06-02 15:10:17', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 15:11:14', 'SYYYY-MM-DD HH24:MI:SS'), '0', '107', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('203', '宾特奔驰斯A系列', '奔驰斯宾特系列礼宾车在豪华商务车系中，一向是高端、舒适的代名词。在秉承了奔驰的贵族气质的同时，其全新定制的奢华内饰让人感觉犹如进入了高档..', '/upload/article/1638/1465808166467.png', '0', '0', TO_DATE('2016-06-02 15:11:08', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-13 16:56:07', 'SYYYY-MM-DD HH24:MI:SS'), '0', '107', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('204', '1', NULL, '/upload/article/1638/1464859580381.jpg', '0', '0', TO_DATE('2016-06-02 17:26:21', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 17:26:21', 'SYYYY-MM-DD HH24:MI:SS'), '0', '148', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('205', '2', NULL, '/upload/article/1638/1464859585818.jpg', '0', '0', TO_DATE('2016-06-02 17:26:26', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 17:26:26', 'SYYYY-MM-DD HH24:MI:SS'), '0', '148', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('206', '3', NULL, '/upload/article/1638/1464859590366.jpg', '0', '0', TO_DATE('2016-06-02 17:26:31', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 17:26:31', 'SYYYY-MM-DD HH24:MI:SS'), '0', '148', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('207', '4', NULL, '/upload/article/1638/1464859595151.jpg', '0', '0', TO_DATE('2016-06-02 17:26:36', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 17:26:36', 'SYYYY-MM-DD HH24:MI:SS'), '0', '148', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('208', '5', NULL, '/upload/article/1638/1464859599849.jpg', '0', '0', TO_DATE('2016-06-02 17:26:40', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-02 17:26:40', 'SYYYY-MM-DD HH24:MI:SS'), '0', '148', '1', N'8', NULL, NULL, NULL, NULL, 0);
 INSERT INTO "BASIC" VALUES ('209', '6', '高品质景观缔造者
-High quality landscape architects.', '/upload/article/1638/1464859604208.jpg', '0', '0', TO_DATE('2016-06-02 17:26:45', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-16 14:24:51', 'SYYYY-MM-DD HH24:MI:SS'), '0', '148', '1', '8', NULL, NULL, NULL, NULL);
+High quality landscape architects.', '/upload/article/1638/1464859604208.jpg', '0', '0', TO_DATE('2016-06-02 17:26:45', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-16 14:24:51', 'SYYYY-MM-DD HH24:MI:SS'), '0', '148', '1', N'8', NULL, NULL, NULL, NULL, 0);
 INSERT INTO "BASIC" VALUES ('210', '幻灯五', '做精品设计、建优良工程、打造精品工程
-Boutique design, construction engineering, excellent build quality engineering.', '/upload/article/1638/1464859633594.jpg', '0', '0', TO_DATE('2016-06-02 17:26:55', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-16 14:24:18', 'SYYYY-MM-DD HH24:MI:SS'), '0', '147', '1', '8', NULL, NULL, NULL, NULL);
+Boutique design, construction engineering, excellent build quality engineering.', '/upload/article/1638/1464859633594.jpg', '0', '0', TO_DATE('2016-06-02 17:26:55', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-16 14:24:18', 'SYYYY-MM-DD HH24:MI:SS'), '0', '147', '1', N'8', NULL, NULL, NULL, NULL, 0);
 INSERT INTO "BASIC" VALUES ('211', '幻灯六', '与您一起携手，共同谱写园林绿化事业的新篇章！
-Work with you to jointly write a new chapter landscaping business!', '/upload/article/1638/1464859625584.jpg', '0', '0', TO_DATE('2016-06-02 17:27:06', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-16 14:23:03', 'SYYYY-MM-DD HH24:MI:SS'), '0', '147', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('212', '愿景', '我们拥有稳定的充满创作激情的设计团队，核心人员由公司创立至今伴随我们一个又一个客户的成长，保证了稳定的设计出品质量及熟知我们所合作过的每一个客户的设计需求，现在，团队不断壮大。', '/upload/article/1638/1464940624025.png', '0', '0', TO_DATE('2016-06-02 17:36:54', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-03 20:52:58', 'SYYYY-MM-DD HH24:MI:SS'), '0', '95', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('213', '价值观', '我们已为数百家企业、政府和社会团体完成品牌的传播与设计，积累了大量丰富的经验，可为您提供大量同类企业和机构的案例进行比较参考。', '/upload/article/1638/1464940619456.jpg', '0', '0', TO_DATE('2016-06-02 17:37:08', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-03 20:52:55', 'SYYYY-MM-DD HH24:MI:SS'), '0', '95', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('214', '经营理念', '可提供一站式全面服务：品牌的定位——企业文化梳理——企业/品牌形象设计——品牌传播——环境空间设计——宣传物品的落地', '/upload/article/1638/1464940614692.jpg', '0', '0', TO_DATE('2016-06-02 17:37:19', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-03 20:52:46', 'SYYYY-MM-DD HH24:MI:SS'), '0', '95', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('215', '管理理念', '多年来，我们始终专注于品牌的设计与塑造，坚持站在市场的角度，为客户创作出准确的、极具商业价值的形象设计与品牌传播策略。', '/upload/article/1638/1464940610305.jpg', '0', '0', TO_DATE('2016-06-02 17:37:42', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-12 17:54:59', 'SYYYY-MM-DD HH24:MI:SS'), '0', '95', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('216', '李镇江', '资深PPT设计师', '/upload/article/1638/1464860436576.png', '0', '0', TO_DATE('2016-06-02 17:40:31', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-03 15:47:36', 'SYYYY-MM-DD HH24:MI:SS'), '0', '115', '1', '8', NULL, NULL, NULL, NULL);
-INSERT INTO "BASIC" VALUES ('217', '曹瑛', '锐诚PPT特邀首席技术专家', '/upload/article/1638/1464860564066.png', '0', '0', TO_DATE('2016-06-02 17:41:15', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-03 15:47:33', 'SYYYY-MM-DD HH24:MI:SS'), '0', '115', '1', '8', NULL, NULL, NULL, NULL);
+Work with you to jointly write a new chapter landscaping business!', '/upload/article/1638/1464859625584.jpg', '0', '0', TO_DATE('2016-06-02 17:27:06', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-16 14:23:03', 'SYYYY-MM-DD HH24:MI:SS'), '0', '147', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('212', '愿景', '我们拥有稳定的充满创作激情的设计团队，核心人员由公司创立至今伴随我们一个又一个客户的成长，保证了稳定的设计出品质量及熟知我们所合作过的每一个客户的设计需求，现在，团队不断壮大。', '/upload/article/1638/1464940624025.png', '0', '0', TO_DATE('2016-06-02 17:36:54', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-03 20:52:58', 'SYYYY-MM-DD HH24:MI:SS'), '0', '95', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('213', '价值观', '我们已为数百家企业、政府和社会团体完成品牌的传播与设计，积累了大量丰富的经验，可为您提供大量同类企业和机构的案例进行比较参考。', '/upload/article/1638/1464940619456.jpg', '0', '0', TO_DATE('2016-06-02 17:37:08', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-03 20:52:55', 'SYYYY-MM-DD HH24:MI:SS'), '0', '95', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('214', '经营理念', '可提供一站式全面服务：品牌的定位——企业文化梳理——企业/品牌形象设计——品牌传播——环境空间设计——宣传物品的落地', '/upload/article/1638/1464940614692.jpg', '0', '0', TO_DATE('2016-06-02 17:37:19', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-03 20:52:46', 'SYYYY-MM-DD HH24:MI:SS'), '0', '95', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('215', '管理理念', '多年来，我们始终专注于品牌的设计与塑造，坚持站在市场的角度，为客户创作出准确的、极具商业价值的形象设计与品牌传播策略。', '/upload/article/1638/1464940610305.jpg', '0', '0', TO_DATE('2016-06-02 17:37:42', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-12 17:54:59', 'SYYYY-MM-DD HH24:MI:SS'), '0', '95', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('216', '李镇江', '资深PPT设计师', '/upload/article/1638/1464860436576.png', '0', '0', TO_DATE('2016-06-02 17:40:31', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-03 15:47:36', 'SYYYY-MM-DD HH24:MI:SS'), '0', '115', '1', N'8', NULL, NULL, NULL, NULL, 0);
+INSERT INTO "BASIC" VALUES ('217', '曹瑛', '锐诚PPT特邀首席技术专家', '/upload/article/1638/1464860564066.png', '0', '0', TO_DATE('2016-06-02 17:41:15', 'SYYYY-MM-DD HH24:MI:SS'), TO_DATE('2016-06-03 15:47:33', 'SYYYY-MM-DD HH24:MI:SS'), '0', '115', '1', N'8', NULL, NULL, NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for BASIC_ATTENTION
@@ -370,7 +358,7 @@ INSERT INTO "BASIC_COLUMN" VALUES ('66', '精选案例展示', '新颖的设计�
 INSERT INTO "BASIC_COLUMN" VALUES ('67', '精选案例展示', '新颖的设计方案，大胆的革新思想，灵活的运用最新技术，是品网视觉的特点，我们只做有灵魂的设计', '1', 'case-show.htm', 'case-list.htm', '/61/67', NULL);
 INSERT INTO "BASIC_COLUMN" VALUES ('68', NULL, '您可以通过以下新闻与公司动态进一步了解我们。我们所签约的客户，无论他们的项目是大或者是小，我们都将提供100%的服务', '1', 'news-show.htm', 'news-list.htm', '/59/68', NULL);
 INSERT INTO "BASIC_COLUMN" VALUES ('69', NULL, NULL, '1', 'news-show.htm', 'news-list.htm', '/59/69', NULL);
-INSERT INTO "BASIC_COLUMN" VALUES ('70', NULL, '新闻中心', '1', 'news-show.htm', 'news-list.htm', '/59/70', NULL);
+INSERT INTO "BASIC_COLUMN" VALUES ('70', NULL, '新闻中心', '1', 'news-list.htm', 'news-show.htm', '/59/70', NULL);
 INSERT INTO "BASIC_COLUMN" VALUES ('83', NULL, '您可以通过以下新闻与公司动态进一步了解我们。我们所签约的客户，无论他们的项目是大或者是小，我们都将提供100%的服务', '1', 'news-show.htm', 'news-list.htm', '/62/83', NULL);
 INSERT INTO "BASIC_COLUMN" VALUES ('84', '专业提供网站模板，网页模板，教程培训，程序插件，网站素材等建站资源。我们致力于打造一个优秀的建站资源共享学习平台！', '专业提供网站模板，网页模板，教程培训，程序插件，网站素材等建站资源。设计者：如果您是模板设计师，插件制作者。我们致力于打造一个优秀的建站资源共享学习平台！您可以在这里放心出售您的模板和插件，我们提供版权保护。购买者：购买本站资源，我们提供“三重保障”(担保交易+人工介入+售后服务)，保障购买者的合法权益。织梦猫已经上路，我们将为此不懈努', '1', 'news-show.htm', 'news-list.htm', '/62/84', NULL);
 INSERT INTO "BASIC_COLUMN" VALUES ('87', NULL, NULL, '2', 'solution.htm', 'about.htm', '/87', NULL);
@@ -772,8 +760,7 @@ CREATE TABLE "MANAGER" (
   "MANAGER_PASSWORD" NVARCHAR2(45) ,
   "MANAGER_ROLEID" NUMBER(11) ,
   "MANAGER_PEOPLEID" NUMBER(20) DEFAULT 0  ,
-  "MANAGER_TIME" DATE ,
-  "MANAGER_SYSTEM_SKIN_ID" NUMBER(11) DEFAULT 0  
+  "MANAGER_TIME" DATE 
 )
 TABLESPACE "USERS"
 LOGGING
@@ -798,13 +785,12 @@ COMMENT ON COLUMN "MANAGER"."MANAGER_PASSWORD" IS '管理员密码';
 COMMENT ON COLUMN "MANAGER"."MANAGER_ROLEID" IS '角色编号';
 COMMENT ON COLUMN "MANAGER"."MANAGER_PEOPLEID" IS '用户编号即商家编号';
 COMMENT ON COLUMN "MANAGER"."MANAGER_TIME" IS '管理员创建时间';
-COMMENT ON COLUMN "MANAGER"."MANAGER_SYSTEM_SKIN_ID" IS '管理员主界面样式';
 COMMENT ON TABLE "MANAGER" IS '管理员表';
 
 -- ----------------------------
 -- Records of "MANAGER"
 -- ----------------------------
-INSERT INTO "MANAGER" VALUES ('50', 'msopen', 'msopen', '9d8622060de5f24937b60585c3f4d66b', '48', '0', TO_DATE('2015-09-18 11:54:36', 'SYYYY-MM-DD HH24:MI:SS'), '0');
+INSERT INTO "MANAGER" VALUES ('50', 'msopen', 'msopen', '9d8622060de5f24937b60585c3f4d66b', '48', '0', TO_DATE('2015-09-18 11:54:36', 'SYYYY-MM-DD HH24:MI:SS'));
 
 -- ----------------------------
 -- Table structure for MANAGER_MODEL_PAGE
@@ -940,14 +926,14 @@ INSERT INTO "MDIY_CONTENT_MODE_FIELD" VALUES ('12', '描述5', 'descripFi', '2',
 -- ----------------------------
 -- Table structure for MDIY_DICT
 -- ----------------------------
-DROP TABLE "MDIY_DICT";
+DROP TABLE "MDIY_DICT"; 
 CREATE TABLE "MDIY_DICT" (
   "DICT_ID" NUMBER(11) NOT NULL ,
   "APP_ID" NUMBER(11) ,
   "DICT_VALUE" NVARCHAR2(100) NOT NULL ,
   "DICT_LABEL" NVARCHAR2(100) NOT NULL ,
   "DICT_TYPE" NVARCHAR2(100) NOT NULL ,
-  "DICT_DESCRIPTION" NVARCHAR2(100) NOT NULL ,
+  "DICT_DESCRIPTION" NVARCHAR2(100) ,
   "DICT_SORT" NUMBER(11) DEFAULT 0  NOT NULL ,
   "DICT_PARENT_ID" NVARCHAR2(64) ,
   "DICT_REMARKS" NVARCHAR2(255) ,
@@ -1016,6 +1002,8 @@ COMMENT ON COLUMN "MDIY_FORM"."FORM_TIPS_NAME" IS '自定义表单提示文字';
 COMMENT ON COLUMN "MDIY_FORM"."FORM_APP_ID" IS '自定义表单关联的应用编号';
 COMMENT ON TABLE "MDIY_FORM" IS '自定义表单表';
 
+INSERT INTO MDIY_FORM VALUES ( '1', '留言', 'mdiy_message_50', '1', '0', TO_DATE('2018-06-29 17:37:13', 'SYYYY-MM-DD HH24:MI:SS'), '0', TO_DATE('2018-06-29 17:37:13', 'SYYYY-MM-DD HH24:MI:SS'));
+
 -- ----------------------------
 -- Table structure for MDIY_FORM_FIELD
 -- ----------------------------
@@ -1050,6 +1038,10 @@ COMMENT ON COLUMN "MDIY_FORM_FIELD"."FF_ISNULL" IS '字段是否为空';
 COMMENT ON COLUMN "MDIY_FORM_FIELD"."FF_SORT" IS '自定义表单的排序';
 COMMENT ON COLUMN "MDIY_FORM_FIELD"."FF_FORMID" IS '字段管理的表单id';
 COMMENT ON TABLE "MDIY_FORM_FIELD" IS '自定义表单字段表';
+
+INSERT INTO MDIY_FORM_FIELD VALUES ('1', '姓名', 'NAME', '1', '', '1', '0', '1');
+INSERT INTO MDIY_FORM_FIELD VALUES ('2', '手机号', 'PHONE', '1', '', '1', '0', '1');
+INSERT INTO MDIY_FORM_FIELD VALUES ('3', '留言内容', 'CONTENT', '1', '', '1', '0', '1');
 
 -- ----------------------------
 -- Table structure for MDIY_MOOC_50
@@ -1529,146 +1521,141 @@ INSERT INTO "ROLE_MODEL" VALUES ('150', '48');
 INSERT INTO "ROLE_MODEL" VALUES ('151', '48');
 
 -- ----------------------------
--- Table structure for SYSTEM_SKIN
+-- Table structure for MDIY_MESSAGE_50
 -- ----------------------------
-DROP TABLE "SYSTEM_SKIN";
-CREATE TABLE "SYSTEM_SKIN" (
-  "SS_ID" NUMBER(11) NOT NULL ,
-  "SS_BACKGROUNDIMG" NVARCHAR2(255) ,
-  "SS_COLOR" NVARCHAR2(255) ,
-  "SS_CSS" NVARCHAR2(255) ,
-  "SS_DATETIME" DATE ,
-  "SS_APP_ID" NUMBER(11) ,
-  "SS_CATEGORY_ID" NUMBER(11) 
-)
+CREATE TABLE MDIY_MESSAGE_50 (
+  "ID" NUMBER(11) NOT NULL,
+  "DATE" DATE,
+  "FROMID" NUMBER(11),
+  "NAME" NVARCHAR2(100),
+  "PHONE" NVARCHAR2(100),
+  "CONTENT" NVARCHAR2(100)
+) 
 TABLESPACE "USERS"
 LOGGING
 NOCOMPRESS
 PCTFREE 10
 INITRANS 1
 STORAGE (
+  INITIAL 65536 
+  NEXT 1048576 
+  MINEXTENTS 1
+  MAXEXTENTS 2147483645
   BUFFER_POOL DEFAULT
 )
 PARALLEL 1
 NOCACHE
 DISABLE ROW MOVEMENT
 ;
-COMMENT ON COLUMN "SYSTEM_SKIN"."SS_ID" IS '自增长id';
-COMMENT ON COLUMN "SYSTEM_SKIN"."SS_BACKGROUNDIMG" IS '背景图片';
-COMMENT ON COLUMN "SYSTEM_SKIN"."SS_COLOR" IS '字体颜色';
-COMMENT ON COLUMN "SYSTEM_SKIN"."SS_CSS" IS '样式';
-COMMENT ON COLUMN "SYSTEM_SKIN"."SS_DATETIME" IS '生成时间';
-COMMENT ON COLUMN "SYSTEM_SKIN"."SS_APP_ID" IS '0后台发布大于０表示是应用自定义';
-COMMENT ON COLUMN "SYSTEM_SKIN"."SS_CATEGORY_ID" IS '主题分类';
-COMMENT ON TABLE "SYSTEM_SKIN" IS '后台皮肤管理表';
+
 
 -- ----------------------------
 -- Sequence structure for SEQ_APP_ID
 -- ----------------------------
 DROP SEQUENCE "SEQ_APP_ID";
-CREATE SEQUENCE "SEQ_APP_ID" MINVALUE 1 MAXVALUE 99999999 INCREMENT BY 300 CACHE 20;
+CREATE SEQUENCE "SEQ_APP_ID" MINVALUE 1 MAXVALUE 99999999 START WITH 300 INCREMENT BY 1   CACHE 20;
 
 -- ----------------------------
 -- Sequence structure for SEQ_BASIC_ID
 -- ----------------------------
 DROP SEQUENCE "SEQ_BASIC_ID";
-CREATE SEQUENCE "SEQ_BASIC_ID" MINVALUE 1 MAXVALUE 99999999 INCREMENT BY 300 CACHE 20;
+CREATE SEQUENCE "SEQ_BASIC_ID" MINVALUE 1 MAXVALUE 99999999 START WITH 300 INCREMENT BY 1   CACHE 20;
 
 -- ----------------------------
 -- Sequence structure for SEQ_BA_ID
 -- ----------------------------
 DROP SEQUENCE "SEQ_BA_ID";
-CREATE SEQUENCE "SEQ_BA_ID" MINVALUE 1 MAXVALUE 99999999 INCREMENT BY 300 CACHE 20;
+CREATE SEQUENCE "SEQ_BA_ID" MINVALUE 1 MAXVALUE 99999999 START WITH 300 INCREMENT BY 1   CACHE 20;
 
 -- ----------------------------
 -- Sequence structure for SEQ_BL_ID
 -- ----------------------------
 DROP SEQUENCE "SEQ_BL_ID";
-CREATE SEQUENCE "SEQ_BL_ID" MINVALUE 1 MAXVALUE 99999999 INCREMENT BY 300 CACHE 20;
+CREATE SEQUENCE "SEQ_BL_ID" MINVALUE 1 MAXVALUE 99999999 START WITH 300 INCREMENT BY 1   CACHE 20;
 
 -- ----------------------------
 -- Sequence structure for SEQ_CATEGORY_ID
 -- ----------------------------
 DROP SEQUENCE "SEQ_CATEGORY_ID";
-CREATE SEQUENCE "SEQ_CATEGORY_ID" MINVALUE 1 MAXVALUE 99999999 INCREMENT BY 300 CACHE 20;
+CREATE SEQUENCE "SEQ_CATEGORY_ID" MINVALUE 1 MAXVALUE 99999999 START WITH 300 INCREMENT BY 1   CACHE 20;
 
 -- ----------------------------
 -- Sequence structure for SEQ_CM_ID
 -- ----------------------------
 DROP SEQUENCE "SEQ_CM_ID";
-CREATE SEQUENCE "SEQ_CM_ID" MINVALUE 1 MAXVALUE 99999999 INCREMENT BY 300 CACHE 20;
+CREATE SEQUENCE "SEQ_CM_ID" MINVALUE 1 MAXVALUE 99999999 START WITH 300 INCREMENT BY 1   CACHE 20;
 
 -- ----------------------------
 -- Sequence structure for SEQ_COMMENT_ID
 -- ----------------------------
 DROP SEQUENCE "SEQ_COMMENT_ID";
-CREATE SEQUENCE "SEQ_COMMENT_ID" MINVALUE 1 MAXVALUE 99999999 INCREMENT BY 300 CACHE 20;
+CREATE SEQUENCE "SEQ_COMMENT_ID" MINVALUE 1 MAXVALUE 99999999 START WITH 300 INCREMENT BY 1   CACHE 20;
 
 -- ----------------------------
 -- Sequence structure for SEQ_DICT_ID
 -- ----------------------------
 DROP SEQUENCE "SEQ_DICT_ID";
-CREATE SEQUENCE "SEQ_DICT_ID" MINVALUE 1 MAXVALUE 99999999 INCREMENT BY 300 CACHE 20;
+CREATE SEQUENCE "SEQ_DICT_ID" MINVALUE 1 MAXVALUE 99999999 START WITH 300 INCREMENT BY 1   CACHE 20;
 
 -- ----------------------------
 -- Sequence structure for SEQ_FF_ID
 -- ----------------------------
 DROP SEQUENCE "SEQ_FF_ID";
-CREATE SEQUENCE "SEQ_FF_ID" MINVALUE 1 MAXVALUE 99999999 INCREMENT BY 300 CACHE 20;
+CREATE SEQUENCE "SEQ_FF_ID" MINVALUE 1 MAXVALUE 99999999 START WITH 300 INCREMENT BY 1   CACHE 20;
 
 -- ----------------------------
 -- Sequence structure for SEQ_FIELD_ID
 -- ----------------------------
 DROP SEQUENCE "SEQ_FIELD_ID";
-CREATE SEQUENCE "SEQ_FIELD_ID" MINVALUE 1 MAXVALUE 99999999 INCREMENT BY 300 CACHE 20;
+CREATE SEQUENCE "SEQ_FIELD_ID" MINVALUE 1 MAXVALUE 99999999 START WITH 300 INCREMENT BY 1   CACHE 20;
 
 -- ----------------------------
 -- Sequence structure for SEQ_FORM_ID
 -- ----------------------------
 DROP SEQUENCE "SEQ_FORM_ID";
-CREATE SEQUENCE "SEQ_FORM_ID" MINVALUE 1 MAXVALUE 99999999 INCREMENT BY 300 CACHE 20;
+CREATE SEQUENCE "SEQ_FORM_ID" MINVALUE 1 MAXVALUE 99999999 START WITH 300 INCREMENT BY 1   CACHE 20;
 
 -- ----------------------------
 -- Sequence structure for SEQ_MANAGER_ID
 -- ----------------------------
 DROP SEQUENCE "SEQ_MANAGER_ID";
-CREATE SEQUENCE "SEQ_MANAGER_ID" MINVALUE 1 MAXVALUE 99999999 INCREMENT BY 300 CACHE 20;
+CREATE SEQUENCE "SEQ_MANAGER_ID" MINVALUE 1 MAXVALUE 99999999 START WITH 300 INCREMENT BY 1   CACHE 20;
 
 -- ----------------------------
 -- Sequence structure for SEQ_MODEL_ID
 -- ----------------------------
 DROP SEQUENCE "SEQ_MODEL_ID";
-CREATE SEQUENCE "SEQ_MODEL_ID" MINVALUE 1 MAXVALUE 99999999 INCREMENT BY 300 CACHE 20;
+CREATE SEQUENCE "SEQ_MODEL_ID" MINVALUE 1 MAXVALUE 99999999 START WITH 300 INCREMENT BY 1   CACHE 20;
 
 -- ----------------------------
 -- Sequence structure for SEQ_PAGE_ID
 -- ----------------------------
 DROP SEQUENCE "SEQ_PAGE_ID";
-CREATE SEQUENCE "SEQ_PAGE_ID" MINVALUE 1 MAXVALUE 99999999 INCREMENT BY 300 CACHE 20;
+CREATE SEQUENCE "SEQ_PAGE_ID" MINVALUE 1 MAXVALUE 99999999 START WITH 300 INCREMENT BY 1   CACHE 20;
 
 -- ----------------------------
 -- Sequence structure for SEQ_PEOPLE_ID
 -- ----------------------------
 DROP SEQUENCE "SEQ_PEOPLE_ID";
-CREATE SEQUENCE "SEQ_PEOPLE_ID" MINVALUE 1 MAXVALUE 99999999 INCREMENT BY 300 CACHE 20;
+CREATE SEQUENCE "SEQ_PEOPLE_ID" MINVALUE 1 MAXVALUE 99999999 START WITH 300 INCREMENT BY 1   CACHE 20;
 
 -- ----------------------------
 -- Sequence structure for SEQ_ROLE_ID
 -- ----------------------------
 DROP SEQUENCE "SEQ_ROLE_ID";
-CREATE SEQUENCE "SEQ_ROLE_ID" MINVALUE 1 MAXVALUE 99999999 INCREMENT BY 300 CACHE 20;
+CREATE SEQUENCE "SEQ_ROLE_ID" MINVALUE 1 MAXVALUE 99999999 START WITH 300 INCREMENT BY 1   CACHE 20;
 
 -- ----------------------------
 -- Sequence structure for SEQ_SEARCH_ID
 -- ----------------------------
 DROP SEQUENCE "SEQ_SEARCH_ID";
-CREATE SEQUENCE "SEQ_SEARCH_ID" MINVALUE 1 MAXVALUE 99999999 INCREMENT BY 300 CACHE 20;
+CREATE SEQUENCE "SEQ_SEARCH_ID" MINVALUE 1 MAXVALUE 99999999 START WITH 300 INCREMENT BY 1   CACHE 20;
 
 -- ----------------------------
 -- Sequence structure for SEQ_SS_ID
 -- ----------------------------
 DROP SEQUENCE "SEQ_SS_ID";
-CREATE SEQUENCE "SEQ_SS_ID" MINVALUE 1 MAXVALUE 99999999 INCREMENT BY 300 CACHE 20;
+CREATE SEQUENCE "SEQ_SS_ID" MINVALUE 1 MAXVALUE 99999999 START WITH 300 INCREMENT BY 1   CACHE 20;
 
 -- ----------------------------
 -- Primary Key structure for table APP
@@ -2437,29 +2424,6 @@ STORAGE (
   BUFFER_POOL DEFAULT
 );
 
--- ----------------------------
--- Primary Key structure for table SYSTEM_SKIN
--- ----------------------------
-ALTER TABLE "SYSTEM_SKIN" ADD CONSTRAINT "SYS_C0025506" PRIMARY KEY ("SS_ID");
-
--- ----------------------------
--- Checks structure for table SYSTEM_SKIN
--- ----------------------------
-ALTER TABLE "SYSTEM_SKIN" ADD CONSTRAINT "SYS_C0025483" CHECK ("SS_ID" IS NOT NULL) NOT DEFERRABLE INITIALLY IMMEDIATE NORELY VALIDATE;
-
--- ----------------------------
--- Indexes structure for table SYSTEM_SKIN
--- ----------------------------
-CREATE INDEX "IND_SYSTEM_SKIN_APP_1"
-  ON "SYSTEM_SKIN" ("SS_APP_ID" ASC)
-  LOGGING
-  TABLESPACE "USERS"
-  VISIBLE
-PCTFREE 10
-INITRANS 2
-STORAGE (
-  BUFFER_POOL DEFAULT
-);
 
 -- ----------------------------
 -- Foreign Keys structure for table APP
@@ -2577,7 +2541,3 @@ ALTER TABLE "PEOPLE_USER" ADD CONSTRAINT "FK_PEOPLE_USER_PEOPLE_1" FOREIGN KEY (
 ALTER TABLE "ROLE_MODEL" ADD CONSTRAINT "FK_ROLE_MODEL_ROLE_1" FOREIGN KEY ("RM_ROLEID") REFERENCES "ROLE" ("ROLE_ID") ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE NORELY VALIDATE;
 ALTER TABLE "ROLE_MODEL" ADD CONSTRAINT "ROLE_MODEL_IBFK_1" FOREIGN KEY ("RM_MODELID") REFERENCES "MODEL" ("MODEL_ID") ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE NORELY VALIDATE;
 
--- ----------------------------
--- Foreign Keys structure for table SYSTEM_SKIN
--- ----------------------------
-ALTER TABLE "SYSTEM_SKIN" ADD CONSTRAINT "FK_SYSTEM_SKIN_APP_1" FOREIGN KEY ("SS_APP_ID") REFERENCES "APP" ("APP_ID") ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE NORELY VALIDATE;
