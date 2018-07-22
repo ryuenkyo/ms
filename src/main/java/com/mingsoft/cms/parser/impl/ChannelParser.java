@@ -237,7 +237,7 @@ public class ChannelParser extends IParser {
 		super.htmlCotent = htmlCotent;
 		super.newCotent = regexTab;
 		htmlCotents = this.replaceFirst(regex);
-		if (htmlCotents.equals("")) {
+		if (htmlCotents.length() != 0) {
 			htmlCotents = "标签格式错误";
 		}
 		return htmlCotents;

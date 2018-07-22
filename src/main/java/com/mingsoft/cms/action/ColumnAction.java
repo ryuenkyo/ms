@@ -133,7 +133,7 @@ public class ColumnAction extends BaseAction{
 	 * @param column 栏目实体
 	 */
 	private void columnPath(HttpServletRequest request,ColumnEntity column){
-		String columnPath = "";
+		StringBuffer columnPath = new StringBuffer();
 		String file = this.getRealPath(request,null)+IParserRegexConstant.HTML_SAVE_PATH+File.separator+ column.getAppId();
 		String delFile = "";
 		//修改栏目路径时，删除已存在的文件夹
@@ -150,14 +150,14 @@ public class ColumnAction extends BaseAction{
 		} else {
 			List<ColumnEntity> list = columnBiz.queryParentColumnByColumnId(column.getCategoryId());
 			if(!StringUtil.isBlank(list)){
-				String temp = "";
+				StringBuffer temp = new StringBuffer();
 				for(int i = list.size()-1; i>=0; i--){
 					ColumnEntity entity = list.get(i);
-					columnPath = columnPath + File.separator + entity.getCategoryId();
-					temp = temp + File.separator + entity.getCategoryId();
+					columnPath.append(File.separator).append(entity.getCategoryId());
+					temp.append(File.separator).append(entity.getCategoryId());
 				}
-				column.setColumnPath(columnPath + File.separator + column.getCategoryId());
-				file = file + temp + File.separator + column.getCategoryId();
+				column.setColumnPath(columnPath.append(File.separator).append(column.getCategoryId()).toString());
+				file = file + temp.toString() + File.separator + column.getCategoryId();
 			}
 		}
 		columnBiz.updateEntity(column);
