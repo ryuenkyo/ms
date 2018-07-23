@@ -24,7 +24,6 @@ package com.mingsoft.cms.action;
 import java.io.File;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -45,24 +44,17 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.mingsoft.basic.action.BaseAction;
 import com.mingsoft.base.entity.BaseEntity;
-import com.mingsoft.base.entity.ListJson;
 import com.mingsoft.base.filter.DateValueFilter;
 import com.mingsoft.base.filter.DoubleValueFilter;
 import com.mingsoft.cms.biz.IArticleBiz;
 import com.mingsoft.basic.biz.IColumnBiz;
-import com.mingsoft.basic.biz.impl.CategoryBizImpl;
-import com.mingsoft.basic.constant.Const;
 import com.mingsoft.cms.constant.e.ColumnTypeEnum;
 import com.mingsoft.mdiy.biz.IContentModelBiz;
 import com.mingsoft.mdiy.biz.IContentModelFieldBiz;
-import com.mingsoft.basic.constant.e.CookieConstEnum;
 import com.mingsoft.cms.constant.ModelCode;
 import com.mingsoft.cms.entity.ArticleEntity;
 import com.mingsoft.cms.util.ArrysUtil;
@@ -70,13 +62,11 @@ import com.mingsoft.basic.entity.ColumnEntity;
 import com.mingsoft.mdiy.entity.ContentModelEntity;
 import com.mingsoft.mdiy.entity.ContentModelFieldEntity;
 import com.mingsoft.parser.IParserRegexConstant;
-import com.mingsoft.util.PageUtil;
 import com.mingsoft.util.StringUtil;
 
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.ArrayUtil;
 import net.mingsoft.basic.bean.EUListBean;
 import net.mingsoft.basic.util.BasicUtil;
+import net.mingsoft.mdiy.util.DictUtil;
 
 /**
  * @ClassName:  ArticleAction   
@@ -144,7 +134,7 @@ public class ArticleAction extends BaseAction {
 	@RequestMapping("/index")
 	public String index(HttpServletRequest request, ModelMap mode, HttpServletResponse response) {
 		// 获取站点id
-		int appId = this.getAppId(request);
+		int appId = BasicUtil.getAppId();
 		List<ColumnEntity> list = columnBiz.queryAll(appId, this.getModelCodeId(request, ModelCode.CMS_COLUMN));
 		request.setAttribute("listColumn", JSONArray.toJSONString(list));
 		// 返回路径
@@ -165,14 +155,9 @@ public class ArticleAction extends BaseAction {
 			HttpServletResponse response, @PathVariable int categoryId) {
 		String articleType = request.getParameter("articleType");
 		String isParent = BasicUtil.getString("isParent", "false");
-		List types = articleType();
-		Map map = new HashMap<>();
-		//映射一个文章的全部属性
-		map.put("a","全部");
-		types.add((Map.Entry<String, String>)map.entrySet().iterator().next());
 		mode.addAttribute("isParent", isParent);
 		//使用糊涂工具排序使全部属性排在第一个
-		mode.addAttribute("articleTypeList", CollUtil.sortEntryToList(types));
+		mode.addAttribute("articleTypeList", DictUtil.list("文章属性"));
 		mode.addAttribute("articleType", articleType);
  		mode.addAttribute("categoryId", categoryId);
 		//返回文章页面显示地址
@@ -221,11 +206,10 @@ public class ArticleAction extends BaseAction {
 	public String add(ModelMap mode, HttpServletRequest request) {
 		int categoryId = this.getInt(request, "categoryId", 0);
 		String categoryTitle = request.getParameter("categoryTitle");
-		String booleanParent = request.getParameter("booleanParent");
 		// 文章属性
-		mode.addAttribute("articleType", articleType());
+		mode.addAttribute("articleType", DictUtil.list("文章属性"));
 		// 站点ID
-		int appId = this.getAppId(request);
+		int appId = BasicUtil.getAppId();
 		List<ColumnEntity> list = columnBiz.queryAll(appId, this.getModelCodeId(request, ModelCode.CMS_COLUMN));
 		mode.addAttribute("appId", appId);
 		mode.addAttribute("listColumn", JSONArray.toJSONString(list));
@@ -268,7 +252,7 @@ public class ArticleAction extends BaseAction {
 	@RequiresPermissions("article:save")
 	public void save(@ModelAttribute ArticleEntity article, HttpServletRequest request, HttpServletResponse response) {
 		// 获取站点id
-		int appId = this.getAppId(request);
+		int appId = BasicUtil.getAppId();
 		// 验证文章，文章自由排序，栏目id
 		if (!validateForm(article, response)) {
 			this.outJson(response, ModelCode.CMS_ARTICLE, false);
@@ -411,7 +395,7 @@ public class ArticleAction extends BaseAction {
 	public void update(@PathVariable int basicId, @ModelAttribute ArticleEntity article, HttpServletRequest request,
 			HttpServletResponse response) {
 		// 获取站点id
-		int appId = this.getAppId(request);
+		int appId = BasicUtil.getAppId();
 		article.setBasicUpdateTime(new Timestamp(System.currentTimeMillis()));
 		// 文章类型
 		String checkboxType = BasicUtil.getString("checkboxType");
@@ -524,7 +508,7 @@ public class ArticleAction extends BaseAction {
 		// 板块id
 		int categoryId = this.getInt(request, "categoryId", 0);
 		ArticleEntity articleEntity = null;
-		int appId = this.getAppId(request);
+		int appId = BasicUtil.getAppId();
 		model.addAttribute("appId", appId);
 		model.addAttribute("articleImagesUrl", "/upload/"+BasicUtil.getAppId()+"/");
 		if (categoryId > 0) { // 分类获取文章
@@ -533,7 +517,7 @@ public class ArticleAction extends BaseAction {
 			int columnType = column.getColumnType();
 			model.addAttribute("article", articleEntity);
 			// 文章属性
-			model.addAttribute("articleType", articleType());
+			model.addAttribute("articleType", DictUtil.list("文章属性"));
 			model.addAttribute("categoryTitle", categoryTitle);
 			model.addAttribute("categoryId", categoryId);// 编辑封面
 			model.addAttribute("isEditCategory", true);// 编辑封面
@@ -546,7 +530,7 @@ public class ArticleAction extends BaseAction {
 			String listJsonString = JSONArray.toJSONString(list);
 			request.setAttribute("listColumn", listJsonString);
 			// 文章属性
-			model.addAttribute("articleType", articleType());
+			model.addAttribute("articleType", DictUtil.list("文章属性"));
 
 			articleEntity = (ArticleEntity) articleBiz.getEntity(id);
 			model.addAttribute("article", articleEntity);
@@ -580,7 +564,7 @@ public class ArticleAction extends BaseAction {
 	@RequestMapping("/delete")
 	@RequiresPermissions("article:del")
 	public void delete(@RequestBody List<ArticleEntity> article, HttpServletRequest request, HttpServletResponse response) {
-		int appId = this.getAppId(request);
+		int appId = BasicUtil.getAppId();
 		int[] ids = new int[article.size()];
 		//循环获取id数据
 		for(int i=0;i<article.size();i++){

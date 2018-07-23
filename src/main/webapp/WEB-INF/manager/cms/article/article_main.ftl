@@ -2,7 +2,7 @@
 	<@ms.nav title="文章列表"></@ms.nav>
 	<@ms.searchForm   name="searchForm" action="">
 			<#if articleTypeList?has_content>
-				<@ms.select label="文章属性"     name="articleType" id="forumSelect"  list=articleTypeList  listValue="value"   listKey="key"    value="${articleType?default('')}"/>
+				<@ms.select label="文章属性" default="全部" value="a" name="articleType" id="forumSelect"  list=articleTypeList  listValue="dictLabel"   listKey="dictValue"    value="${articleType?default('')}"/>
 			<#else>
 				<@ms.select label="文章属性"     name="articleType" id="forumSelect" value="" list=["默认属性"]  />
 			</#if>
