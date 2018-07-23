@@ -1,19 +1,3 @@
-/*
- Navicat Premium Data Transfer
-
- Source Server         : SQLServerMcms
- Source Server Type    : SQL Server
- Source Server Version : 11003128
- Source Host           : 192.168.0.112:1433
- Source Catalog        : mcms
- Source Schema         : dbo
-
- Target Server Type    : SQL Server
- Target Server Version : 11003128
- File Encoding         : 65001
-
- Date: 10/05/2018 16:45:30
-*/
 
 
 -- ----------------------------
@@ -38,7 +22,8 @@ CREATE TABLE [app] (
   [app_pay_date] datetime2(7) NULL,
   [app_pay] nvarchar(300) COLLATE Chinese_PRC_CI_AS NULL,
   [app_state] int DEFAULT ((0)) NOT NULL,
-  [app_mobile_state] int DEFAULT ((0)) NOT NULL
+  [app_mobile_state] int DEFAULT ((0)) NOT NULL,
+  [app_login_page] nvarchar(255) COLLATE Chinese_PRC_CI_AS NULL
 )
 GO
 
@@ -151,6 +136,13 @@ EXEC sp_addextendedproperty
 GO
 
 EXEC sp_addextendedproperty
+'MS_Description', N'自定义登录界面',
+'SCHEMA', N'dbo',
+'TABLE', N'app',
+'COLUMN', N'app_login_page'
+GO
+
+EXEC sp_addextendedproperty
 'MS_Description', N'应用表',
 'SCHEMA', N'dbo',
 'TABLE', N'app'
@@ -163,8 +155,8 @@ GO
 SET IDENTITY_INSERT [app] ON
 GO
 
-INSERT INTO [app] ([app_id], [app_name], [app_url], [app_logo], [app_keyword], [app_copyright], [app_style], [app_managerid], [app_description], [app_datetime], [app_mobile_style], [app_pay_date], [app_pay], [app_state], [app_mobile_state]) VALUES (N'1', N'MCMS-OPEN', N'http://localhost:8080/ms-mcms
-', N'', N'', N'', N'mooc', N'50', N'', NULL, N'm', NULL, N'', N'0', N'0')
+INSERT INTO [app] ([app_id], [app_name], [app_url], [app_logo], [app_keyword], [app_copyright], [app_style], [app_managerid], [app_description], [app_datetime], [app_mobile_style], [app_pay_date], [app_pay], [app_state], [app_mobile_state],[app_login_page]) VALUES (N'1', N'MCMS-OPEN', N'http://localhost:8080/ms-mcms
+', N'', N'', N'', N'mooc', N'50', N'', NULL, N'm', NULL, N'', N'0', N'0',null)
 GO
 
 SET IDENTITY_INSERT [app] OFF
@@ -194,7 +186,8 @@ CREATE TABLE [basic] (
   [basic_comment] int NULL,
   [basic_collect] int NULL,
   [basic_share] int NULL,
-  [basic_type] nvarchar(255) COLLATE Chinese_PRC_CI_AS NULL
+  [basic_type] nvarchar(255) COLLATE Chinese_PRC_CI_AS NULL,
+  [basic_display] int DEFAULT ((0)) NOT NULL
 )
 GO
 
@@ -314,6 +307,13 @@ EXEC sp_addextendedproperty
 GO
 
 EXEC sp_addextendedproperty
+'MS_Description', N'显示属性 0显示1不显示',
+'SCHEMA', N'dbo',
+'TABLE', N'basic',
+'COLUMN', N'basic_display'
+GO
+
+EXEC sp_addextendedproperty
 'MS_Description', N'基础表',
 'SCHEMA', N'dbo',
 'TABLE', N'basic'
@@ -326,304 +326,304 @@ GO
 SET IDENTITY_INSERT [basic] ON
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'24', N'关于我们', N'  公司于2012年3月8日，已正式向《景德镇市工商行政管理局》领取营业   执照。\r\n  公司名称：景德镇铭飞科技有限公司\r\n  经营范围：计算机系统服务及技术开发、咨询服务', N'', N'0', N'0', N'2015-09-18 16:31:18.0000000', N'2016-06-02 11:07:36.0000000', N'0', N'19', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'24', N'关于我们', N'  公司于2012年3月8日，已正式向《景德镇市工商行政管理局》领取营业   执照。\r\n  公司名称：景德镇铭飞科技有限公司\r\n  经营范围：计算机系统服务及技术开发、咨询服务', N'', N'0', N'0', N'2015-09-18 16:31:18.0000000', N'2016-06-02 11:07:36.0000000', N'0', N'19', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'32', N'为远行的人', N'', N'', N'0', N'0', N'2016-03-16 17:26:37.0000000', N'2016-05-19 17:50:56.0000000', N'0', N'146', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'32', N'为远行的人', N'', N'', N'0', N'0', N'2016-03-16 17:26:37.0000000', N'2016-05-19 17:50:56.0000000', N'0', N'146', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'33', N'一生学做人', N'', N'', N'0', N'0', N'2016-03-16 17:27:31.0000000', N'2016-06-02 11:35:20.0000000', N'0', N'146', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'33', N'一生学做人', N'', N'', N'0', N'0', N'2016-03-16 17:27:31.0000000', N'2016-06-02 11:35:20.0000000', N'0', N'146', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'34', N'何处惹尘埃', N'', N'', N'0', N'0', N'2016-03-16 17:29:06.0000000', N'2016-05-19 17:50:31.0000000', N'0', N'146', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'34', N'何处惹尘埃', N'', N'', N'0', N'0', N'2016-03-16 17:29:06.0000000', N'2016-05-19 17:50:31.0000000', N'0', N'146', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'35', N'雨夜，晚归人', N'', N'', N'0', N'0', N'2016-03-16 17:31:11.0000000', N'2016-05-19 17:50:10.0000000', N'0', N'146', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'35', N'雨夜，晚归人', N'', N'', N'0', N'0', N'2016-03-16 17:31:11.0000000', N'2016-05-19 17:50:10.0000000', N'0', N'146', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'36', N'网站建设', N'网站设计 网站制作 网站维护 网站改版', N'/upload/article/1638/1464868285592.png', N'0', N'0', N'2016-03-16 17:41:27.0000000', N'2016-06-02 19:51:27.0000000', N'0', N'53', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'36', N'网站建设', N'网站设计 网站制作 网站维护 网站改版', N'/upload/article/1638/1464868285592.png', N'0', N'0', N'2016-03-16 17:41:27.0000000', N'2016-06-02 19:51:27.0000000', N'0', N'53', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'37', N'人才招聘', N'企业内部的竞聘、晋升机制，为员工提供了公平竞争的机会。通过挖掘企业内部的人才，调动内部人员的潜力和积极性，促进了优秀人才脱颖而出，实现人力资源的合理配置，把\"合适的人放在合适的地方\"。', N'', N'0', N'0', N'2016-03-16 17:48:38.0000000', N'2016-06-04 11:08:08.0000000', N'0', N'146', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'37', N'人才招聘', N'企业内部的竞聘、晋升机制，为员工提供了公平竞争的机会。通过挖掘企业内部的人才，调动内部人员的潜力和积极性，促进了优秀人才脱颖而出，实现人力资源的合理配置，把\"合适的人放在合适的地方\"。', N'', N'0', N'0', N'2016-03-16 17:48:38.0000000', N'2016-06-04 11:08:08.0000000', N'0', N'146', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'52', N'响应式Web设计的9项基本原则', N'响应式web设计对于解决多类型屏幕问题来说是个', N'/upload/article/1/1458980355125.png', N'0', N'0', N'2016-03-26 14:43:40.0000000', N'2016-06-02 15:00:26.0000000', N'0', N'65', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'52', N'响应式Web设计的9项基本原则', N'响应式web设计对于解决多类型屏幕问题来说是个', N'/upload/article/1/1458980355125.png', N'0', N'0', N'2016-03-26 14:43:40.0000000', N'2016-06-02 15:00:26.0000000', N'0', N'65', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'53', N'导航设计模式的重要意义', N'Gmai 就 是单页应用的一个很好的例子，其将多项', N'/upload/article/1/1458981328236.jpeg', N'0', N'0', N'2016-03-26 14:49:14.0000000', N'2016-06-02 15:00:32.0000000', N'0', N'65', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'53', N'导航设计模式的重要意义', N'Gmai 就 是单页应用的一个很好的例子，其将多项', N'/upload/article/1/1458981328236.jpeg', N'0', N'0', N'2016-03-26 14:49:14.0000000', N'2016-06-02 15:00:32.0000000', N'0', N'65', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'54', N'如何进行可用性启发式评估', N'用 户体验只有在渗透入从创意到开发测试等产品', N'/upload/article/1/1458981122379.png', N'0', N'0', N'2016-03-26 15:47:29.0000000', N'2016-06-02 15:00:59.0000000', N'0', N'67', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'54', N'如何进行可用性启发式评估', N'用 户体验只有在渗透入从创意到开发测试等产品', N'/upload/article/1/1458981122379.png', N'0', N'0', N'2016-03-26 15:47:29.0000000', N'2016-06-02 15:00:59.0000000', N'0', N'67', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'55', N'响应式Web设计的9项基本原则', N'想象一下走进一个狭小拥挤，遍地垃圾的商店。店', N'/upload/article/1/1458981072779.jpg', N'0', N'0', N'2016-03-26 15:50:20.0000000', N'2016-06-02 15:00:54.0000000', N'0', N'67', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'55', N'响应式Web设计的9项基本原则', N'想象一下走进一个狭小拥挤，遍地垃圾的商店。店', N'/upload/article/1/1458981072779.jpg', N'0', N'0', N'2016-03-26 15:50:20.0000000', N'2016-06-02 15:00:54.0000000', N'0', N'67', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'56', N'原生App切图的那些事儿', N'最小的分辨率是320x480，我们把这个尺寸定为基', N'/upload/article/1/1458981027610.png', N'1', N'0', N'2016-03-26 15:51:39.0000000', N'2016-06-02 15:00:48.0000000', N'0', N'66', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'56', N'原生App切图的那些事儿', N'最小的分辨率是320x480，我们把这个尺寸定为基', N'/upload/article/1/1458981027610.png', N'1', N'0', N'2016-03-26 15:51:39.0000000', N'2016-06-02 15:00:48.0000000', N'0', N'66', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'57', N'11个小妙招激发你的灵感', N'感到自己深陷千篇一律的设计泥潭无法自拔？ Sty', N'/upload/article/1/1458980990018.jpeg', N'1', N'0', N'2016-03-26 15:52:27.0000000', N'2016-06-02 15:00:37.0000000', N'0', N'65', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'57', N'11个小妙招激发你的灵感', N'感到自己深陷千篇一律的设计泥潭无法自拔？ Sty', N'/upload/article/1/1458980990018.jpeg', N'1', N'0', N'2016-03-26 15:52:27.0000000', N'2016-06-02 15:00:37.0000000', N'0', N'65', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'58', N'5项提高产品设计的交互模式', N'在这个简短的移动端设计模式系列文章的前几篇中', N'/upload/article/1/1458980956132.jpeg', N'1', N'0', N'2016-03-26 15:53:20.0000000', N'2016-06-02 15:00:43.0000000', N'0', N'65', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'58', N'5项提高产品设计的交互模式', N'在这个简短的移动端设计模式系列文章的前几篇中', N'/upload/article/1/1458980956132.jpeg', N'1', N'0', N'2016-03-26 15:53:20.0000000', N'2016-06-02 15:00:43.0000000', N'0', N'65', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'59', N'在网页设计中运用柔和色调', N'网页中的柔和色调的使用，不止是近来的趋势，这', N'/upload/article/1/1458980935362.jpg', N'1', N'0', N'2016-03-26 15:54:17.0000000', N'2016-06-02 15:00:19.0000000', N'0', N'65', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'59', N'在网页设计中运用柔和色调', N'网页中的柔和色调的使用，不止是近来的趋势，这', N'/upload/article/1/1458980935362.jpg', N'1', N'0', N'2016-03-26 15:54:17.0000000', N'2016-06-02 15:00:19.0000000', N'0', N'65', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'60', N'细数那些精彩纷呈的引导页', N'随着苹果ios8的发布，可以看到App store货架上', N'/upload/article/1/1458980789639.png', N'0', N'0', N'2016-03-26 16:07:08.0000000', N'2016-06-02 15:00:09.0000000', N'0', N'65', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'60', N'细数那些精彩纷呈的引导页', N'随着苹果ios8的发布，可以看到App store货架上', N'/upload/article/1/1458980789639.png', N'0', N'0', N'2016-03-26 16:07:08.0000000', N'2016-06-02 15:00:09.0000000', N'0', N'65', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'61', N'从摄影的角度看设计', N'一幅好照片要把观众的注意力吸引到趣味中心mdas', N'/upload/article/1/1458980625909.jpg', N'1', N'0', N'2016-03-26 16:07:55.0000000', N'2016-06-02 14:59:55.0000000', N'0', N'65', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'61', N'从摄影的角度看设计', N'一幅好照片要把观众的注意力吸引到趣味中心mdas', N'/upload/article/1/1458980625909.jpg', N'1', N'0', N'2016-03-26 16:07:55.0000000', N'2016-06-02 14:59:55.0000000', N'0', N'65', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'62', N'国内java开源商城系统', N'MCMS(http://ms.mingsoft.net)是企业创立初期很好的基础框架，不仅可以实现和现有系统的对接而且有大量的插件模版可以使用。', N'/upload/article/1/1458980449738.jpeg', N'1', N'0', N'2016-03-26 16:08:53.0000000', N'2016-06-02 14:59:46.0000000', N'0', N'65', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'62', N'国内java开源商城系统', N'MCMS(http://ms.mingsoft.net)是企业创立初期很好的基础框架，不仅可以实现和现有系统的对接而且有大量的插件模版可以使用。', N'/upload/article/1/1458980449738.jpeg', N'1', N'0', N'2016-03-26 16:08:53.0000000', N'2016-06-02 14:59:46.0000000', N'0', N'65', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'63', N'国内java开源 cms系统', N'MCMS(http://ms.mingsoft.net)是企业创立初期很好的基础框架，不仅可以实现和现有系统的对接而且有大量的插件模版可以使用。', N'/upload/article/1/1458980395756.jpg', N'1', N'0', N'2016-03-26 16:09:27.0000000', N'2016-06-02 14:59:39.0000000', N'0', N'65', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'63', N'国内java开源 cms系统', N'MCMS(http://ms.mingsoft.net)是企业创立初期很好的基础框架，不仅可以实现和现有系统的对接而且有大量的插件模版可以使用。', N'/upload/article/1/1458980395756.jpg', N'1', N'0', N'2016-03-26 16:09:27.0000000', N'2016-06-02 14:59:39.0000000', N'0', N'65', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'70', N'2015年 铭飞MCms获得最热门开源项目第40位', N'自 Git@OSC 上线以来受到广大开源作者的喜爱。值此新年之际，开源中国整理出 Git@OSC 最热门开源项目 Top50，对 Git@OSC 的发展至今所取得的成绩进行总结。此榜单主要通过开源项目的 Watch、Star、Fork 数量来评定', N'/upload/article/1/1461384072200.jpeg', N'1', N'0', N'2016-03-27 09:34:58.0000000', N'2016-06-02 19:38:12.0000000', N'0', N'69', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'70', N'2015年 铭飞MCms获得最热门开源项目第40位', N'自 Git@OSC 上线以来受到广大开源作者的喜爱。值此新年之际，开源中国整理出 Git@OSC 最热门开源项目 Top50，对 Git@OSC 的发展至今所取得的成绩进行总结。此榜单主要通过开源项目的 Watch、Star、Fork 数量来评定', N'/upload/article/1/1461384072200.jpeg', N'1', N'0', N'2016-03-27 09:34:58.0000000', N'2016-06-02 19:38:12.0000000', N'0', N'69', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'71', N'国内java开源 cms系统', N'MCMS(http://ms.mingsoft.net)是企业创立初期很好的基础框架，不仅可以实现和现有系统的对接而且有大量的插件模版可以使用。', N'/upload/article/1638/1464847653084.jpeg', N'0', N'0', N'2016-03-27 09:36:45.0000000', N'2016-06-03 19:48:52.0000000', N'0', N'68', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'71', N'国内java开源 cms系统', N'MCMS(http://ms.mingsoft.net)是企业创立初期很好的基础框架，不仅可以实现和现有系统的对接而且有大量的插件模版可以使用。', N'/upload/article/1638/1464847653084.jpeg', N'0', N'0', N'2016-03-27 09:36:45.0000000', N'2016-06-03 19:48:52.0000000', N'0', N'68', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'72', N'2016年CMS开源系统排行榜', N'CMS（Content Management System),中文叫作整站系统、文章系统。\r\n大概2004以前，如果想进行网站内容管理,基本上都是靠手工维护,但千变万化的信息流，但没有好的程序支持，还继续靠手工完成是不可能的事。', N'/upload/article/1/1461384142045.png', N'0', N'0', N'2016-03-27 09:37:07.0000000', N'2016-06-03 19:49:00.0000000', N'0', N'68', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'72', N'2016年CMS开源系统排行榜', N'CMS（Content Management System),中文叫作整站系统、文章系统。\r\n大概2004以前，如果想进行网站内容管理,基本上都是靠手工维护,但千变万化的信息流，但没有好的程序支持，还继续靠手工完成是不可能的事。', N'/upload/article/1/1461384142045.png', N'0', N'0', N'2016-03-27 09:37:07.0000000', N'2016-06-03 19:49:00.0000000', N'0', N'68', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'73', N'国内java开源商城系统', N'MCMS(http://ms.mingsoft.net)是企业创立初期很好的基础框架，不仅可以实现和现有系统的对接而且有大量的插件模版可以使用。', N'/upload/article/1/1461384035654.png', N'2', N'0', N'2016-03-27 09:37:46.0000000', N'2016-06-03 19:49:09.0000000', N'0', N'68', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'73', N'国内java开源商城系统', N'MCMS(http://ms.mingsoft.net)是企业创立初期很好的基础框架，不仅可以实现和现有系统的对接而且有大量的插件模版可以使用。', N'/upload/article/1/1461384035654.png', N'2', N'0', N'2016-03-27 09:37:46.0000000', N'2016-06-03 19:49:09.0000000', N'0', N'68', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'74', N'国内java开源bbs系统', N'当前版本:5.4.2 铭飞MS官网:http://ms.mingsoft.net官网同时提供一键运行版本下载，请步移官网....', N'/upload/article/1/1461383961935.png', N'1', N'0', N'2016-03-27 09:38:15.0000000', N'2016-06-02 19:24:56.0000000', N'0', N'68', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'74', N'国内java开源bbs系统', N'当前版本:5.4.2 铭飞MS官网:http://ms.mingsoft.net官网同时提供一键运行版本下载，请步移官网....', N'/upload/article/1/1461383961935.png', N'1', N'0', N'2016-03-27 09:38:15.0000000', N'2016-06-02 19:24:56.0000000', N'0', N'68', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'92', N'建站资源共享学习平台', N'专业提供网站模板，网页模板，教程培训，程序插件，网站素材等建站资源。我们致力于打造一个优秀的建站资源共享学习平台！从零开始系统全面的教你如何建立一个属于自己的网站。能够自己搭建一个网站，并通过优化推广实现盈利。0基础由浅入深的带您走进的世界。掌握程序的操作和使用，能独立开发模板并能运用进行仿站。专业提供网站模板，网页模板，教程培训，程序插件，网站素材等建站资源。', N'', N'0', N'0', N'2016-03-28 16:39:44.0000000', N'2016-06-02 10:07:19.0000000', N'0', N'83', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'92', N'建站资源共享学习平台', N'专业提供网站模板，网页模板，教程培训，程序插件，网站素材等建站资源。我们致力于打造一个优秀的建站资源共享学习平台！从零开始系统全面的教你如何建立一个属于自己的网站。能够自己搭建一个网站，并通过优化推广实现盈利。0基础由浅入深的带您走进的世界。掌握程序的操作和使用，能独立开发模板并能运用进行仿站。专业提供网站模板，网页模板，教程培训，程序插件，网站素材等建站资源。', N'', N'0', N'0', N'2016-03-28 16:39:44.0000000', N'2016-06-02 10:07:19.0000000', N'0', N'83', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'93', N'从零开始系统全面的教你如何建立一个属于自己的网站', N'专业提供网站模板，网页模板，教程培训，程序插件，网站素材等建站资源。我们致力于打造一个优秀的建站资源共享学习平台！从零开始系统全面的教你如何建立一个属于自己的网站。能够自己搭建一个网站，并通过优化推广实现盈利。0基础由浅入深的带您走进的世界。掌握程序的操作和使用，能独立开发模板并能运用进行仿站。专业提供网站模板，网页模板，教程培训，程序插件，网站素材等建站资源。', N'', N'0', N'0', N'2016-03-28 16:40:18.0000000', N'2016-06-02 10:06:14.0000000', N'0', N'83', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'93', N'从零开始系统全面的教你如何建立一个属于自己的网站', N'专业提供网站模板，网页模板，教程培训，程序插件，网站素材等建站资源。我们致力于打造一个优秀的建站资源共享学习平台！从零开始系统全面的教你如何建立一个属于自己的网站。能够自己搭建一个网站，并通过优化推广实现盈利。0基础由浅入深的带您走进的世界。掌握程序的操作和使用，能独立开发模板并能运用进行仿站。专业提供网站模板，网页模板，教程培训，程序插件，网站素材等建站资源。', N'', N'0', N'0', N'2016-03-28 16:40:18.0000000', N'2016-06-02 10:06:14.0000000', N'0', N'83', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'94', N'0基础由浅入深的带您走进的世界', N'专业提供网站模板，网页模板，教程培训，程序插件，网站素材等建站资源。我们致力于打造一个优秀的建站资源共享学习平台！从零开始系统全面的教你如何建立一个属于自己的网站。能够自己搭建一个网站，并通过优化推广实现盈利。0基础由浅入深的带您走进的世界。掌握程序的操作和使用，能独立开发模板并能运用进行仿站。专业提供网站模板，网页模板，教程培训，程序插件，网站素材等建站资源。', N'', N'0', N'0', N'2016-03-28 16:41:12.0000000', N'2016-06-02 10:06:32.0000000', N'0', N'83', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'94', N'0基础由浅入深的带您走进的世界', N'专业提供网站模板，网页模板，教程培训，程序插件，网站素材等建站资源。我们致力于打造一个优秀的建站资源共享学习平台！从零开始系统全面的教你如何建立一个属于自己的网站。能够自己搭建一个网站，并通过优化推广实现盈利。0基础由浅入深的带您走进的世界。掌握程序的操作和使用，能独立开发模板并能运用进行仿站。专业提供网站模板，网页模板，教程培训，程序插件，网站素材等建站资源。', N'', N'0', N'0', N'2016-03-28 16:41:12.0000000', N'2016-06-02 10:06:32.0000000', N'0', N'83', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'95', N'网站模板', N'专业提供网站模板，网页模板，教程培训，程序插件，网站素材等建站资源。', N'', N'0', N'0', N'2016-03-28 16:54:59.0000000', N'2016-06-02 10:07:56.0000000', N'0', N'84', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'95', N'网站模板', N'专业提供网站模板，网页模板，教程培训，程序插件，网站素材等建站资源。', N'', N'0', N'0', N'2016-03-28 16:54:59.0000000', N'2016-06-02 10:07:56.0000000', N'0', N'84', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'96', N'建站培训', N'专业提供网站模板，网页模板，教程培训，程序插件，网站素材等建站资源。', N'', N'0', N'0', N'2016-03-28 16:55:22.0000000', N'2016-06-02 10:07:51.0000000', N'0', N'84', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'96', N'建站培训', N'专业提供网站模板，网页模板，教程培训，程序插件，网站素材等建站资源。', N'', N'0', N'0', N'2016-03-28 16:55:22.0000000', N'2016-06-02 10:07:51.0000000', N'0', N'84', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'97', N'模板', N'专业提供网站模板，网页模板，教程培训，程序插件，网站素材等建站资源。', N'', N'0', N'0', N'2016-03-28 16:55:43.0000000', N'2016-06-02 10:07:46.0000000', N'0', N'84', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'97', N'模板', N'专业提供网站模板，网页模板，教程培训，程序插件，网站素材等建站资源。', N'', N'0', N'0', N'2016-03-28 16:55:43.0000000', N'2016-06-02 10:07:46.0000000', N'0', N'84', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'98', N'视频课程', N'专业提供网站模板，网页模板，教程培训，程序插件，网站素材等建站资源。', N'', N'0', N'0', N'2016-03-28 16:56:27.0000000', N'2016-06-02 10:07:40.0000000', N'0', N'84', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'98', N'视频课程', N'专业提供网站模板，网页模板，教程培训，程序插件，网站素材等建站资源。', N'', N'0', N'0', N'2016-03-28 16:56:27.0000000', N'2016-06-02 10:07:40.0000000', N'0', N'84', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'112', N'新科科技', N'在网上寻觅了很久很久。终于找到了这里。晃眼一看，好多漂亮的模板。下载了几个都很好用。希望越做越好，多提供些精品资源！找了好久啊，一直想有一个这样的网站，找来找去，老感觉么有合适的。偶然间来到这儿，爽。找到啦！对于网站建设新手来说，是一个最好的平台，你可以随心找到你最喜欢的网站模板，做出你喜欢的网站。\r\n专业提供网站模板，网页模板，模板教程，网页制作，程序插件，网站素材等建站资源，我们致为于打造优秀的建站资源共享平台！ ', N'/upload/article/1/1459305011132.png', N'0', N'0', N'2016-03-30 10:28:39.0000000', N'2016-06-02 15:19:51.0000000', N'0', N'87', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'112', N'新科科技', N'在网上寻觅了很久很久。终于找到了这里。晃眼一看，好多漂亮的模板。下载了几个都很好用。希望越做越好，多提供些精品资源！找了好久啊，一直想有一个这样的网站，找来找去，老感觉么有合适的。偶然间来到这儿，爽。找到啦！对于网站建设新手来说，是一个最好的平台，你可以随心找到你最喜欢的网站模板，做出你喜欢的网站。\r\n专业提供网站模板，网页模板，模板教程，网页制作，程序插件，网站素材等建站资源，我们致为于打造优秀的建站资源共享平台！ ', N'/upload/article/1/1459305011132.png', N'0', N'0', N'2016-03-30 10:28:39.0000000', N'2016-06-02 15:19:51.0000000', N'0', N'87', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'113', N'联娱公司', N'找模板找了很久了，于是找到了，觉的这里的模板很不错，下载了两套试试，果然可以用。于是充值了，希望站长以后多多指点啊！站长很友好，为我们这些新手站长提供这么多的模版。大家一起交流，才能成长得更快吧！感谢，感谢网友，你们辛苦了！对于网站建设新手来说，是一个最好的平台，你可以随心找到你最喜欢的网站模板，做出你喜欢的网站。专业提供网站模板，网页模板，模板教程，网页制作，程序插件，网站素材等建站资源，我们致为于打造优秀的建站资源共享平台！ ', N'/upload/article/1/1459305021450.png', N'0', N'0', N'2016-03-30 10:29:13.0000000', N'2016-06-02 15:19:14.0000000', N'0', N'87', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'113', N'联娱公司', N'找模板找了很久了，于是找到了，觉的这里的模板很不错，下载了两套试试，果然可以用。于是充值了，希望站长以后多多指点啊！站长很友好，为我们这些新手站长提供这么多的模版。大家一起交流，才能成长得更快吧！感谢，感谢网友，你们辛苦了！对于网站建设新手来说，是一个最好的平台，你可以随心找到你最喜欢的网站模板，做出你喜欢的网站。专业提供网站模板，网页模板，模板教程，网页制作，程序插件，网站素材等建站资源，我们致为于打造优秀的建站资源共享平台！ ', N'/upload/article/1/1459305021450.png', N'0', N'0', N'2016-03-30 10:29:13.0000000', N'2016-06-02 15:19:14.0000000', N'0', N'87', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'130', N'关于我们', N'广州城市规划设计有限公司是中欧国际旅游规划设计研究院（Sino-Europe Academy of Tourism Planning and Design）旗下之专业机构，公司专注于城市规...', N'/upload/article/1/1460376794567.jpg', N'0', N'0', N'2016-04-11 20:02:32.0000000', N'2016-06-02 11:27:17.0000000', N'0', N'93', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'130', N'关于我们', N'广州城市规划设计有限公司是中欧国际旅游规划设计研究院（Sino-Europe Academy of Tourism Planning and Design）旗下之专业机构，公司专注于城市规...', N'/upload/article/1/1460376794567.jpg', N'0', N'0', N'2016-04-11 20:02:32.0000000', N'2016-06-02 11:27:17.0000000', N'0', N'93', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'131', N'主营业务', N'互联网时代正在颠覆旅游业传统的商业模式。CEDAR积极应对这种变革，依托中欧国际旅游规划设计研究院（SEATPD）的资源优势，推动文化、地产与旅游业的横向联合发展，以此延伸到移动互联、绿色农业、金融资本、现代物流业等产业领域。', N'/upload/article/1638/1464838231122.jpg', N'0', N'5', N'2016-04-11 20:20:42.0000000', N'2016-06-03 14:29:55.0000000', N'0', N'94', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'131', N'主营业务', N'互联网时代正在颠覆旅游业传统的商业模式。CEDAR积极应对这种变革，依托中欧国际旅游规划设计研究院（SEATPD）的资源优势，推动文化、地产与旅游业的横向联合发展，以此延伸到移动互联、绿色农业、金融资本、现代物流业等产业领域。', N'/upload/article/1638/1464838231122.jpg', N'0', N'5', N'2016-04-11 20:20:42.0000000', N'2016-06-03 14:29:55.0000000', N'0', N'94', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'132', N'合作伙伴', N'让设计充满新奇和创造力，同时也饱含着和谐、力量与深意。\r\n\"适度\" 是一种幸福的生活态度。\r\n设计哲学 \"合适的设计\"，设计中最难的环节往往并非创新，而是在精确适配下的创造。\r\n打造令人灵感迸发及纵情享受的情绪空间。\r\n', N'/upload/article/1638/1464838215050.jpg', N'0', N'0', N'2016-04-11 20:21:45.0000000', N'2016-06-02 17:38:19.0000000', N'0', N'95', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'132', N'合作伙伴', N'让设计充满新奇和创造力，同时也饱含着和谐、力量与深意。\r\n\"适度\" 是一种幸福的生活态度。\r\n设计哲学 \"合适的设计\"，设计中最难的环节往往并非创新，而是在精确适配下的创造。\r\n打造令人灵感迸发及纵情享受的情绪空间。\r\n', N'/upload/article/1638/1464838215050.jpg', N'0', N'0', N'2016-04-11 20:21:45.0000000', N'2016-06-02 17:38:19.0000000', N'0', N'95', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'133', N'合作伙伴', N'某某，中国知名室内设计师，2005年于北京创立筑邦臣设计公司，他擅长用东方哲学思考解决问题，关注各类空间形态对人的影响，同时注重设计的商业化表现。张海涛说：“希望在设计中融入丰富的文化表达，以打造可以令人思考的空间意境。”他一直坚信，中国拥有丰富的文化底蕴，在未来“中国设计”将充满无限可能！', N'/upload/article/1569/1461506188829.jpg', N'0', N'0', N'2016-04-11 20:23:48.0000000', N'2016-06-02 17:59:19.0000000', N'0', N'97', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'133', N'合作伙伴', N'某某，中国知名室内设计师，2005年于北京创立筑邦臣设计公司，他擅长用东方哲学思考解决问题，关注各类空间形态对人的影响，同时注重设计的商业化表现。张海涛说：“希望在设计中融入丰富的文化表达，以打造可以令人思考的空间意境。”他一直坚信，中国拥有丰富的文化底蕴，在未来“中国设计”将充满无限可能！', N'/upload/article/1569/1461506188829.jpg', N'0', N'0', N'2016-04-11 20:23:48.0000000', N'2016-06-02 17:59:19.0000000', N'0', N'97', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'134', N'亚太旅游规划设计十大影响力品牌', N'2009年12月13日由中国民族建筑研究会与中国 房地产 及住宅研究会共同主办，2009第六届中国人居典范建筑规划设计方案竞赛颁奖大会在北京京都信苑饭店隆重召开。经过九个多月来的精...', N'/upload/article/1/1460377619458.jpg', N'0', N'0', N'2016-04-11 20:27:43.0000000', N'2016-04-12 19:56:40.0000000', N'0', N'96', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'134', N'亚太旅游规划设计十大影响力品牌', N'2009年12月13日由中国民族建筑研究会与中国 房地产 及住宅研究会共同主办，2009第六届中国人居典范建筑规划设计方案竞赛颁奖大会在北京京都信苑饭店隆重召开。经过九个多月来的精...', N'/upload/article/1/1460377619458.jpg', N'0', N'0', N'2016-04-11 20:27:43.0000000', N'2016-04-12 19:56:40.0000000', N'0', N'96', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'135', N'2009中国人居典范●最佳设计方案', N'2009年12月13日由中国民族建筑研究会与中国 房地产 及住宅研究会共同主办，2009第六届中国人居典范建筑规划...', N'/upload/article/1/1460377712056.png', N'0', N'0', N'2016-04-11 20:28:48.0000000', N'2016-06-02 14:16:45.0000000', N'0', N'96', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'135', N'2009中国人居典范●最佳设计方案', N'2009年12月13日由中国民族建筑研究会与中国 房地产 及住宅研究会共同主办，2009第六届中国人居典范建筑规划...', N'/upload/article/1/1460377712056.png', N'0', N'0', N'2016-04-11 20:28:48.0000000', N'2016-06-02 14:16:45.0000000', N'0', N'96', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'136', N'定制化项目金融孵化模式', N'广州规划设计以金融资本为支撑，以规划设计为撬动点，协助旅游业开发高潜力项目，推动项目融资..', N'/upload/article/1585/1462265098563.jpg', N'0', N'0', N'2016-04-11 20:30:32.0000000', N'2016-05-03 16:45:00.0000000', N'0', N'98', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'136', N'定制化项目金融孵化模式', N'广州规划设计以金融资本为支撑，以规划设计为撬动点，协助旅游业开发高潜力项目，推动项目融资..', N'/upload/article/1585/1462265098563.jpg', N'0', N'0', N'2016-04-11 20:30:32.0000000', N'2016-05-03 16:45:00.0000000', N'0', N'98', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'137', N'幻灯一', N'', N'/upload/article/1638/1465808003859.jpg', N'0', N'0', N'2016-04-11 20:59:07.0000000', N'2016-06-13 16:53:24.0000000', N'0', N'147', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'137', N'幻灯一', N'', N'/upload/article/1638/1465808003859.jpg', N'0', N'0', N'2016-04-11 20:59:07.0000000', N'2016-06-13 16:53:24.0000000', N'0', N'147', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'138', N'幻灯二', N'', N'/upload/article/1638/1465808020382.jpg', N'0', N'0', N'2016-04-11 20:59:25.0000000', N'2016-06-13 16:53:40.0000000', N'0', N'147', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'138', N'幻灯二', N'', N'/upload/article/1638/1465808020382.jpg', N'0', N'0', N'2016-04-11 20:59:25.0000000', N'2016-06-13 16:53:40.0000000', N'0', N'147', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'139', N'幻灯三', N'', N'/upload/article/1638/1465808030831.jpg', N'0', N'0', N'2016-04-11 21:00:16.0000000', N'2016-06-13 16:53:51.0000000', N'0', N'147', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'139', N'幻灯三', N'', N'/upload/article/1638/1465808030831.jpg', N'0', N'0', N'2016-04-11 21:00:16.0000000', N'2016-06-13 16:53:51.0000000', N'0', N'147', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'140', N'幻灯四', N'', N'/upload/article/1638/1464858626484.jpg', N'0', N'0', N'2016-04-11 21:00:35.0000000', N'2016-06-02 17:25:01.0000000', N'0', N'147', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'140', N'幻灯四', N'', N'/upload/article/1638/1464858626484.jpg', N'0', N'0', N'2016-04-11 21:00:35.0000000', N'2016-06-02 17:25:01.0000000', N'0', N'147', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'141', N'城市规划', N'城市商业综合体规划 -新城（新区）规划 -温城市更新与旧城改造 -小城镇建设规划 -历史文化名城/镇保护研究与规划 -产业园区规划...', N'/upload/article/1/1460380106006.jpg', N'0', N'0', N'2016-04-11 21:09:07.0000000', N'2016-06-03 15:32:34.0000000', N'0', N'101', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'141', N'城市规划', N'城市商业综合体规划 -新城（新区）规划 -温城市更新与旧城改造 -小城镇建设规划 -历史文化名城/镇保护研究与规划 -产业园区规划...', N'/upload/article/1/1460380106006.jpg', N'0', N'0', N'2016-04-11 21:09:07.0000000', N'2016-06-03 15:32:34.0000000', N'0', N'101', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'142', N'环境艺术设计', N'CEDAR以美学与生态的双重视野开展环境艺术的探索与实践，营造健康、高雅、舒适、美观的现代生态环境，以此提升城市及旅游景区的软环境。...', N'/upload/article/1/1460380199624.jpg', N'0', N'0', N'2016-04-11 21:10:38.0000000', N'2016-06-02 17:57:25.0000000', N'0', N'102', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'142', N'环境艺术设计', N'CEDAR以美学与生态的双重视野开展环境艺术的探索与实践，营造健康、高雅、舒适、美观的现代生态环境，以此提升城市及旅游景区的软环境。...', N'/upload/article/1/1460380199624.jpg', N'0', N'0', N'2016-04-11 21:10:38.0000000', N'2016-06-02 17:57:25.0000000', N'0', N'102', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'143', N'旅游形象策划', N'在把握好旅游地的地脉（地理根据）、文脉（文化根据）和商脉（市场根据）的基础上，为旅游地做好旅游形象定位，并开展理念基础（MI）、行为准则（BI）、视觉形象（VI）的系统策...', N'/upload/article/1/1460380287863.jpg', N'0', N'0', N'2016-04-11 21:11:33.0000000', N'2016-06-02 17:57:30.0000000', N'0', N'103', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'143', N'旅游形象策划', N'在把握好旅游地的地脉（地理根据）、文脉（文化根据）和商脉（市场根据）的基础上，为旅游地做好旅游形象定位，并开展理念基础（MI）、行为准则（BI）、视觉形象（VI）的系统策...', N'/upload/article/1/1460380287863.jpg', N'0', N'0', N'2016-04-11 21:11:33.0000000', N'2016-06-02 17:57:30.0000000', N'0', N'103', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'144', N'旅游企业管理', N'目的地与景区管理： -发展战略规划 -营销管理体系咨询 -品牌管理体系咨询 -组织架构与流程再造 -投资运营与管理 -资源与环境保护 酒店管理： -酒店运营管理 -酒店物业管理 -酒店产品...', N'/upload/article/1/1460380343199.jpg', N'0', N'0', N'2016-04-11 21:12:42.0000000', N'2016-06-02 17:57:33.0000000', N'0', N'104', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'144', N'旅游企业管理', N'目的地与景区管理： -发展战略规划 -营销管理体系咨询 -品牌管理体系咨询 -组织架构与流程再造 -投资运营与管理 -资源与环境保护 酒店管理： -酒店运营管理 -酒店物业管理 -酒店产品...', N'/upload/article/1/1460380343199.jpg', N'0', N'0', N'2016-04-11 21:12:42.0000000', N'2016-06-02 17:57:33.0000000', N'0', N'104', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'146', N'广东梅州市雁洋旅游服务区域城市规划', N'项目地址：广东梅州市雁洋镇\r\n规划面积：1，281，863平方米\r\n项目委托：广东梅州市人民政府', N'/upload/article/1/1460380700438.png', N'0', N'0', N'2016-04-11 21:18:54.0000000', N'2016-06-02 15:06:21.0000000', N'0', N'107', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'146', N'广东梅州市雁洋旅游服务区域城市规划', N'项目地址：广东梅州市雁洋镇\r\n规划面积：1，281，863平方米\r\n项目委托：广东梅州市人民政府', N'/upload/article/1/1460380700438.png', N'0', N'0', N'2016-04-11 21:18:54.0000000', N'2016-06-02 15:06:21.0000000', N'0', N'107', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'147', N'海口湾酒店公寓第二期建筑设计', N'项目地址：海南省海口市北部海口湾西部滨海地区\r\n总用地面积：47957.1平方米\r\n总建筑面积：116154.65平方米\r\n总地上建筑面积：94523.55平方米', N'/upload/article/1/1460380774867.png', N'0', N'0', N'2016-04-11 21:20:05.0000000', N'2016-06-02 15:15:07.0000000', N'0', N'108', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'147', N'海口湾酒店公寓第二期建筑设计', N'项目地址：海南省海口市北部海口湾西部滨海地区\r\n总用地面积：47957.1平方米\r\n总建筑面积：116154.65平方米\r\n总地上建筑面积：94523.55平方米', N'/upload/article/1/1460380774867.png', N'0', N'0', N'2016-04-11 21:20:05.0000000', N'2016-06-02 15:15:07.0000000', N'0', N'108', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'148', N'昆山水月周庄旅游地产概念营销策划', N'周庄拥有丰富的自然资源、人文资源及极具优势的地理位置，区域发展潜力巨大，古镇旅游品牌价值大，区域发展热点已经形成，旅游经济的发展为房地产市场提供了巨大的想象空间。', N'/upload/article/1/1460380829450.jpg', N'0', N'0', N'2016-04-11 21:21:01.0000000', N'2016-06-02 15:06:16.0000000', N'0', N'107', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'148', N'昆山水月周庄旅游地产概念营销策划', N'周庄拥有丰富的自然资源、人文资源及极具优势的地理位置，区域发展潜力巨大，古镇旅游品牌价值大，区域发展热点已经形成，旅游经济的发展为房地产市场提供了巨大的想象空间。', N'/upload/article/1/1460380829450.jpg', N'0', N'0', N'2016-04-11 21:21:01.0000000', N'2016-06-02 15:06:16.0000000', N'0', N'107', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'149', N'京杭大运河旅游形象研究与策划', N'项目地址：浙江杭州、苏州\r\n项目委托：杭州市旅游局、苏州市旅游局\r\n \r\n运河文化，吴地风情', N'/upload/article/1/1460380900751.png', N'0', N'0', N'2016-04-11 21:22:08.0000000', N'2016-06-02 15:14:43.0000000', N'0', N'107', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'149', N'京杭大运河旅游形象研究与策划', N'项目地址：浙江杭州、苏州\r\n项目委托：杭州市旅游局、苏州市旅游局\r\n \r\n运河文化，吴地风情', N'/upload/article/1/1460380900751.png', N'0', N'0', N'2016-04-11 21:22:08.0000000', N'2016-06-02 15:14:43.0000000', N'0', N'107', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'150', N'佛山某师军史馆设计', N'', N'/upload/article/1/1460380995728.jpg', N'0', N'0', N'2016-04-11 21:23:19.0000000', N'2016-06-02 15:14:45.0000000', N'0', N'107', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'150', N'佛山某师军史馆设计', N'', N'/upload/article/1/1460380995728.jpg', N'0', N'0', N'2016-04-11 21:23:19.0000000', N'2016-06-02 15:14:45.0000000', N'0', N'107', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'157', N'旅游规划', N'- 区域旅游发展规划\r\n- 历史文化区旅游开发规划\r\n- 风景名胜区旅游开发规划', N'/upload/article/1/1460384875034.jpg', N'0', N'0', N'2016-04-11 22:28:02.0000000', N'2016-06-02 15:06:02.0000000', N'0', N'107', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'157', N'旅游规划', N'- 区域旅游发展规划\r\n- 历史文化区旅游开发规划\r\n- 风景名胜区旅游开发规划', N'/upload/article/1/1460384875034.jpg', N'0', N'0', N'2016-04-11 22:28:02.0000000', N'2016-06-02 15:06:02.0000000', N'0', N'107', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'158', N'旅游规划', N'区域旅游发展规划 -历史文化区旅游开发规划 -风景名胜区旅游开发规划 -生态旅游区开发规划 -温泉滨海度假区旅游开发规划 -旅游地产开发规划 -乡村旅游开发', N'/upload/article/1/1460385002423.jpg', N'0', N'0', N'2016-04-11 22:30:21.0000000', N'2016-06-02 17:58:24.0000000', N'0', N'101', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'158', N'旅游规划', N'区域旅游发展规划 -历史文化区旅游开发规划 -风景名胜区旅游开发规划 -生态旅游区开发规划 -温泉滨海度假区旅游开发规划 -旅游地产开发规划 -乡村旅游开发', N'/upload/article/1/1460385002423.jpg', N'0', N'0', N'2016-04-11 22:30:21.0000000', N'2016-06-02 17:58:24.0000000', N'0', N'101', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'163', N'得品牌者得市场', N'精益求精的网页制作人员、严谨的应用程序开发人员、尽善尽美的售后服务人员。这一切，是我们为您提供专业网站建设服务，也是让你在同行业中傲视群 雄', N'/upload/article/1638/1464746921150.jpg', N'0', N'0', N'2016-04-15 15:29:42.0000000', N'2016-06-03 20:16:45.0000000', N'0', N'99', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'163', N'得品牌者得市场', N'精益求精的网页制作人员、严谨的应用程序开发人员、尽善尽美的售后服务人员。这一切，是我们为您提供专业网站建设服务，也是让你在同行业中傲视群 雄', N'/upload/article/1638/1464746921150.jpg', N'0', N'0', N'2016-04-15 15:29:42.0000000', N'2016-06-03 20:16:45.0000000', N'0', N'99', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'164', N'海派卓越规划设计智业团队', N'广州规划设计麾下聚集了众多从美国旧金山艺术大学、奥本大学、香港理工大学毕业的海派旅游规', N'/upload/article/1585/1462265091247.jpg', N'0', N'0', N'2016-04-15 15:39:48.0000000', N'2016-05-03 16:44:52.0000000', N'0', N'98', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'164', N'海派卓越规划设计智业团队', N'广州规划设计麾下聚集了众多从美国旧金山艺术大学、奥本大学、香港理工大学毕业的海派旅游规', N'/upload/article/1585/1462265091247.jpg', N'0', N'0', N'2016-04-15 15:39:48.0000000', N'2016-05-03 16:44:52.0000000', N'0', N'98', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'165', N'高质量行业交互平台', N'广州规划设计创新构建协同式、交互式、大数据及系统式行业服务平台。。。', N'/upload/article/1585/1462265083093.jpg', N'0', N'0', N'2016-04-15 15:40:42.0000000', N'2016-06-02 17:59:22.0000000', N'0', N'98', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'165', N'高质量行业交互平台', N'广州规划设计创新构建协同式、交互式、大数据及系统式行业服务平台。。。', N'/upload/article/1585/1462265083093.jpg', N'0', N'0', N'2016-04-15 15:40:42.0000000', N'2016-06-02 17:59:22.0000000', N'0', N'98', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'166', N'01品牌创建', N'品牌命名/品牌文化/品牌识别设计\r\n最初的品牌播种，决定了品牌是要长成野草还是参天大树。所谓三岁看大，品牌风格确立也要从萌芽开始，让品牌自始至终保持活力与竞争力，健康茁长的成长。\r\n服务项目：\r\n品牌文化理念挖掘 / 挖掘一种品牌文化，并力求这种文化与更多目标消费群相关品牌命名 /\r\n创造符合品牌精神的独特名称 / 品牌视觉识别（VIS）设计 /\r\n基于市场与设计角度创造严谨而实用的形象设计 /', N'/upload/article/1/1460771365547.jpg', N'0', N'0', N'2016-04-16 09:49:44.0000000', N'2016-04-29 17:23:22.0000000', N'0', N'62', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'166', N'01品牌创建', N'品牌命名/品牌文化/品牌识别设计\r\n最初的品牌播种，决定了品牌是要长成野草还是参天大树。所谓三岁看大，品牌风格确立也要从萌芽开始，让品牌自始至终保持活力与竞争力，健康茁长的成长。\r\n服务项目：\r\n品牌文化理念挖掘 / 挖掘一种品牌文化，并力求这种文化与更多目标消费群相关品牌命名 /\r\n创造符合品牌精神的独特名称 / 品牌视觉识别（VIS）设计 /\r\n基于市场与设计角度创造严谨而实用的形象设计 /', N'/upload/article/1/1460771365547.jpg', N'0', N'0', N'2016-04-16 09:49:44.0000000', N'2016-04-29 17:23:22.0000000', N'0', N'62', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'167', N'品牌改造设计', N'品牌形象的改造与提升设计\r\n品牌发展到一定的阶段，因为企业发展模式及战略目标发生改变，其原有的形象已经不能承载企业未来发展的战略需求时，则需要创造更具生长气质的视觉形象，为未来打算，为未来改变！品牌改造设计正好填补着类客户的发展需求。\r\n服务项目：\r\n品牌形象改造设计 / 令形象更适合品牌定位，提升 / 完善品牌形象\r\n完善并继承优秀基因,为企业注入新鲜的视觉活力\r\n与客户品牌发展模式及战略目标相匹配', N'/upload/article/1/1460771447978.jpg', N'0', N'0', N'2016-04-16 09:51:22.0000000', N'2016-06-02 19:12:58.0000000', N'0', N'138', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'167', N'品牌改造设计', N'品牌形象的改造与提升设计\r\n品牌发展到一定的阶段，因为企业发展模式及战略目标发生改变，其原有的形象已经不能承载企业未来发展的战略需求时，则需要创造更具生长气质的视觉形象，为未来打算，为未来改变！品牌改造设计正好填补着类客户的发展需求。\r\n服务项目：\r\n品牌形象改造设计 / 令形象更适合品牌定位，提升 / 完善品牌形象\r\n完善并继承优秀基因,为企业注入新鲜的视觉活力\r\n与客户品牌发展模式及战略目标相匹配', N'/upload/article/1/1460771447978.jpg', N'0', N'0', N'2016-04-16 09:51:22.0000000', N'2016-06-02 19:12:58.0000000', N'0', N'138', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'168', N'品牌推广设计', N'形象画册 / 产品样本 / 招商手册 / 企业年报\r\n印刷品是企业最常用最有效的推广方式，也是挖掘潜在客户的钥匙。好的设计能循序渐进的引导读者，让读者更清楚的了解产品，从而择需购买。一本设计粗糙的画册，不等被翻开便会被丢弃。\r\n服务项目：\r\n印刷品设计 / 具有企业特色的形象画册设计、产品目录及年报设计.\r\n企业内刊策划设计 / 为大型企业策划设计品牌内部刊物', N'/upload/article/1/1460771488365.jpg', N'0', N'0', N'2016-04-16 09:52:35.0000000', N'2016-06-02 15:18:14.0000000', N'0', N'138', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'168', N'品牌推广设计', N'形象画册 / 产品样本 / 招商手册 / 企业年报\r\n印刷品是企业最常用最有效的推广方式，也是挖掘潜在客户的钥匙。好的设计能循序渐进的引导读者，让读者更清楚的了解产品，从而择需购买。一本设计粗糙的画册，不等被翻开便会被丢弃。\r\n服务项目：\r\n印刷品设计 / 具有企业特色的形象画册设计、产品目录及年报设计.\r\n企业内刊策划设计 / 为大型企业策划设计品牌内部刊物', N'/upload/article/1/1460771488365.jpg', N'0', N'0', N'2016-04-16 09:52:35.0000000', N'2016-06-02 15:18:14.0000000', N'0', N'138', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'172', N'网络优化', N'企业网站建设目的何在？如何充分挖掘互联网络的资源和优势，如何合理地组织网站内容与功能从而达到客户的需求？\r\n我们将根据市场分析、客户产品及服务的优势、竞争对手分析等等，有效的确立网站定位。根据相关需求分析获得相应网站运营策略，在网站建立之初我们就网站VI形象、网站营销手段、运营模式、网站发展前景等等进行定位。', N'/upload/article/1/1460889312736.jpg', N'0', N'0', N'2016-04-17 18:37:32.0000000', N'2016-06-04 09:16:24.0000000', N'0', N'133', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'172', N'网络优化', N'企业网站建设目的何在？如何充分挖掘互联网络的资源和优势，如何合理地组织网站内容与功能从而达到客户的需求？\r\n我们将根据市场分析、客户产品及服务的优势、竞争对手分析等等，有效的确立网站定位。根据相关需求分析获得相应网站运营策略，在网站建立之初我们就网站VI形象、网站营销手段、运营模式、网站发展前景等等进行定位。', N'/upload/article/1/1460889312736.jpg', N'0', N'0', N'2016-04-17 18:37:32.0000000', N'2016-06-04 09:16:24.0000000', N'0', N'133', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'173', N'网络营销', N'互联网品牌推广有个新鲜名词叫数字营销，数字营销是新发展起来的一种营销模式，是利用互联网特性和技术，更加有效、高性价比地完成整合营销计划，达到传统 的IMC不能达到的高效客户关系管理等，从而精准地实施营销策略，实现企业营销的高效率、低成本、大影响。可以按两种意思来理解：网络整合营销是利用网络 技术和网络特性最大化、最快速、最有效、最精准的进行整合营销；网络整合营销是以为客户提供有价值的信息为基础，由客户创造、传播为主导的整合营销理念进 行的网络营销。', N'/upload/article/1/1460889475526.jpg', N'0', N'0', N'2016-04-17 18:38:12.0000000', N'2016-06-02 17:15:23.0000000', N'0', N'134', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'173', N'网络营销', N'互联网品牌推广有个新鲜名词叫数字营销，数字营销是新发展起来的一种营销模式，是利用互联网特性和技术，更加有效、高性价比地完成整合营销计划，达到传统 的IMC不能达到的高效客户关系管理等，从而精准地实施营销策略，实现企业营销的高效率、低成本、大影响。可以按两种意思来理解：网络整合营销是利用网络 技术和网络特性最大化、最快速、最有效、最精准的进行整合营销；网络整合营销是以为客户提供有价值的信息为基础，由客户创造、传播为主导的整合营销理念进 行的网络营销。', N'/upload/article/1/1460889475526.jpg', N'0', N'0', N'2016-04-17 18:38:12.0000000', N'2016-06-02 17:15:23.0000000', N'0', N'134', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'174', N'域名注册', N'上网\"已成为不少人的口头禅。但是，要想在网上建立服务器发布信息，则必须首先注册自己的域名，只有有了自己的域名才能让别人访问到自己。所以，域名注册是在互联网上建立任何服务的基础。同时，由于域名的唯一性，尽早注册又是十分必要的。', N'/upload/article/1638/1464868329275.png', N'0', N'0', N'2016-04-17 18:39:43.0000000', N'2016-06-04 09:16:08.0000000', N'0', N'135', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'174', N'域名注册', N'上网\"已成为不少人的口头禅。但是，要想在网上建立服务器发布信息，则必须首先注册自己的域名，只有有了自己的域名才能让别人访问到自己。所以，域名注册是在互联网上建立任何服务的基础。同时，由于域名的唯一性，尽早注册又是十分必要的。', N'/upload/article/1638/1464868329275.png', N'0', N'0', N'2016-04-17 18:39:43.0000000', N'2016-06-04 09:16:08.0000000', N'0', N'135', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'177', N'国内开源 java cms，铭飞MCms', N'MCMS是企业创立初期很好的基础框架，不仅可以实现和现有系统的对接而且有大量的插件模版可以使用。\r\n\r\nMS平台开发团队承诺MCMS内容管理系统永久完整开源免费(这真是极', N'/upload/article/1/1461384090357.jpeg', N'1', N'0', N'2016-04-23 11:51:21.0000000', N'2016-06-02 19:39:13.0000000', N'0', N'70', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'177', N'国内开源 java cms，铭飞MCms', N'MCMS是企业创立初期很好的基础框架，不仅可以实现和现有系统的对接而且有大量的插件模版可以使用。\r\n\r\nMS平台开发团队承诺MCMS内容管理系统永久完整开源免费(这真是极', N'/upload/article/1/1461384090357.jpeg', N'1', N'0', N'2016-04-23 11:51:21.0000000', N'2016-06-02 19:39:13.0000000', N'0', N'70', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'178', N'价值源自分享', N'MStore（铭飞商城）是铭飞（MS）平台为开发者提供模版与插件作品分享平台,为企业提供优质产品和服务我们致力于打造一个优秀的Java资源共享学习平台。', N'/upload/article/1/1461383921888.jpeg', N'1', N'0', N'2016-04-23 11:52:35.0000000', N'2016-06-02 19:22:20.0000000', N'0', N'68', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'178', N'价值源自分享', N'MStore（铭飞商城）是铭飞（MS）平台为开发者提供模版与插件作品分享平台,为企业提供优质产品和服务我们致力于打造一个优秀的Java资源共享学习平台。', N'/upload/article/1/1461383921888.jpeg', N'1', N'0', N'2016-04-23 11:52:35.0000000', N'2016-06-02 19:22:20.0000000', N'0', N'68', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'179', N'铭飞商城MStore——价值源自分享', N'MStore（铭飞商城）是铭飞（MS）平台为开发者提供模版与插件作品分享平台,为企业提供优质产品和服务我们致力于打造一个优秀的Java资源共享学习平台。\r\n', N'/upload/article/1/1461383937683.jpeg', N'1', N'0', N'2016-04-23 11:58:24.0000000', N'2016-06-02 19:20:23.0000000', N'0', N'68', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'179', N'铭飞商城MStore——价值源自分享', N'MStore（铭飞商城）是铭飞（MS）平台为开发者提供模版与插件作品分享平台,为企业提供优质产品和服务我们致力于打造一个优秀的Java资源共享学习平台。\r\n', N'/upload/article/1/1461383937683.jpeg', N'1', N'0', N'2016-04-23 11:58:24.0000000', N'2016-06-02 19:20:23.0000000', N'0', N'68', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'182', N'人才理念', N'网络营销是以互联网络为基础，通过数字化的信息和网络媒体的交互性来辅助营销目标实现的一种新型的市场营销方式。', N'/upload/article/1584/1462521245856.jpg', N'0', N'0', N'2016-04-29 14:49:03.0000000', N'2016-06-02 11:17:43.0000000', N'0', N'52', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'182', N'人才理念', N'网络营销是以互联网络为基础，通过数字化的信息和网络媒体的交互性来辅助营销目标实现的一种新型的市场营销方式。', N'/upload/article/1584/1462521245856.jpg', N'0', N'0', N'2016-04-29 14:49:03.0000000', N'2016-06-02 11:17:43.0000000', N'0', N'52', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'183', N'联系我们', N'这里是一个充满活力和梦想的企业，我们不反对个性，我们不安于现状，我们亲手创造价值，我们永远在进步……如果你也是名有梦想勇于尝试的人，那就赶快加入我们吧！\r\n\r\n我们面向全国招募有志之士，欢迎自荐或向周围的好友推荐。', N'', N'0', N'0', N'2016-04-29 14:49:25.0000000', N'2016-06-02 11:17:55.0000000', N'0', N'136', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'183', N'联系我们', N'这里是一个充满活力和梦想的企业，我们不反对个性，我们不安于现状，我们亲手创造价值，我们永远在进步……如果你也是名有梦想勇于尝试的人，那就赶快加入我们吧！\r\n\r\n我们面向全国招募有志之士，欢迎自荐或向周围的好友推荐。', N'', N'0', N'0', N'2016-04-29 14:49:25.0000000', N'2016-06-02 11:17:55.0000000', N'0', N'136', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'185', N'联系我们', N'这里是一个充满活力和梦想的企业，我们不反对个性，我们不安于现状，我们亲手创造价值，我们永远在进步……如果你也是名有梦想勇于尝试的人，那就赶快加入我们吧！\r\n\r\n我们面向全国招募有志之士，欢迎自荐或向周围的好友推荐。', N'/upload/article/1638/1465720290023.jpg', N'0', N'4', N'2016-05-04 14:49:32.0000000', N'2016-06-12 16:31:31.0000000', N'0', N'141', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'185', N'联系我们', N'这里是一个充满活力和梦想的企业，我们不反对个性，我们不安于现状，我们亲手创造价值，我们永远在进步……如果你也是名有梦想勇于尝试的人，那就赶快加入我们吧！\r\n\r\n我们面向全国招募有志之士，欢迎自荐或向周围的好友推荐。', N'/upload/article/1638/1465720290023.jpg', N'0', N'4', N'2016-05-04 14:49:32.0000000', N'2016-06-12 16:31:31.0000000', N'0', N'141', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'190', N'在线留言', N'', N'', N'0', N'0', N'2016-06-02 11:17:01.0000000', N'2016-06-02 11:17:01.0000000', N'0', N'142', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'190', N'在线留言', N'', N'', N'0', N'0', N'2016-06-02 11:17:01.0000000', N'2016-06-02 11:17:01.0000000', N'0', N'142', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'191', N'“绿色装饰”融入杭州市民中心装饰工程', N'此外项目部还非常注重采取新工艺、新方法，不仅提高了工程的整体美观性和实用性，而且加快了施工进度，提升了工作效率。由于本工程是圆型结构的楼层施 工，特别是石材在圆弧和圆柱造型上用量大，大大增加了工程的施工难度。', N'/upload/article/1638/1464861354733.jpg', N'0', N'0', N'2016-06-02 14:52:40.0000000', N'2016-06-02 17:55:55.0000000', N'0', N'84', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'191', N'“绿色装饰”融入杭州市民中心装饰工程', N'此外项目部还非常注重采取新工艺、新方法，不仅提高了工程的整体美观性和实用性，而且加快了施工进度，提升了工作效率。由于本工程是圆型结构的楼层施 工，特别是石材在圆弧和圆柱造型上用量大，大大增加了工程的施工难度。', N'/upload/article/1638/1464861354733.jpg', N'0', N'0', N'2016-06-02 14:52:40.0000000', N'2016-06-02 17:55:55.0000000', N'0', N'84', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'192', N'纽约时髦客手中那些让人尖叫的包', N'对于时尚达人而言，包袋与衣服的混搭也是一种必杀技。休闲手提包可以搭配不同的造型，而搭配运动裤就是更加直接地表现出时尚休闲风的最佳配搭方案。', N'/upload/article/1638/1464861380560.png', N'0', N'0', N'2016-06-02 14:53:33.0000000', N'2016-06-04 09:55:27.0000000', N'0', N'83', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'192', N'纽约时髦客手中那些让人尖叫的包', N'对于时尚达人而言，包袋与衣服的混搭也是一种必杀技。休闲手提包可以搭配不同的造型，而搭配运动裤就是更加直接地表现出时尚休闲风的最佳配搭方案。', N'/upload/article/1638/1464861380560.png', N'0', N'0', N'2016-06-02 14:53:33.0000000', N'2016-06-04 09:55:27.0000000', N'0', N'83', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'193', N'宋朝华率队赴贵州招商洽谈推进重大项目', N'市委副书记、市长宋朝华率队前往贵州省贵阳市，实地考察由中铁贵旅公司投资开发建设的中铁国际生态城项目，并与公司高层进行了深入友好座谈，洽谈推进重大项目落户我市仁寿县相关事宜。\r\n ', N'/upload/article/1638/1464861385314.jpg', N'0', N'0', N'2016-06-02 14:53:59.0000000', N'2016-06-02 17:56:25.0000000', N'0', N'83', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'193', N'宋朝华率队赴贵州招商洽谈推进重大项目', N'市委副书记、市长宋朝华率队前往贵州省贵阳市，实地考察由中铁贵旅公司投资开发建设的中铁国际生态城项目，并与公司高层进行了深入友好座谈，洽谈推进重大项目落户我市仁寿县相关事宜。\r\n ', N'/upload/article/1638/1464861385314.jpg', N'0', N'0', N'2016-06-02 14:53:59.0000000', N'2016-06-02 17:56:25.0000000', N'0', N'83', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'194', N'红木市场是否低迷 消费者仍在', N'内庭中央还展示着一辆豪华轿车，而周边则摆满红木家具，完全没有红木家具应该有的意境。更令人瞠目结舌的是，里面人流熙熙攘攘', N'/upload/article/1638/1464861401214.jpg', N'0', N'0', N'2016-06-02 14:54:54.0000000', N'2016-06-02 17:56:42.0000000', N'0', N'83', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'194', N'红木市场是否低迷 消费者仍在', N'内庭中央还展示着一辆豪华轿车，而周边则摆满红木家具，完全没有红木家具应该有的意境。更令人瞠目结舌的是，里面人流熙熙攘攘', N'/upload/article/1638/1464861401214.jpg', N'0', N'0', N'2016-06-02 14:54:54.0000000', N'2016-06-02 17:56:42.0000000', N'0', N'83', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'195', N'众多国宝级古典家具悉数亮相', N'海南黄花梨圆包脚罗汉床、小叶紫檀云龙纹镶理石圆桌、富贵满堂多宝阁……昨日（12月13日）上午，第三届中国（江门）传统家具精品鉴赏会暨2014中国（江门）红木家具....', N'/upload/article/1638/1464861408016.jpg', N'0', N'0', N'2016-06-02 14:55:33.0000000', N'2016-06-04 09:55:30.0000000', N'0', N'83', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'195', N'众多国宝级古典家具悉数亮相', N'海南黄花梨圆包脚罗汉床、小叶紫檀云龙纹镶理石圆桌、富贵满堂多宝阁……昨日（12月13日）上午，第三届中国（江门）传统家具精品鉴赏会暨2014中国（江门）红木家具....', N'/upload/article/1638/1464861408016.jpg', N'0', N'0', N'2016-06-02 14:55:33.0000000', N'2016-06-04 09:55:30.0000000', N'0', N'83', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'196', N'戴为红木燃情成都，开启幸福之门', N'近期，出于对中国传统文化的热爱，以及对红木艺术的执着、深情和追求，戴为红木携带“幸福之家”主题活动礼遇成都，使其鸿儒红木家居艺术馆隆重开业，为已进入寒冬的成都燃起了一把火，掀起了中式红木家具热潮！', N'/upload/article/1638/1464861413861.jpg', N'0', N'0', N'2016-06-02 14:56:00.0000000', N'2016-06-02 17:56:54.0000000', N'0', N'83', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'196', N'戴为红木燃情成都，开启幸福之门', N'近期，出于对中国传统文化的热爱，以及对红木艺术的执着、深情和追求，戴为红木携带“幸福之家”主题活动礼遇成都，使其鸿儒红木家居艺术馆隆重开业，为已进入寒冬的成都燃起了一把火，掀起了中式红木家具热潮！', N'/upload/article/1638/1464861413861.jpg', N'0', N'0', N'2016-06-02 14:56:00.0000000', N'2016-06-02 17:56:54.0000000', N'0', N'83', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'197', N'质检整治电商售假 红木家具市场良莠不齐', N'质检总局执法督查司按照网上发现、源头追溯、落地查处的要求，组织开展电子商务产品专项执法打假活动，积极构建适应电子商务执法打假的全国执法协查工作机制...', N'/upload/article/1638/1464861373394.png', N'0', N'0', N'2016-06-02 14:56:35.0000000', N'2016-06-02 17:56:16.0000000', N'0', N'83', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'197', N'质检整治电商售假 红木家具市场良莠不齐', N'质检总局执法督查司按照网上发现、源头追溯、落地查处的要求，组织开展电子商务产品专项执法打假活动，积极构建适应电子商务执法打假的全国执法协查工作机制...', N'/upload/article/1638/1464861373394.png', N'0', N'0', N'2016-06-02 14:56:35.0000000', N'2016-06-02 17:56:16.0000000', N'0', N'83', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'198', N'东西方两大甜妞聚首巴黎时装周头排', N'巴黎时装周许晴倾力助阵，当天许晴身着黑色拼接装头排看秀，大秀美腿，加上干净利落的妆容，整体造型简洁率性，绿色的刺绣手包更添俏皮..', N'/upload/article/1638/1464861364631.jpg', N'0', N'0', N'2016-06-02 14:57:07.0000000', N'2016-06-02 17:56:05.0000000', N'0', N'83', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'198', N'东西方两大甜妞聚首巴黎时装周头排', N'巴黎时装周许晴倾力助阵，当天许晴身着黑色拼接装头排看秀，大秀美腿，加上干净利落的妆容，整体造型简洁率性，绿色的刺绣手包更添俏皮..', N'/upload/article/1638/1464861364631.jpg', N'0', N'0', N'2016-06-02 14:57:07.0000000', N'2016-06-02 17:56:05.0000000', N'0', N'83', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'199', N'宋朝华率队赴贵州招商洽谈推进重大项目', N'市委副书记、市长宋朝华率队前往贵州省贵阳市，实地考察由中铁贵旅公司投资开发建设的中铁国际生态城项目，并与公司高层进行了深入友好座谈，洽谈推进重大项目落户我市仁寿县相关事宜。', N'/upload/article/1638/1464861360036.png', N'0', N'0', N'2016-06-02 14:57:40.0000000', N'2016-06-02 17:56:01.0000000', N'0', N'83', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'199', N'宋朝华率队赴贵州招商洽谈推进重大项目', N'市委副书记、市长宋朝华率队前往贵州省贵阳市，实地考察由中铁贵旅公司投资开发建设的中铁国际生态城项目，并与公司高层进行了深入友好座谈，洽谈推进重大项目落户我市仁寿县相关事宜。', N'/upload/article/1638/1464861360036.png', N'0', N'0', N'2016-06-02 14:57:40.0000000', N'2016-06-02 17:56:01.0000000', N'0', N'83', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'200', N'奔驰斯宾特A3 豪华版', N'斯宾特系列(Sprinter)系列技术领先，动力强劲。座位数从10座到20座均可选择，跟据配置不同,价格也从95.8万178万可以选择。为您带来不同的商务体验。下面为.', N'/upload/article/1638/1464851333470.jpg', N'0', N'0', N'2016-06-02 15:09:12.0000000', N'2016-06-02 15:14:48.0000000', N'0', N'107', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'200', N'奔驰斯宾特A3 豪华版', N'斯宾特系列(Sprinter)系列技术领先，动力强劲。座位数从10座到20座均可选择，跟据配置不同,价格也从95.8万178万可以选择。为您带来不同的商务体验。下面为.', N'/upload/article/1638/1464851333470.jpg', N'0', N'0', N'2016-06-02 15:09:12.0000000', N'2016-06-02 15:14:48.0000000', N'0', N'107', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'201', N'福特E350 游艇版', N'其实商务车在人们眼里就是普通的客车，没有人会花时间去研究它，欣赏它。商务车给人的印象，就是整体的一箱车，发动机不是在驾驶与副驾驶的座椅下...', N'/upload/article/1638/1464851477741.jpg', N'0', N'0', N'2016-06-02 15:09:42.0000000', N'2016-06-02 15:11:18.0000000', N'0', N'107', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'201', N'福特E350 游艇版', N'其实商务车在人们眼里就是普通的客车，没有人会花时间去研究它，欣赏它。商务车给人的印象，就是整体的一箱车，发动机不是在驾驶与副驾驶的座椅下...', N'/upload/article/1638/1464851477741.jpg', N'0', N'0', N'2016-06-02 15:09:42.0000000', N'2016-06-02 15:11:18.0000000', N'0', N'107', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'202', N'GMC3500 平顶舒适版', N'对于这样一款外观霸气，承载性高的原装进口商务车和它实在的销售价格，都让这款车的性价比大大提升了不少。对于市场上一些追求个性的客户群来讲，...', N'/upload/article/1638/1464851473102.jpg', N'0', N'0', N'2016-06-02 15:10:17.0000000', N'2016-06-02 15:11:14.0000000', N'0', N'107', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'202', N'GMC3500 平顶舒适版', N'对于这样一款外观霸气，承载性高的原装进口商务车和它实在的销售价格，都让这款车的性价比大大提升了不少。对于市场上一些追求个性的客户群来讲，...', N'/upload/article/1638/1464851473102.jpg', N'0', N'0', N'2016-06-02 15:10:17.0000000', N'2016-06-02 15:11:14.0000000', N'0', N'107', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'203', N'宾特奔驰斯A系列', N'奔驰斯宾特系列礼宾车在豪华商务车系中，一向是高端、舒适的代名词。在秉承了奔驰的贵族气质的同时，其全新定制的奢华内饰让人感觉犹如进入了高档..', N'/upload/article/1638/1465808166467.png', N'0', N'0', N'2016-06-02 15:11:08.0000000', N'2016-06-13 16:56:07.0000000', N'0', N'107', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'203', N'宾特奔驰斯A系列', N'奔驰斯宾特系列礼宾车在豪华商务车系中，一向是高端、舒适的代名词。在秉承了奔驰的贵族气质的同时，其全新定制的奢华内饰让人感觉犹如进入了高档..', N'/upload/article/1638/1465808166467.png', N'0', N'0', N'2016-06-02 15:11:08.0000000', N'2016-06-13 16:56:07.0000000', N'0', N'107', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'204', N'1', N'', N'/upload/article/1638/1464859580381.jpg', N'0', N'0', N'2016-06-02 17:26:21.0000000', N'2016-06-02 17:26:21.0000000', N'0', N'148', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'204', N'1', N'', N'/upload/article/1638/1464859580381.jpg', N'0', N'0', N'2016-06-02 17:26:21.0000000', N'2016-06-02 17:26:21.0000000', N'0', N'148', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'205', N'2', N'', N'/upload/article/1638/1464859585818.jpg', N'0', N'0', N'2016-06-02 17:26:26.0000000', N'2016-06-02 17:26:26.0000000', N'0', N'148', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'205', N'2', N'', N'/upload/article/1638/1464859585818.jpg', N'0', N'0', N'2016-06-02 17:26:26.0000000', N'2016-06-02 17:26:26.0000000', N'0', N'148', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'206', N'3', N'', N'/upload/article/1638/1464859590366.jpg', N'0', N'0', N'2016-06-02 17:26:31.0000000', N'2016-06-02 17:26:31.0000000', N'0', N'148', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'206', N'3', N'', N'/upload/article/1638/1464859590366.jpg', N'0', N'0', N'2016-06-02 17:26:31.0000000', N'2016-06-02 17:26:31.0000000', N'0', N'148', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'207', N'4', N'', N'/upload/article/1638/1464859595151.jpg', N'0', N'0', N'2016-06-02 17:26:36.0000000', N'2016-06-02 17:26:36.0000000', N'0', N'148', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'207', N'4', N'', N'/upload/article/1638/1464859595151.jpg', N'0', N'0', N'2016-06-02 17:26:36.0000000', N'2016-06-02 17:26:36.0000000', N'0', N'148', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'208', N'5', N'', N'/upload/article/1638/1464859599849.jpg', N'0', N'0', N'2016-06-02 17:26:40.0000000', N'2016-06-02 17:26:40.0000000', N'0', N'148', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'208', N'5', N'', N'/upload/article/1638/1464859599849.jpg', N'0', N'0', N'2016-06-02 17:26:40.0000000', N'2016-06-02 17:26:40.0000000', N'0', N'148', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'209', N'6', N'高品质景观缔造者\r\nHigh quality landscape architects.', N'/upload/article/1638/1464859604208.jpg', N'0', N'0', N'2016-06-02 17:26:45.0000000', N'2016-06-16 14:24:51.0000000', N'0', N'148', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'209', N'6', N'高品质景观缔造者\r\nHigh quality landscape architects.', N'/upload/article/1638/1464859604208.jpg', N'0', N'0', N'2016-06-02 17:26:45.0000000', N'2016-06-16 14:24:51.0000000', N'0', N'148', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'210', N'幻灯五', N'做精品设计、建优良工程、打造精品工程\r\nBoutique design, construction engineering, excellent build quality engineering.', N'/upload/article/1638/1464859633594.jpg', N'0', N'0', N'2016-06-02 17:26:55.0000000', N'2016-06-16 14:24:18.0000000', N'0', N'147', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'210', N'幻灯五', N'做精品设计、建优良工程、打造精品工程\r\nBoutique design, construction engineering, excellent build quality engineering.', N'/upload/article/1638/1464859633594.jpg', N'0', N'0', N'2016-06-02 17:26:55.0000000', N'2016-06-16 14:24:18.0000000', N'0', N'147', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'211', N'幻灯六', N'与您一起携手，共同谱写园林绿化事业的新篇章！\r\nWork with you to jointly write a new chapter landscaping business!', N'/upload/article/1638/1464859625584.jpg', N'0', N'0', N'2016-06-02 17:27:06.0000000', N'2016-06-16 14:23:03.0000000', N'0', N'147', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'211', N'幻灯六', N'与您一起携手，共同谱写园林绿化事业的新篇章！\r\nWork with you to jointly write a new chapter landscaping business!', N'/upload/article/1638/1464859625584.jpg', N'0', N'0', N'2016-06-02 17:27:06.0000000', N'2016-06-16 14:23:03.0000000', N'0', N'147', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'212', N'愿景', N'我们拥有稳定的充满创作激情的设计团队，核心人员由公司创立至今伴随我们一个又一个客户的成长，保证了稳定的设计出品质量及熟知我们所合作过的每一个客户的设计需求，现在，团队不断壮大。', N'/upload/article/1638/1464940624025.png', N'0', N'0', N'2016-06-02 17:36:54.0000000', N'2016-06-03 20:52:58.0000000', N'0', N'95', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'212', N'愿景', N'我们拥有稳定的充满创作激情的设计团队，核心人员由公司创立至今伴随我们一个又一个客户的成长，保证了稳定的设计出品质量及熟知我们所合作过的每一个客户的设计需求，现在，团队不断壮大。', N'/upload/article/1638/1464940624025.png', N'0', N'0', N'2016-06-02 17:36:54.0000000', N'2016-06-03 20:52:58.0000000', N'0', N'95', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'213', N'价值观', N'我们已为数百家企业、政府和社会团体完成品牌的传播与设计，积累了大量丰富的经验，可为您提供大量同类企业和机构的案例进行比较参考。', N'/upload/article/1638/1464940619456.jpg', N'0', N'0', N'2016-06-02 17:37:08.0000000', N'2016-06-03 20:52:55.0000000', N'0', N'95', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'213', N'价值观', N'我们已为数百家企业、政府和社会团体完成品牌的传播与设计，积累了大量丰富的经验，可为您提供大量同类企业和机构的案例进行比较参考。', N'/upload/article/1638/1464940619456.jpg', N'0', N'0', N'2016-06-02 17:37:08.0000000', N'2016-06-03 20:52:55.0000000', N'0', N'95', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'214', N'经营理念', N'可提供一站式全面服务：品牌的定位——企业文化梳理——企业/品牌形象设计——品牌传播——环境空间设计——宣传物品的落地', N'/upload/article/1638/1464940614692.jpg', N'0', N'0', N'2016-06-02 17:37:19.0000000', N'2016-06-03 20:52:46.0000000', N'0', N'95', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'214', N'经营理念', N'可提供一站式全面服务：品牌的定位——企业文化梳理——企业/品牌形象设计——品牌传播——环境空间设计——宣传物品的落地', N'/upload/article/1638/1464940614692.jpg', N'0', N'0', N'2016-06-02 17:37:19.0000000', N'2016-06-03 20:52:46.0000000', N'0', N'95', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'215', N'管理理念', N'多年来，我们始终专注于品牌的设计与塑造，坚持站在市场的角度，为客户创作出准确的、极具商业价值的形象设计与品牌传播策略。', N'/upload/article/1638/1464940610305.jpg', N'0', N'0', N'2016-06-02 17:37:42.0000000', N'2016-06-12 17:54:59.0000000', N'0', N'95', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'215', N'管理理念', N'多年来，我们始终专注于品牌的设计与塑造，坚持站在市场的角度，为客户创作出准确的、极具商业价值的形象设计与品牌传播策略。', N'/upload/article/1638/1464940610305.jpg', N'0', N'0', N'2016-06-02 17:37:42.0000000', N'2016-06-12 17:54:59.0000000', N'0', N'95', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'216', N'李镇江', N'资深PPT设计师', N'/upload/article/1638/1464860436576.png', N'0', N'0', N'2016-06-02 17:40:31.0000000', N'2016-06-03 15:47:36.0000000', N'0', N'115', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'216', N'李镇江', N'资深PPT设计师', N'/upload/article/1638/1464860436576.png', N'0', N'0', N'2016-06-02 17:40:31.0000000', N'2016-06-03 15:47:36.0000000', N'0', N'115', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'217', N'曹瑛', N'锐诚PPT特邀首席技术专家', N'/upload/article/1638/1464860564066.png', N'0', N'0', N'2016-06-02 17:41:15.0000000', N'2016-06-03 15:47:33.0000000', N'0', N'115', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'217', N'曹瑛', N'锐诚PPT特邀首席技术专家', N'/upload/article/1638/1464860564066.png', N'0', N'0', N'2016-06-02 17:41:15.0000000', N'2016-06-03 15:47:33.0000000', N'0', N'115', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'218', N'孙建东', N'锐诚PPT培训部总监', N'/upload/article/1638/1464860506257.png', N'0', N'0', N'2016-06-02 17:41:47.0000000', N'2016-06-03 15:47:30.0000000', N'0', N'115', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'218', N'孙建东', N'锐诚PPT培训部总监', N'/upload/article/1638/1464860506257.png', N'0', N'0', N'2016-06-02 17:41:47.0000000', N'2016-06-03 15:47:30.0000000', N'0', N'115', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
-INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type]) VALUES (N'219', N'梅幸', N'锐诚PPT金牌设计师1', N'/upload/article/1638/1464860570155.png', N'0', N'0', N'2016-06-02 17:42:00.0000000', N'2018-05-10 16:18:13.9670000', N'0', N'69', N'1', N'8', NULL, NULL, NULL, NULL)
+INSERT INTO [basic] ([basic_id], [basic_title], [basic_description], [basic_thumbnails], [basic_hit], [basic_sort], [basic_datetime], [basic_updatetime], [basic_peopleid], [basic_categoryid], [basic_appid], [basic_modelid], [basic_comment], [basic_collect], [basic_share], [basic_type], [basic_display]) VALUES (N'219', N'梅幸', N'锐诚PPT金牌设计师1', N'/upload/article/1638/1464860570155.png', N'0', N'0', N'2016-06-02 17:42:00.0000000', N'2018-05-10 16:18:13.9670000', N'0', N'69', N'1', N'8', NULL, NULL, NULL, NULL, 0)
 GO
 
 SET IDENTITY_INSERT [basic] OFF
@@ -1869,8 +1869,7 @@ CREATE TABLE [manager] (
   [manager_password] nvarchar(45) COLLATE Chinese_PRC_CI_AS NULL,
   [manager_roleid] int NULL,
   [manager_peopleid] bigint DEFAULT ((0)) NULL,
-  [manager_time] datetime2(7) NULL,
-  [manager_system_skin_id] int DEFAULT ((0)) NULL
+  [manager_time] datetime2(7) NULL
 )
 GO
 
@@ -1926,12 +1925,6 @@ EXEC sp_addextendedproperty
 'COLUMN', N'manager_time'
 GO
 
-EXEC sp_addextendedproperty
-'MS_Description', N'管理员主界面样式',
-'SCHEMA', N'dbo',
-'TABLE', N'manager',
-'COLUMN', N'manager_system_skin_id'
-GO
 
 EXEC sp_addextendedproperty
 'MS_Description', N'管理员表',
@@ -1946,7 +1939,7 @@ GO
 SET IDENTITY_INSERT [manager] ON
 GO
 
-INSERT INTO [manager] ([manager_id], [manager_name], [manager_nickname], [manager_password], [manager_roleid], [manager_peopleid], [manager_time], [manager_system_skin_id]) VALUES (N'50', N'msopen', N'msopen', N'9d8622060de5f24937b60585c3f4d66b', N'48', N'0', N'2015-09-18 11:54:36.0000000', N'0')
+INSERT INTO [manager] ([manager_id], [manager_name], [manager_nickname], [manager_password], [manager_roleid], [manager_peopleid], [manager_time]) VALUES (N'50', N'msopen', N'msopen', N'9d8622060de5f24937b60585c3f4d66b', N'48', N'0', N'2015-09-18 11:54:36.0000000')
 GO
 
 SET IDENTITY_INSERT [manager] OFF
@@ -2232,7 +2225,7 @@ CREATE TABLE [mdiy_dict] (
   [dict_value] nvarchar(100) COLLATE Chinese_PRC_CI_AS NOT NULL,
   [dict_label] nvarchar(100) COLLATE Chinese_PRC_CI_AS NOT NULL,
   [dict_type] nvarchar(100) COLLATE Chinese_PRC_CI_AS NOT NULL,
-  [dict_description] nvarchar(100) COLLATE Chinese_PRC_CI_AS NOT NULL,
+  [dict_description] nvarchar(100) COLLATE Chinese_PRC_CI_AS NULL,
   [dict_sort] int DEFAULT ((0)) NOT NULL,
   [dict_parent_id] nvarchar(64) COLLATE Chinese_PRC_CI_AS NULL,
   [dict_remarks] nvarchar(255) COLLATE Chinese_PRC_CI_AS NULL,
@@ -2351,6 +2344,26 @@ EXEC sp_addextendedproperty
 'TABLE', N'mdiy_dict'
 GO
 
+-- ----------------------------
+-- Records of [mdiy_dict]
+-- ----------------------------
+SET IDENTITY_INSERT [dbo].[mdiy_dict] ON
+GO
+
+INSERT INTO [dbo].[mdiy_dict] VALUES (N'2', N'1', N'c', N'推荐', N'文章属性', NULL, N'4', NULL, NULL, N'0', NULL, N'0', NULL, N'0')
+GO
+
+INSERT INTO [dbo].[mdiy_dict] VALUES (N'3', N'1', N'p', N'图片', N'文章属性', NULL, N'4', NULL, NULL, N'0', NULL, N'0', NULL, N'0')
+GO
+
+INSERT INTO [dbo].[mdiy_dict] VALUES (N'4', N'1', N'h', N'头条', N'文章属性', NULL, N'2', NULL, NULL, N'0', NULL, N'0', NULL, N'0')
+GO
+
+INSERT INTO [dbo].[mdiy_dict] VALUES (N'5', N'1', N'f', N'幻灯', N'文章属性', NULL, N'2', NULL, NULL, N'0', NULL, N'0', NULL, N'0')
+GO
+
+SET IDENTITY_INSERT [dbo].[mdiy_dict] OFF
+GO
 
 -- ----------------------------
 -- Table structure for mdiy_form
@@ -2401,6 +2414,17 @@ EXEC sp_addextendedproperty
 'TABLE', N'mdiy_form'
 GO
 
+-- ----------------------------
+-- Records of [mdiy_form]
+-- ----------------------------
+SET IDENTITY_INSERT [dbo].[mdiy_form] ON
+GO
+
+INSERT INTO [dbo].[mdiy_form] VALUES (N'1', N'留言', N'mdiy_message_50', N'1', N'0', NULL, NULL, NULL)
+GO
+
+SET IDENTITY_INSERT [dbo].[mdiy_form] OFF
+GO
 
 -- ----------------------------
 -- Table structure for mdiy_form_field
@@ -2479,6 +2503,23 @@ EXEC sp_addextendedproperty
 'TABLE', N'mdiy_form_field'
 GO
 
+-- ----------------------------
+-- Records of [mdiy_form_field]
+-- ----------------------------
+SET IDENTITY_INSERT [dbo].[mdiy_form_field] ON
+GO
+
+INSERT INTO [dbo].[mdiy_form_field] VALUES (N'1', N'姓名', N'NAME', N'1', N'', N'0', N'0', N'1')
+GO
+
+INSERT INTO [dbo].[mdiy_form_field] VALUES (N'2', N'手机', N'PHONE', N'1', N'', N'0', N'0', N'1')
+GO
+
+INSERT INTO [dbo].[mdiy_form_field] VALUES (N'3', N'留言内容', N'CONTENT', N'3', N'', N'1', N'0', N'1')
+GO
+
+SET IDENTITY_INSERT [dbo].[mdiy_form_field] OFF
+GO
 
 -- ----------------------------
 -- Table structure for mdiy_mooc_50
@@ -2692,6 +2733,35 @@ EXEC sp_addextendedproperty
 'MS_Description', N'自定义搜索表',
 'SCHEMA', N'dbo',
 'TABLE', N'mdiy_search'
+GO
+
+-- ----------------------------
+-- Table structure for mdiy_message_50
+-- ----------------------------
+IF EXISTS (SELECT * FROM sys.all_objects WHERE object_id = OBJECT_ID(N'[dbo].[mdiy_message_50]') AND type IN ('U'))
+	DROP TABLE [dbo].[mdiy_message_50]
+GO
+
+CREATE TABLE [dbo].[mdiy_message_50] (
+  [Id] int IDENTITY(5,1) NOT NULL,
+  [date] datetime DEFAULT NULL NULL,
+  [fromID] int DEFAULT NULL NULL,
+  [NAME] varchar(100) COLLATE Chinese_PRC_CI_AS NULL,
+  [PHONE] varchar(100) COLLATE Chinese_PRC_CI_AS NULL,
+  [CONTENT] text COLLATE Chinese_PRC_CI_AS NULL
+)
+GO
+
+ALTER TABLE [dbo].[mdiy_message_50] SET (LOCK_ESCALATION = TABLE)
+GO
+
+
+-- ----------------------------
+-- Primary Key structure for table mdiy_message_50
+-- ----------------------------
+ALTER TABLE [dbo].[mdiy_message_50] ADD CONSTRAINT [PK__mdiy_mes__3214EC07F6D81267] PRIMARY KEY CLUSTERED ([Id])
+WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)  
+ON [PRIMARY]
 GO
 
 
@@ -3607,81 +3677,7 @@ INSERT INTO [role_model]  VALUES (N'151', N'48')
 GO
 
 
--- ----------------------------
--- Table structure for system_skin
--- ----------------------------
-IF EXISTS (SELECT * FROM sys.all_objects WHERE object_id = OBJECT_ID(N'[system_skin]') AND type IN ('U'))
-	DROP TABLE [system_skin]
-GO
 
-CREATE TABLE [system_skin] (
-  [ss_id] int IDENTITY(1,1) NOT NULL,
-  [ss_backgroundimg] nvarchar(255) COLLATE Chinese_PRC_CI_AS NULL,
-  [ss_color] nvarchar(255) COLLATE Chinese_PRC_CI_AS NULL,
-  [ss_css] nvarchar(255) COLLATE Chinese_PRC_CI_AS NULL,
-  [ss_datetime] datetime2(7) NULL,
-  [ss_app_id] int NULL,
-  [ss_category_id] int NULL
-)
-GO
-
-ALTER TABLE [system_skin] SET (LOCK_ESCALATION = TABLE)
-GO
-
-EXEC sp_addextendedproperty
-'MS_Description', N'自增长id',
-'SCHEMA', N'dbo',
-'TABLE', N'system_skin',
-'COLUMN', N'ss_id'
-GO
-
-EXEC sp_addextendedproperty
-'MS_Description', N'背景图片',
-'SCHEMA', N'dbo',
-'TABLE', N'system_skin',
-'COLUMN', N'ss_backgroundimg'
-GO
-
-EXEC sp_addextendedproperty
-'MS_Description', N'字体颜色',
-'SCHEMA', N'dbo',
-'TABLE', N'system_skin',
-'COLUMN', N'ss_color'
-GO
-
-EXEC sp_addextendedproperty
-'MS_Description', N'样式',
-'SCHEMA', N'dbo',
-'TABLE', N'system_skin',
-'COLUMN', N'ss_css'
-GO
-
-EXEC sp_addextendedproperty
-'MS_Description', N'生成时间',
-'SCHEMA', N'dbo',
-'TABLE', N'system_skin',
-'COLUMN', N'ss_datetime'
-GO
-
-EXEC sp_addextendedproperty
-'MS_Description', N'0后台发布大于０表示是应用自定义',
-'SCHEMA', N'dbo',
-'TABLE', N'system_skin',
-'COLUMN', N'ss_app_id'
-GO
-
-EXEC sp_addextendedproperty
-'MS_Description', N'主题分类',
-'SCHEMA', N'dbo',
-'TABLE', N'system_skin',
-'COLUMN', N'ss_category_id'
-GO
-
-EXEC sp_addextendedproperty
-'MS_Description', N'后台皮肤管理表',
-'SCHEMA', N'dbo',
-'TABLE', N'system_skin'
-GO
 
 
 -- ----------------------------
@@ -4196,25 +4192,6 @@ GO
 
 
 -- ----------------------------
--- Indexes structure for table system_skin
--- ----------------------------
-CREATE NONCLUSTERED INDEX [fk_system_skin_app_1]
-ON [system_skin] (
-  [ss_app_id] ASC
-)
-GO
-
-
--- ----------------------------
--- Primary Key structure for table system_skin
--- ----------------------------
-ALTER TABLE [system_skin] ADD CONSTRAINT [PK__system_s__A445C6A2FB382E34] PRIMARY KEY CLUSTERED ([ss_id])
-WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = OFF, ALLOW_PAGE_LOCKS = OFF)  
-ON [PRIMARY]
-GO
-
-
--- ----------------------------
 -- Foreign Keys structure for table app
 -- ----------------------------
 ALTER TABLE [app] ADD CONSTRAINT [fk_app_manager_1] FOREIGN KEY ([app_managerid]) REFERENCES [manager] ([manager_id]) ON DELETE SET NULL ON UPDATE NO ACTION
@@ -4386,9 +4363,5 @@ ALTER TABLE [role_model] ADD CONSTRAINT [role_model_ibfk_1] FOREIGN KEY ([rm_mod
 GO
 
 
--- ----------------------------
--- Foreign Keys structure for table system_skin
--- ----------------------------
-ALTER TABLE [system_skin] ADD CONSTRAINT [fk_system_skin_app_1] FOREIGN KEY ([ss_app_id]) REFERENCES [app] ([app_id]) ON DELETE CASCADE ON UPDATE NO ACTION
-GO
+
 

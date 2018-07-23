@@ -971,6 +971,12 @@ COMMENT ON COLUMN "MDIY_DICT"."UPDATE_DATE" IS '更新时间';
 COMMENT ON COLUMN "MDIY_DICT"."DEL" IS '删除标记';
 COMMENT ON TABLE "MDIY_DICT" IS '字典表';
 
+INSERT INTO "MDIY_DICT" VALUES ('1', '1', 'p', '图片', '文章属性', '图片', '1', NULL, NULL, '0', NULL, '0', NULL, '0');
+INSERT INTO "MDIY_DICT" VALUES ('2', '1', 'h', '头条', '文章属性', '头条', '2', NULL, NULL, '0', NULL, '0', NULL, '0');
+INSERT INTO "MDIY_DICT" VALUES ('3', '1', 'f', '幻灯', '文章属性', '幻灯', '3', NULL, NULL, '0', NULL, '0', NULL, '0');
+INSERT INTO "MDIY_DICT" VALUES ('4', '1', 'c', '推荐', '文章属性', '推荐', '4', NULL, NULL, '0', NULL, '0', NULL, '0');
+
+
 -- ----------------------------
 -- Table structure for MDIY_FORM
 -- ----------------------------
