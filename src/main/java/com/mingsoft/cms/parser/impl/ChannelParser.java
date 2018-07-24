@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.alibaba.druid.util.StringUtils;
 import com.mingsoft.basic.entity.ColumnEntity;
 
 import com.mingsoft.parser.IParser;
@@ -237,7 +238,7 @@ public class ChannelParser extends IParser {
 		super.htmlCotent = htmlCotent;
 		super.newCotent = regexTab;
 		htmlCotents = this.replaceFirst(regex);
-		if (htmlCotents.length() != 0) {
+		if (StringUtils.isEmpty(htmlCotents)) {
 			htmlCotents = "标签格式错误";
 		}
 		return htmlCotents;
