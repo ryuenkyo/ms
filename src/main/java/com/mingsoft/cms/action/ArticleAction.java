@@ -66,6 +66,7 @@ import com.mingsoft.util.StringUtil;
 
 import net.mingsoft.basic.bean.EUListBean;
 import net.mingsoft.basic.util.BasicUtil;
+import net.mingsoft.basic.util.FileUtil;
 import net.mingsoft.mdiy.util.DictUtil;
 
 /**
@@ -563,12 +564,12 @@ public class ArticleAction extends BaseAction {
 	 */
 	@RequestMapping("/delete")
 	@RequiresPermissions("article:del")
-	public void delete(@RequestBody List<ArticleEntity> article, HttpServletRequest request, HttpServletResponse response) {
+	public void delete(@RequestBody List<ArticleEntity> articles, HttpServletRequest request, HttpServletResponse response) {
 		int appId = BasicUtil.getAppId();
-		int[] ids = new int[article.size()];
+		int[] ids = new int[articles.size()];
 		//循环获取id数据
-		for(int i=0;i<article.size();i++){
-			ids[i] = article.get(i).getArticleID();
+		for(int i=0;i<articles.size();i++){
+			ids[i] = articles.get(i).getArticleID();
 		}
 		
 		if (ids.length == 0 || ids == null) {
@@ -577,6 +578,7 @@ public class ArticleAction extends BaseAction {
 		}
 		// 删除多个帖子
 		articleBiz.deleteBasic(ids);
+		FileUtil.del(articles);
 		this.outJson(response, ModelCode.CMS_ARTICLE, true, "", this.redirectBack(request, false));
 	}
 
