@@ -66,6 +66,7 @@ import com.mingsoft.util.StringUtil;
 
 import net.mingsoft.basic.bean.EUListBean;
 import net.mingsoft.basic.util.BasicUtil;
+import net.mingsoft.basic.util.FileUtil;
 import net.mingsoft.mdiy.util.DictUtil;
 
 /**
@@ -577,6 +578,7 @@ public class ArticleAction extends BaseAction {
 		}
 		// 删除多个帖子
 		articleBiz.deleteBasic(ids);
+		FileUtil.del(article);
 		this.outJson(response, ModelCode.CMS_ARTICLE, true, "", this.redirectBack(request, false));
 	}
 
