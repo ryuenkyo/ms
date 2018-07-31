@@ -50,13 +50,15 @@
 		contentType : "application/x-www-form-urlencoded",
 		queryParamsType : "undefined",
 		toolbar: "#toolbar",
-	    columns: [{ checkbox: true},{
-	        field: 'articleID',
-	        title: '编号',
-	        align: 'center'
-	    }, {
+	    columns: [{ checkbox: true}, {
+	        field: 'column.categoryTitle',
+	        title: '栏目名',
+	        width: 90,
+	        align: 'left'
+	    },{
 	        field: 'basicTitle',
 	        title: '文章标题',
+	        
 	        formatter: function (value, row, index){
 				<@shiro.hasPermission name="article:update">	        
 	        	var url='${managerPath}/cms/article/'+row.articleID+"/edit.do";
@@ -68,20 +70,24 @@
 	    		
 	    	}
 	    }, {
-	        field: 'column.categoryTitle',
-	        title: '栏目名',
-	        align: 'center'
-	    }, {
 	        field: 'articleAuthor',
-	        title: '作者'
-	    }, {
-	        field: 'basicHit',
-	        title: '点击量',
-	        align: 'center'
+	        title: '作者',
+	        width: 100
 	    }, {
 	        field: 'basicSort',
 	        title: '排序',
-	        align: 'center'
+	        align: 'center',
+	        width: 50
+	    }, {
+	        field: 'basicHit',
+	        title: '点击',
+	        align: 'center',
+	        width: 50
+	    }, {
+	        field: 'basicDateTime',
+	        title: '发布时间',
+	        align: 'center',
+	        width: 90
 	    }]
 	});
 	//查询文章标题
