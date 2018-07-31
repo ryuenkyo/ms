@@ -2225,7 +2225,7 @@ CREATE TABLE [mdiy_dict] (
   [dict_value] nvarchar(100) COLLATE Chinese_PRC_CI_AS NOT NULL,
   [dict_label] nvarchar(100) COLLATE Chinese_PRC_CI_AS NOT NULL,
   [dict_type] nvarchar(100) COLLATE Chinese_PRC_CI_AS NOT NULL,
-  [dict_description] nvarchar(100) COLLATE Chinese_PRC_CI_AS NOT NULL,
+  [dict_description] nvarchar(100) COLLATE Chinese_PRC_CI_AS NULL,
   [dict_sort] int DEFAULT ((0)) NOT NULL,
   [dict_parent_id] nvarchar(64) COLLATE Chinese_PRC_CI_AS NULL,
   [dict_remarks] nvarchar(255) COLLATE Chinese_PRC_CI_AS NULL,
@@ -2344,6 +2344,26 @@ EXEC sp_addextendedproperty
 'TABLE', N'mdiy_dict'
 GO
 
+-- ----------------------------
+-- Records of [mdiy_dict]
+-- ----------------------------
+SET IDENTITY_INSERT [dbo].[mdiy_dict] ON
+GO
+
+INSERT INTO [dbo].[mdiy_dict] VALUES (N'2', N'1', N'c', N'推荐', N'文章属性', NULL, N'4', NULL, NULL, N'0', NULL, N'0', NULL, N'0')
+GO
+
+INSERT INTO [dbo].[mdiy_dict] VALUES (N'3', N'1', N'p', N'图片', N'文章属性', NULL, N'4', NULL, NULL, N'0', NULL, N'0', NULL, N'0')
+GO
+
+INSERT INTO [dbo].[mdiy_dict] VALUES (N'4', N'1', N'h', N'头条', N'文章属性', NULL, N'2', NULL, NULL, N'0', NULL, N'0', NULL, N'0')
+GO
+
+INSERT INTO [dbo].[mdiy_dict] VALUES (N'5', N'1', N'f', N'幻灯', N'文章属性', NULL, N'2', NULL, NULL, N'0', NULL, N'0', NULL, N'0')
+GO
+
+SET IDENTITY_INSERT [dbo].[mdiy_dict] OFF
+GO
 
 -- ----------------------------
 -- Table structure for mdiy_form
@@ -2394,6 +2414,17 @@ EXEC sp_addextendedproperty
 'TABLE', N'mdiy_form'
 GO
 
+-- ----------------------------
+-- Records of [mdiy_form]
+-- ----------------------------
+SET IDENTITY_INSERT [dbo].[mdiy_form] ON
+GO
+
+INSERT INTO [dbo].[mdiy_form] VALUES (N'1', N'留言', N'mdiy_message_50', N'1', N'0', NULL, NULL, NULL)
+GO
+
+SET IDENTITY_INSERT [dbo].[mdiy_form] OFF
+GO
 
 -- ----------------------------
 -- Table structure for mdiy_form_field
@@ -2472,6 +2503,23 @@ EXEC sp_addextendedproperty
 'TABLE', N'mdiy_form_field'
 GO
 
+-- ----------------------------
+-- Records of [mdiy_form_field]
+-- ----------------------------
+SET IDENTITY_INSERT [dbo].[mdiy_form_field] ON
+GO
+
+INSERT INTO [dbo].[mdiy_form_field] VALUES (N'1', N'姓名', N'NAME', N'1', N'', N'0', N'0', N'1')
+GO
+
+INSERT INTO [dbo].[mdiy_form_field] VALUES (N'2', N'手机', N'PHONE', N'1', N'', N'0', N'0', N'1')
+GO
+
+INSERT INTO [dbo].[mdiy_form_field] VALUES (N'3', N'留言内容', N'CONTENT', N'3', N'', N'1', N'0', N'1')
+GO
+
+SET IDENTITY_INSERT [dbo].[mdiy_form_field] OFF
+GO
 
 -- ----------------------------
 -- Table structure for mdiy_mooc_50
@@ -2685,6 +2733,35 @@ EXEC sp_addextendedproperty
 'MS_Description', N'自定义搜索表',
 'SCHEMA', N'dbo',
 'TABLE', N'mdiy_search'
+GO
+
+-- ----------------------------
+-- Table structure for mdiy_message_50
+-- ----------------------------
+IF EXISTS (SELECT * FROM sys.all_objects WHERE object_id = OBJECT_ID(N'[dbo].[mdiy_message_50]') AND type IN ('U'))
+	DROP TABLE [dbo].[mdiy_message_50]
+GO
+
+CREATE TABLE [dbo].[mdiy_message_50] (
+  [Id] int IDENTITY(5,1) NOT NULL,
+  [date] datetime DEFAULT NULL NULL,
+  [fromID] int DEFAULT NULL NULL,
+  [NAME] varchar(100) COLLATE Chinese_PRC_CI_AS NULL,
+  [PHONE] varchar(100) COLLATE Chinese_PRC_CI_AS NULL,
+  [CONTENT] text COLLATE Chinese_PRC_CI_AS NULL
+)
+GO
+
+ALTER TABLE [dbo].[mdiy_message_50] SET (LOCK_ESCALATION = TABLE)
+GO
+
+
+-- ----------------------------
+-- Primary Key structure for table mdiy_message_50
+-- ----------------------------
+ALTER TABLE [dbo].[mdiy_message_50] ADD CONSTRAINT [PK__mdiy_mes__3214EC07F6D81267] PRIMARY KEY CLUSTERED ([Id])
+WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)  
+ON [PRIMARY]
 GO
 
 

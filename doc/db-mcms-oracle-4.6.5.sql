@@ -358,7 +358,7 @@ INSERT INTO "BASIC_COLUMN" VALUES ('66', '精选案例展示', '新颖的设计�
 INSERT INTO "BASIC_COLUMN" VALUES ('67', '精选案例展示', '新颖的设计方案，大胆的革新思想，灵活的运用最新技术，是品网视觉的特点，我们只做有灵魂的设计', '1', 'case-show.htm', 'case-list.htm', '/61/67', NULL);
 INSERT INTO "BASIC_COLUMN" VALUES ('68', NULL, '您可以通过以下新闻与公司动态进一步了解我们。我们所签约的客户，无论他们的项目是大或者是小，我们都将提供100%的服务', '1', 'news-show.htm', 'news-list.htm', '/59/68', NULL);
 INSERT INTO "BASIC_COLUMN" VALUES ('69', NULL, NULL, '1', 'news-show.htm', 'news-list.htm', '/59/69', NULL);
-INSERT INTO "BASIC_COLUMN" VALUES ('70', NULL, '新闻中心', '1', 'news-show.htm', 'news-list.htm', '/59/70', NULL);
+INSERT INTO "BASIC_COLUMN" VALUES ('70', NULL, '新闻中心', '1', 'news-list.htm', 'news-show.htm', '/59/70', NULL);
 INSERT INTO "BASIC_COLUMN" VALUES ('83', NULL, '您可以通过以下新闻与公司动态进一步了解我们。我们所签约的客户，无论他们的项目是大或者是小，我们都将提供100%的服务', '1', 'news-show.htm', 'news-list.htm', '/62/83', NULL);
 INSERT INTO "BASIC_COLUMN" VALUES ('84', '专业提供网站模板，网页模板，教程培训，程序插件，网站素材等建站资源。我们致力于打造一个优秀的建站资源共享学习平台！', '专业提供网站模板，网页模板，教程培训，程序插件，网站素材等建站资源。设计者：如果您是模板设计师，插件制作者。我们致力于打造一个优秀的建站资源共享学习平台！您可以在这里放心出售您的模板和插件，我们提供版权保护。购买者：购买本站资源，我们提供“三重保障”(担保交易+人工介入+售后服务)，保障购买者的合法权益。织梦猫已经上路，我们将为此不懈努', '1', 'news-show.htm', 'news-list.htm', '/62/84', NULL);
 INSERT INTO "BASIC_COLUMN" VALUES ('87', NULL, NULL, '2', 'solution.htm', 'about.htm', '/87', NULL);
@@ -926,14 +926,14 @@ INSERT INTO "MDIY_CONTENT_MODE_FIELD" VALUES ('12', '描述5', 'descripFi', '2',
 -- ----------------------------
 -- Table structure for MDIY_DICT
 -- ----------------------------
-DROP TABLE "MDIY_DICT";
+DROP TABLE "MDIY_DICT"; 
 CREATE TABLE "MDIY_DICT" (
   "DICT_ID" NUMBER(11) NOT NULL ,
   "APP_ID" NUMBER(11) ,
   "DICT_VALUE" NVARCHAR2(100) NOT NULL ,
   "DICT_LABEL" NVARCHAR2(100) NOT NULL ,
   "DICT_TYPE" NVARCHAR2(100) NOT NULL ,
-  "DICT_DESCRIPTION" NVARCHAR2(100) NOT NULL ,
+  "DICT_DESCRIPTION" NVARCHAR2(100) ,
   "DICT_SORT" NUMBER(11) DEFAULT 0  NOT NULL ,
   "DICT_PARENT_ID" NVARCHAR2(64) ,
   "DICT_REMARKS" NVARCHAR2(255) ,
@@ -971,6 +971,12 @@ COMMENT ON COLUMN "MDIY_DICT"."UPDATE_DATE" IS '更新时间';
 COMMENT ON COLUMN "MDIY_DICT"."DEL" IS '删除标记';
 COMMENT ON TABLE "MDIY_DICT" IS '字典表';
 
+INSERT INTO "MDIY_DICT" VALUES ('1', '1', 'p', '图片', '文章属性', '图片', '1', NULL, NULL, '0', NULL, '0', NULL, '0');
+INSERT INTO "MDIY_DICT" VALUES ('2', '1', 'h', '头条', '文章属性', '头条', '2', NULL, NULL, '0', NULL, '0', NULL, '0');
+INSERT INTO "MDIY_DICT" VALUES ('3', '1', 'f', '幻灯', '文章属性', '幻灯', '3', NULL, NULL, '0', NULL, '0', NULL, '0');
+INSERT INTO "MDIY_DICT" VALUES ('4', '1', 'c', '推荐', '文章属性', '推荐', '4', NULL, NULL, '0', NULL, '0', NULL, '0');
+
+
 -- ----------------------------
 -- Table structure for MDIY_FORM
 -- ----------------------------
@@ -1001,6 +1007,8 @@ COMMENT ON COLUMN "MDIY_FORM"."FORM_ID" IS '自增长id';
 COMMENT ON COLUMN "MDIY_FORM"."FORM_TIPS_NAME" IS '自定义表单提示文字';
 COMMENT ON COLUMN "MDIY_FORM"."FORM_APP_ID" IS '自定义表单关联的应用编号';
 COMMENT ON TABLE "MDIY_FORM" IS '自定义表单表';
+
+INSERT INTO MDIY_FORM VALUES ( '1', '留言', 'mdiy_message_50', '1', '0', TO_DATE('2018-06-29 17:37:13', 'SYYYY-MM-DD HH24:MI:SS'), '0', TO_DATE('2018-06-29 17:37:13', 'SYYYY-MM-DD HH24:MI:SS'));
 
 -- ----------------------------
 -- Table structure for MDIY_FORM_FIELD
@@ -1036,6 +1044,10 @@ COMMENT ON COLUMN "MDIY_FORM_FIELD"."FF_ISNULL" IS '字段是否为空';
 COMMENT ON COLUMN "MDIY_FORM_FIELD"."FF_SORT" IS '自定义表单的排序';
 COMMENT ON COLUMN "MDIY_FORM_FIELD"."FF_FORMID" IS '字段管理的表单id';
 COMMENT ON TABLE "MDIY_FORM_FIELD" IS '自定义表单字段表';
+
+INSERT INTO MDIY_FORM_FIELD VALUES ('1', '姓名', 'NAME', '1', '', '1', '0', '1');
+INSERT INTO MDIY_FORM_FIELD VALUES ('2', '手机号', 'PHONE', '1', '', '1', '0', '1');
+INSERT INTO MDIY_FORM_FIELD VALUES ('3', '留言内容', 'CONTENT', '1', '', '1', '0', '1');
 
 -- ----------------------------
 -- Table structure for MDIY_MOOC_50
@@ -1514,115 +1526,142 @@ INSERT INTO "ROLE_MODEL" VALUES ('149', '48');
 INSERT INTO "ROLE_MODEL" VALUES ('150', '48');
 INSERT INTO "ROLE_MODEL" VALUES ('151', '48');
 
+-- ----------------------------
+-- Table structure for MDIY_MESSAGE_50
+-- ----------------------------
+CREATE TABLE MDIY_MESSAGE_50 (
+  "ID" NUMBER(11) NOT NULL,
+  "DATE" DATE,
+  "FROMID" NUMBER(11),
+  "NAME" NVARCHAR2(100),
+  "PHONE" NVARCHAR2(100),
+  "CONTENT" NVARCHAR2(100)
+) 
+TABLESPACE "USERS"
+LOGGING
+NOCOMPRESS
+PCTFREE 10
+INITRANS 1
+STORAGE (
+  INITIAL 65536 
+  NEXT 1048576 
+  MINEXTENTS 1
+  MAXEXTENTS 2147483645
+  BUFFER_POOL DEFAULT
+)
+PARALLEL 1
+NOCACHE
+DISABLE ROW MOVEMENT
+;
 
 
 -- ----------------------------
 -- Sequence structure for SEQ_APP_ID
 -- ----------------------------
 DROP SEQUENCE "SEQ_APP_ID";
-CREATE SEQUENCE "SEQ_APP_ID" MINVALUE 1 MAXVALUE 99999999 INCREMENT BY 300 CACHE 20;
+CREATE SEQUENCE "SEQ_APP_ID" MINVALUE 1 MAXVALUE 99999999 START WITH 300 INCREMENT BY 1   CACHE 20;
 
 -- ----------------------------
 -- Sequence structure for SEQ_BASIC_ID
 -- ----------------------------
 DROP SEQUENCE "SEQ_BASIC_ID";
-CREATE SEQUENCE "SEQ_BASIC_ID" MINVALUE 1 MAXVALUE 99999999 INCREMENT BY 300 CACHE 20;
+CREATE SEQUENCE "SEQ_BASIC_ID" MINVALUE 1 MAXVALUE 99999999 START WITH 300 INCREMENT BY 1   CACHE 20;
 
 -- ----------------------------
 -- Sequence structure for SEQ_BA_ID
 -- ----------------------------
 DROP SEQUENCE "SEQ_BA_ID";
-CREATE SEQUENCE "SEQ_BA_ID" MINVALUE 1 MAXVALUE 99999999 INCREMENT BY 300 CACHE 20;
+CREATE SEQUENCE "SEQ_BA_ID" MINVALUE 1 MAXVALUE 99999999 START WITH 300 INCREMENT BY 1   CACHE 20;
 
 -- ----------------------------
 -- Sequence structure for SEQ_BL_ID
 -- ----------------------------
 DROP SEQUENCE "SEQ_BL_ID";
-CREATE SEQUENCE "SEQ_BL_ID" MINVALUE 1 MAXVALUE 99999999 INCREMENT BY 300 CACHE 20;
+CREATE SEQUENCE "SEQ_BL_ID" MINVALUE 1 MAXVALUE 99999999 START WITH 300 INCREMENT BY 1   CACHE 20;
 
 -- ----------------------------
 -- Sequence structure for SEQ_CATEGORY_ID
 -- ----------------------------
 DROP SEQUENCE "SEQ_CATEGORY_ID";
-CREATE SEQUENCE "SEQ_CATEGORY_ID" MINVALUE 1 MAXVALUE 99999999 INCREMENT BY 300 CACHE 20;
+CREATE SEQUENCE "SEQ_CATEGORY_ID" MINVALUE 1 MAXVALUE 99999999 START WITH 300 INCREMENT BY 1   CACHE 20;
 
 -- ----------------------------
 -- Sequence structure for SEQ_CM_ID
 -- ----------------------------
 DROP SEQUENCE "SEQ_CM_ID";
-CREATE SEQUENCE "SEQ_CM_ID" MINVALUE 1 MAXVALUE 99999999 INCREMENT BY 300 CACHE 20;
+CREATE SEQUENCE "SEQ_CM_ID" MINVALUE 1 MAXVALUE 99999999 START WITH 300 INCREMENT BY 1   CACHE 20;
 
 -- ----------------------------
 -- Sequence structure for SEQ_COMMENT_ID
 -- ----------------------------
 DROP SEQUENCE "SEQ_COMMENT_ID";
-CREATE SEQUENCE "SEQ_COMMENT_ID" MINVALUE 1 MAXVALUE 99999999 INCREMENT BY 300 CACHE 20;
+CREATE SEQUENCE "SEQ_COMMENT_ID" MINVALUE 1 MAXVALUE 99999999 START WITH 300 INCREMENT BY 1   CACHE 20;
 
 -- ----------------------------
 -- Sequence structure for SEQ_DICT_ID
 -- ----------------------------
 DROP SEQUENCE "SEQ_DICT_ID";
-CREATE SEQUENCE "SEQ_DICT_ID" MINVALUE 1 MAXVALUE 99999999 INCREMENT BY 300 CACHE 20;
+CREATE SEQUENCE "SEQ_DICT_ID" MINVALUE 1 MAXVALUE 99999999 START WITH 300 INCREMENT BY 1   CACHE 20;
 
 -- ----------------------------
 -- Sequence structure for SEQ_FF_ID
 -- ----------------------------
 DROP SEQUENCE "SEQ_FF_ID";
-CREATE SEQUENCE "SEQ_FF_ID" MINVALUE 1 MAXVALUE 99999999 INCREMENT BY 300 CACHE 20;
+CREATE SEQUENCE "SEQ_FF_ID" MINVALUE 1 MAXVALUE 99999999 START WITH 300 INCREMENT BY 1   CACHE 20;
 
 -- ----------------------------
 -- Sequence structure for SEQ_FIELD_ID
 -- ----------------------------
 DROP SEQUENCE "SEQ_FIELD_ID";
-CREATE SEQUENCE "SEQ_FIELD_ID" MINVALUE 1 MAXVALUE 99999999 INCREMENT BY 300 CACHE 20;
+CREATE SEQUENCE "SEQ_FIELD_ID" MINVALUE 1 MAXVALUE 99999999 START WITH 300 INCREMENT BY 1   CACHE 20;
 
 -- ----------------------------
 -- Sequence structure for SEQ_FORM_ID
 -- ----------------------------
 DROP SEQUENCE "SEQ_FORM_ID";
-CREATE SEQUENCE "SEQ_FORM_ID" MINVALUE 1 MAXVALUE 99999999 INCREMENT BY 300 CACHE 20;
+CREATE SEQUENCE "SEQ_FORM_ID" MINVALUE 1 MAXVALUE 99999999 START WITH 300 INCREMENT BY 1   CACHE 20;
 
 -- ----------------------------
 -- Sequence structure for SEQ_MANAGER_ID
 -- ----------------------------
 DROP SEQUENCE "SEQ_MANAGER_ID";
-CREATE SEQUENCE "SEQ_MANAGER_ID" MINVALUE 1 MAXVALUE 99999999 INCREMENT BY 300 CACHE 20;
+CREATE SEQUENCE "SEQ_MANAGER_ID" MINVALUE 1 MAXVALUE 99999999 START WITH 300 INCREMENT BY 1   CACHE 20;
 
 -- ----------------------------
 -- Sequence structure for SEQ_MODEL_ID
 -- ----------------------------
 DROP SEQUENCE "SEQ_MODEL_ID";
-CREATE SEQUENCE "SEQ_MODEL_ID" MINVALUE 1 MAXVALUE 99999999 INCREMENT BY 300 CACHE 20;
+CREATE SEQUENCE "SEQ_MODEL_ID" MINVALUE 1 MAXVALUE 99999999 START WITH 300 INCREMENT BY 1   CACHE 20;
 
 -- ----------------------------
 -- Sequence structure for SEQ_PAGE_ID
 -- ----------------------------
 DROP SEQUENCE "SEQ_PAGE_ID";
-CREATE SEQUENCE "SEQ_PAGE_ID" MINVALUE 1 MAXVALUE 99999999 INCREMENT BY 300 CACHE 20;
+CREATE SEQUENCE "SEQ_PAGE_ID" MINVALUE 1 MAXVALUE 99999999 START WITH 300 INCREMENT BY 1   CACHE 20;
 
 -- ----------------------------
 -- Sequence structure for SEQ_PEOPLE_ID
 -- ----------------------------
 DROP SEQUENCE "SEQ_PEOPLE_ID";
-CREATE SEQUENCE "SEQ_PEOPLE_ID" MINVALUE 1 MAXVALUE 99999999 INCREMENT BY 300 CACHE 20;
+CREATE SEQUENCE "SEQ_PEOPLE_ID" MINVALUE 1 MAXVALUE 99999999 START WITH 300 INCREMENT BY 1   CACHE 20;
 
 -- ----------------------------
 -- Sequence structure for SEQ_ROLE_ID
 -- ----------------------------
 DROP SEQUENCE "SEQ_ROLE_ID";
-CREATE SEQUENCE "SEQ_ROLE_ID" MINVALUE 1 MAXVALUE 99999999 INCREMENT BY 300 CACHE 20;
+CREATE SEQUENCE "SEQ_ROLE_ID" MINVALUE 1 MAXVALUE 99999999 START WITH 300 INCREMENT BY 1   CACHE 20;
 
 -- ----------------------------
 -- Sequence structure for SEQ_SEARCH_ID
 -- ----------------------------
 DROP SEQUENCE "SEQ_SEARCH_ID";
-CREATE SEQUENCE "SEQ_SEARCH_ID" MINVALUE 1 MAXVALUE 99999999 INCREMENT BY 300 CACHE 20;
+CREATE SEQUENCE "SEQ_SEARCH_ID" MINVALUE 1 MAXVALUE 99999999 START WITH 300 INCREMENT BY 1   CACHE 20;
 
 -- ----------------------------
 -- Sequence structure for SEQ_SS_ID
 -- ----------------------------
 DROP SEQUENCE "SEQ_SS_ID";
-CREATE SEQUENCE "SEQ_SS_ID" MINVALUE 1 MAXVALUE 99999999 INCREMENT BY 300 CACHE 20;
+CREATE SEQUENCE "SEQ_SS_ID" MINVALUE 1 MAXVALUE 99999999 START WITH 300 INCREMENT BY 1   CACHE 20;
 
 -- ----------------------------
 -- Primary Key structure for table APP

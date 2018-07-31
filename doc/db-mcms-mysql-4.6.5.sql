@@ -1,4 +1,3 @@
-
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
@@ -30,7 +29,7 @@ CREATE TABLE `app` (
 -- ----------------------------
 -- Records of app
 -- ----------------------------
-INSERT INTO `app` VALUES ('1', 'MCMS-OPEN', 'http://localhost:8080/ms-mcms\r\n', '', '', '', 'default', '50', '', null, 'm', null, '', '0', '0', null);
+INSERT INTO `app` VALUES ('1', 'MCMS-OPEN', 'http://localhost:9090/ms-mcms', '', '', '', 'default', '50', '', null, 'm', null, '', '0', '0', null);
 
 -- ----------------------------
 -- Table structure for basic
@@ -657,7 +656,7 @@ CREATE TABLE `mdiy_dict` (
   `dict_value` varchar(100) COLLATE utf8_bin NOT NULL COMMENT '数据值',
   `dict_label` varchar(100) COLLATE utf8_bin NOT NULL COMMENT '标签名',
   `dict_type` varchar(100) COLLATE utf8_bin NOT NULL COMMENT '类型',
-  `dict_description` varchar(100) COLLATE utf8_bin NOT NULL COMMENT '描述',
+  `dict_description` varchar(100) COLLATE utf8_bin DEFAULT NULL COMMENT '描述',
   `dict_sort` int(10) NOT NULL DEFAULT '0' COMMENT '排序（升序）',
   `dict_parent_id` varchar(64) COLLATE utf8_bin DEFAULT '0' COMMENT '父级编号',
   `dict_remarks` varchar(255) COLLATE utf8_bin DEFAULT NULL COMMENT '备注信息',
@@ -671,11 +670,15 @@ CREATE TABLE `mdiy_dict` (
   KEY `dict_value` (`dict_value`) USING BTREE,
   KEY `dict_label` (`dict_label`) USING BTREE,
   CONSTRAINT `fk_mdiy_dict` FOREIGN KEY (`app_id`) REFERENCES `app` (`app_id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin ROW_FORMAT=DYNAMIC COMMENT='字典表';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_bin ROW_FORMAT=DYNAMIC COMMENT='字典表';
 
 -- ----------------------------
 -- Records of mdiy_dict
 -- ----------------------------
+INSERT INTO `mdiy_dict` VALUES ('1', '1', 'f', '幻灯', '文章属性', null, '3', '0', null, '0', null, '0', null, '0');
+INSERT INTO `mdiy_dict` VALUES ('2', '1', 'p', '图片', '文章属性', null, '1', '0', null, '0', null, '0', null, '0');
+INSERT INTO `mdiy_dict` VALUES ('3', '1', 'c', '推荐', '文章属性', null, '4', '0', null, '0', null, '0', null, '0');
+INSERT INTO `mdiy_dict` VALUES ('4', '1', 'h', '头条', '文章属性', null, '2', '0', null, '0', null, '0', null, '0');
 
 -- ----------------------------
 -- Table structure for mdiy_form
@@ -723,7 +726,7 @@ CREATE TABLE `mdiy_form_field` (
 -- ----------------------------
 INSERT INTO `mdiy_form_field` VALUES ('1', '姓名', 'NAME', '1', '', '1', '0', '1');
 INSERT INTO `mdiy_form_field` VALUES ('2', '手机号', 'PHONE', '1', '', '1', '0', '1');
-INSERT INTO `mdiy_form_field` VALUES ('3', '留言内容', 'CONTENT', '1', '', '1', '0', '1');
+INSERT INTO `mdiy_form_field` VALUES ('3', '留言内容', 'CONTENT', '3', '', '1', '0', '1');
 
 -- ----------------------------
 -- Table structure for mdiy_message_50
@@ -849,15 +852,15 @@ CREATE TABLE `model` (
 -- ----------------------------
 -- Records of model
 -- ----------------------------
-INSERT INTO `model` VALUES ('1', '内容管理', '02000000', null, '', '2014-08-01 16:19:50', '&#xe77a;', '0', '0', '1', null);
+INSERT INTO `model` VALUES ('1', '内容管理', '02000000', null, '', '2014-08-01 16:19:50', '&#xe77a;', '0', '5', '1', null);
 INSERT INTO `model` VALUES ('4', '管理员管理', '01020000', '23', 'basic/manager/index.do', '2014-08-03 09:15:02', '', '0', '0', '1', '23');
 INSERT INTO `model` VALUES ('5', '角色管理', '01010000', '23', 'basic/role/index.do', '2014-08-03 09:15:14', '', '0', '0', '1', '23');
-INSERT INTO `model` VALUES ('7', '栏目管理', '02990000', '1', 'cms/column/index.do', '2014-08-03 09:16:29', '', '0', '0', '1', '1');
-INSERT INTO `model` VALUES ('8', '文章管理', '02980000', '1', 'cms/article/index.do', '2014-08-03 09:17:10', '', '0', '0', '1', '1');
-INSERT INTO `model` VALUES ('22', '会员中心', '07000000', null, '', '2014-09-08 08:11:28', '&#xe6b6;', '0', '0', '1', null);
-INSERT INTO `model` VALUES ('23', '权限管理', '01000000', null, '', '2014-09-08 08:12:22', '&#xe950;', '0', '0', '1', null);
-INSERT INTO `model` VALUES ('80', '静态化', '02020000', '1', 'cms/generate/index.do', '2014-12-18 11:37:15', '', '0', '0', '1', '1');
-INSERT INTO `model` VALUES ('84', '系统管理', '12000000', null, '', '2014-12-18 18:30:24', '&#xe71f;', '0', '0', '1', null);
+INSERT INTO `model` VALUES ('7', '栏目管理', '02990000', '1', 'cms/column/index.do', '2014-08-03 09:16:29', '', '0', '2', '1', '1');
+INSERT INTO `model` VALUES ('8', '文章管理', '02980000', '1', 'cms/article/index.do', '2014-08-03 09:17:10', '', '0', '3', '1', '1');
+INSERT INTO `model` VALUES ('22', '会员中心', '07000000', null, '', '2014-09-08 08:11:28', '&#xe6b6;', '0', '4', '1', null);
+INSERT INTO `model` VALUES ('23', '权限管理', '01000000', null, '', '2014-09-08 08:12:22', '&#xe950;', '0', '2', '1', null);
+INSERT INTO `model` VALUES ('80', '静态化', '02020000', '1', 'cms/generate/index.do', '2014-12-18 11:37:15', '', '0', '1', '1', '1');
+INSERT INTO `model` VALUES ('84', '系统管理', '12000000', null, '', '2014-12-18 18:30:24', '&#xe71f;', '0', '1', '1', null);
 INSERT INTO `model` VALUES ('86', '应用设置', '12010000', '84', 'app/-1/edit.do', '2014-12-18 18:31:59', '', '0', '0', '1', '84');
 INSERT INTO `model` VALUES ('88', '用户管理', '07020100', '22', 'people/peopleUser/index.do ', '2015-09-18 11:44:54', '', '0', '0', '1', '22');
 INSERT INTO `model` VALUES ('91', '模板管理', '12020000', '84', 'template/queryTemplateSkin.do', null, '', '0', '0', '1', '84');
@@ -871,7 +874,7 @@ INSERT INTO `model` VALUES ('98', '查看', '01010001', '5', 'role:view', '2017-
 INSERT INTO `model` VALUES ('99', '查看', '01030001', '96', 'model:view', '2017-09-04 11:10:43', '', '0', '0', '0', '23,96');
 INSERT INTO `model` VALUES ('100', '查看', '12020001', '91', 'template:view', '2017-09-04 11:12:02', '', '0', '0', '0', '84,91');
 INSERT INTO `model` VALUES ('101', '查看', '12010001', '86', 'app:view', '2017-09-04 11:12:46', '', '0', '0', '0', '84,86');
-INSERT INTO `model` VALUES ('104', '自定义管理', '20000000', null, '', '2017-09-04 11:17:41', '&#xe6dd', '0', '0', '1', null);
+INSERT INTO `model` VALUES ('104', '自定义管理', '20000000', null, '', '2017-09-04 11:17:41', '&#xe6dd', '0', '3', '1', null);
 INSERT INTO `model` VALUES ('105', '自定义页面', '20010000', '104', 'mdiy/page/index.do', '2017-09-04 11:18:51', '', '0', '0', '1', '104');
 INSERT INTO `model` VALUES ('106', '自定义表单', '20020000', '104', 'mdiy/form/index.do', '2017-09-04 11:19:15', '', '0', '0', '1', '104');
 INSERT INTO `model` VALUES ('107', '自定义模型', '20030000', '104', 'mdiy/contentModel/index.do', '2017-09-04 11:20:15', '', '0', '0', '1', '104');

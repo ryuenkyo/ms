@@ -27,6 +27,8 @@
 	<context:component-scan base-package="**.service" />
 	<!-- 业务调度 -->
 	<context:component-scan base-package="**.job" />
+	<!-- 异常处理 -->
+	<context:component-scan base-package="**.exception" />	
 	<!-- 打开aop 注解 -->
 	<aop:aspectj-autoproxy proxy-target-class="true" />
 	<mvc:annotation-driven />

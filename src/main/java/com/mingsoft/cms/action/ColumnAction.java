@@ -36,6 +36,7 @@ import com.mingsoft.util.StringUtil;
 
 import net.mingsoft.basic.bean.EUListBean;
 import net.mingsoft.basic.util.BasicUtil;
+import net.mingsoft.basic.util.FileUtil;
 
 
 
@@ -181,9 +182,12 @@ public class ColumnAction extends BaseAction{
 	@ResponseBody
 	public void delete(HttpServletResponse response, HttpServletRequest request) {
 		int[] ids = BasicUtil.getInts("ids", ",");
+		ColumnEntity column =new ColumnEntity();
 		for(int i=0;i<ids.length;i++){
+			column = (ColumnEntity) columnBiz.getEntity(ids[i]);
 			columnBiz.deleteCategory(ids[i]);
-		}
+			FileUtil.del(column);
+		};
 		this.outJson(response, true);
 	}
 		

@@ -240,7 +240,7 @@
 		<where>
 			a.ARTICLE_WEBID = #{webId}
 			<if test="article != null ">
-				<if test="article.basicTitle != null">
+				<if test="article.basicTitle != null and article.basicTitle != ''">
 					and b.BASIC_TITLE like
 					<include refid="queryWhereBasicTitle"></include>
 				</if>
@@ -273,7 +273,7 @@
 		JOIN category c ON c.CATEGORY_ID = cl.COLUMN_CATEGORY_ID
 		where a.ARTICLE_WEBID = #{webId}
 		<if test="article != null ">
-			<if test="article.basicTitle != null">
+			<if test="article.basicTitle != null and article.basicTitle != ''">
 				and b.BASIC_TITLE like
 				<include refid="queryWhereBasicTitle"></include>
 			</if>

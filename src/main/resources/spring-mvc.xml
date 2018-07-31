@@ -86,7 +86,4 @@
 		</property>
 		<property name="excludeUrls" value="upload"/>  
 	</bean>
-
-	<!-- 系统错误转发配置[并记录错误日志] -->
-	<bean class="net.mingsoft.basic.exception.SimpleMappingExceptionResolver"/>
 </beans>
