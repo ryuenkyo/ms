@@ -180,8 +180,7 @@
 					<encoding>UTF-8</encoding>
 					<compilerArguments>
 						<verbose />
-						<!--bootclasspath路径分隔符平台差异：windows使用分号';'linux|mac os使用冒号':' -->
-						<bootclasspath>${java.home}/lib/rt.jar;${java.home}/lib/jce.jar</bootclasspath>
+						<bootclasspath>${java.home}/lib/rt.jar${path.separator}${java.home}/lib/jce.jar</bootclasspath>
 					</compilerArguments>
 
 				</configuration>
