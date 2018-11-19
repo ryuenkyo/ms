@@ -49,6 +49,7 @@ import com.mingsoft.mdiy.biz.IContentModelFieldBiz;
 import com.mingsoft.mdiy.entity.ContentModelEntity;
 import com.mingsoft.util.StringUtil;
 
+import cn.hutool.core.util.ObjectUtil;
 import net.mingsoft.basic.bean.ListBean;
 import net.mingsoft.basic.util.BasicUtil;
 
@@ -123,7 +124,7 @@ public class ArticleAction extends BaseAction {
 			listFieldName.add("basicId");
 			// 查询新增字段的信息
 			List fieldLists = fieldBiz.queryBySQL(contentModel.getCmTableName(), listFieldName, where);
-			if (fieldLists != null || fieldLists.size() > 0) {
+			if (fieldLists.size() > 0) {
 				Map map = (Map) fieldLists.get(0);
 				article.setExtendsFields(map);
 			}
@@ -198,7 +199,31 @@ public class ArticleAction extends BaseAction {
 			}
 		}
 		BasicUtil.startPage();
-		List list = articleBiz.query(appId, ids, null, null, article.getOrderBy(), isOrder, article);
+		List<ArticleEntity> list = articleBiz.query(appId, ids, null, null, article.getOrderBy(), isOrder, article);
+		
+		for(ArticleEntity _article : list){
+			// 获取文章栏目id获取栏目实体
+			ColumnEntity column = (ColumnEntity) columnBiz.getEntity(_article.getBasicCategoryId());
+			ContentModelEntity contentModel = (ContentModelEntity) contentModelBiz
+					.getEntity(column.getColumnContentModelId());
+
+			// 判断内容模型的值
+			if (contentModel != null) {
+				Map where = new HashMap();
+				// 压入basicId字段的值
+				where.put("basicId", _article.getBasicId());
+				// 遍历所有的字段实体,得到字段名列表信息
+				List<String> listFieldName = new ArrayList<String>();
+				listFieldName.add("basicId");
+				// 查询新增字段的信息
+				List fieldLists = fieldBiz.queryBySQL(contentModel.getCmTableName(), listFieldName, where);
+				if (fieldLists.size() > 0) {
+					Map map = (Map) fieldLists.get(0);
+					_article.setExtendsFields(map);
+				}
+			}
+		}
+		
 		this.outJson(response, JSONArray.toJSONString(new ListBean(list, BasicUtil.endPage(list)),new DateValueFilter("yyyy-MM-dd HH:mm:ss")));
 	}
 
