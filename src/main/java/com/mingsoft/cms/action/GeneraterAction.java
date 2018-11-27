@@ -193,7 +193,7 @@ public class GeneraterAction extends BaseAction {
 				FileUtil.writeFile(mobileHtmlContent, generateMobilePath, FileUtil.URF8);
 				this.outJson(response, true);
 			} 
-		}
+		} 
 	}
 
 	/**
