@@ -210,7 +210,7 @@ public class GeneraterAction extends BaseAction {
 							//3、将tag.getContent()写入路径
 							FileUtil.writeFile(content, generatePath, FileUtil.URF8);
 							
-							template = cfg.getTemplate("m/index.htm","UTF-8");
+							template = cfg.getTemplate("m/"+tmpFileName,"UTF-8");
 							template.process(null, mWriter);
 							TagParser mTag = new TagParser(mWriter.toString());
 							String mContent = mTag.rendering(map);
