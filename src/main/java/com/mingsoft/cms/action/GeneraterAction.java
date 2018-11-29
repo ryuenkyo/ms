@@ -23,6 +23,7 @@ package com.mingsoft.cms.action;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.StringWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -65,7 +66,12 @@ import com.mingsoft.util.FileUtil;
 import com.mingsoft.util.StringUtil;
 
 import cn.hutool.http.HttpUtil;
+import freemarker.cache.FileTemplateLoader;
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
 import net.mingsoft.basic.util.BasicUtil;
+import net.mingsoft.mdiy.parser.TagParser;
 
 /**
  * 
@@ -183,14 +189,52 @@ public class GeneraterAction extends BaseAction {
 			String htmlContent = FileUtil.readFile(tmpFilePath); // 读取模版文件内容
 			String mobileHtmlContent = FileUtil.readFile(tmpMobileFilePath); // 读取手机端模版文件内容
 			if (!StringUtil.isBlank(htmlContent)) {
+				try {
+					Map map = new HashMap();
+					//1、设置模板文件夹路径
+					FileTemplateLoader ft = new FileTemplateLoader(new File(webSiteTmpPath));
+					Configuration cfg = new Configuration();
+					cfg.setTemplateLoader(ft);
+					try {
+						//2、读取模板文件
+						Template template = cfg.getTemplate(tmpFileName,"UTF-8");
+						//pc端内容
+						StringWriter pcWriter = new StringWriter();
+						//手机端m
+						StringWriter mWriter = new StringWriter();
+						try {
+							template.process(null, pcWriter);
+							TagParser tag = new TagParser(pcWriter.toString());
+							String content = tag.rendering(map);
+							//LOG.debug(tag.getContent());
+							//3、将tag.getContent()写入路径
+							FileUtil.writeFile(content, generatePath, FileUtil.URF8);
+							
+							template = cfg.getTemplate("m/index.htm","UTF-8");
+							template.process(null, mWriter);
+							TagParser mTag = new TagParser(mWriter.toString());
+							String mContent = mTag.rendering(map);
+							FileUtil.writeFile(mContent, generateMobilePath, FileUtil.URF8);
+							
+						} catch (TemplateException e) {
+							e.printStackTrace();
+						}
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				//进行html的解析
-				htmlContent = cmsParser.parse(htmlContent,app);
-				Map map = new HashMap();
-				map.put(CmsParser.MOBILE,IParserRegexConstant.MOBILE);
-				mobileHtmlContent = cmsParser.parse(mobileHtmlContent,app,map);
-				// 解析HTML上的标签
-				FileUtil.writeFile(htmlContent, generatePath, FileUtil.URF8);
-				FileUtil.writeFile(mobileHtmlContent, generateMobilePath, FileUtil.URF8);
+//				htmlContent = cmsParser.parse(htmlContent,app);
+//				Map map = new HashMap();
+//				map.put(CmsParser.MOBILE,IParserRegexConstant.MOBILE);
+//				mobileHtmlContent = cmsParser.parse(mobileHtmlContent,app,map);
+//				// 解析HTML上的标签
+//				FileUtil.writeFile(htmlContent, generatePath, FileUtil.URF8);
+//				FileUtil.writeFile(mobileHtmlContent, generateMobilePath, FileUtil.URF8);
 				this.outJson(response, true);
 			} 
 		} 
@@ -428,6 +472,13 @@ public class GeneraterAction extends BaseAction {
 		List<ArticleEntity> articleList = null;
 		List<ColumnEntity> columns = new ArrayList<ColumnEntity>();
 		Integer modelId = modelBiz.getEntityByModelCode(ModelCode.CMS_COLUMN).getModelId(); // 查询当前模块编号
+		
+		//根据栏目取出所有文章（可能会增加一个方法，只返回文章编号集合，原则sql越简单越好）
+		//遍历文章记录
+		//解析标签时传递 basicId ，放到map
+		//生成文件
+		
+		
 		if (columnId > 0) {
 			List<CategoryEntity> categorys = columnBiz.queryChildrenCategory(columnId, app.getAppId(),modelId);
 			for (CategoryEntity c : categorys) {
@@ -436,6 +487,7 @@ public class GeneraterAction extends BaseAction {
 		} else {
 			columns = columnBiz.queryColumnListByWebsiteId(app.getAppId()); // 读取所有栏目
 		}
+		
 		String url = app.getAppHostUrl() + File.separator + IParserRegexConstant.HTML_SAVE_PATH + File.separator + app.getAppId() + File.separator; // 文章地址前缀
 		// 如果没有选择栏目，生成规则
 		// 1先读取所有的栏目,从最低级的分类取
