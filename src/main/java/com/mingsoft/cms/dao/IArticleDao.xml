@@ -294,6 +294,12 @@
 		<if test="article !=null and article.basicDisplay &gt; -1">
 			and b.basic_display = #{article.basicDisplay}
 		</if>
+		<if test="beginTime!=null and beginTime!=''">
+			and basic_updatetime &gt;= #{beginTime}
+		</if>
+		<if test="endTime!=null and endTime!=''">
+			and basic_updatetime &gt;= #{endTime}
+		</if>
 		<if test="orderBy != null">
 			order by
 			<choose>

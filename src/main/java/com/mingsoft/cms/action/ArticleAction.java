@@ -190,7 +190,7 @@ public class ArticleAction extends BaseAction {
 		BasicUtil.startPage();
 		article.setBasicDisplay(-1);
 		//查询文章列表
-		List<ArticleEntity> articleList = articleBiz.query(appId, basicCategoryIds, articleType, null, null, true, article);
+		List<ArticleEntity> articleList = articleBiz.query(appId, basicCategoryIds, articleType, null, null, true, article,null,null);
 		EUListBean _list = new EUListBean(articleList, (int) BasicUtil.endPage(articleList).getTotal());
 		//将数据以json数据的形式返回
 		this.outJson(response, net.mingsoft.base.util.JSONArray.toJSONString(_list, new DoubleValueFilter(),new DateValueFilter("yyyy-MM-dd")));

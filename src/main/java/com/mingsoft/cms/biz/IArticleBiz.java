@@ -152,7 +152,7 @@ public interface IArticleBiz extends IBasicBiz {
 	 * @return 文章集合
 	 */
 	List<ArticleEntity> query(int webId, int[] basicCategoryIds, String flag, String noFlag, String orderBy,
-			boolean order, ArticleEntity article);//,Date beginTime,Date endTime
+			boolean order, ArticleEntity article,String beginTime,String endTime);
 
 	/**
 	 * 根据分类与时间查询文章列表

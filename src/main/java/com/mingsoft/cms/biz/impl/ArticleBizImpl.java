@@ -22,33 +22,23 @@ The MIT License (MIT) * Copyright (c) 2016 铭飞科技(mingsoft.net)
 package com.mingsoft.cms.biz.impl;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mingsoft.base.dao.IBaseDao;
-import com.mingsoft.base.entity.BaseEntity;
 import com.mingsoft.basic.biz.ICategoryBiz;
 import com.mingsoft.basic.biz.IColumnBiz;
 import com.mingsoft.basic.biz.IModelBiz;
 import com.mingsoft.basic.biz.impl.BasicBizImpl;
-import com.mingsoft.basic.entity.CategoryEntity;
-import com.mingsoft.basic.entity.ColumnEntity;
 import com.mingsoft.cms.biz.IArticleBiz;
-import com.mingsoft.cms.constant.ModelCode;
 import com.mingsoft.cms.dao.IArticleDao;
 import com.mingsoft.cms.entity.ArticleEntity;
 import com.mingsoft.mdiy.biz.IContentModelBiz;
 import com.mingsoft.mdiy.entity.ContentModelEntity;
 import com.mingsoft.util.PageUtil;
-import com.mingsoft.util.StringUtil;
-
-import cn.hutool.core.util.ArrayUtil;
 
 /**
  * 
@@ -192,12 +182,12 @@ public class ArticleBizImpl extends BasicBizImpl implements IArticleBiz {
 
 	@Override
 	public List<ArticleEntity> query(int webId, int[] basicCategoryIds, String flag, String noFlag, String orderBy,
-			boolean order, ArticleEntity article) {
+			boolean order, ArticleEntity article,String beginTime,String endTime) {
 		// TODO Auto-generated method stub
 		if(article == null) {
 			article = new ArticleEntity();
 		}
-		return articleDao.query(webId, basicCategoryIds, flag, noFlag, orderBy, order, article);
+		return articleDao.query(webId, basicCategoryIds, flag, noFlag, orderBy, order, article, beginTime, endTime);
 	}
 
 	@Override
