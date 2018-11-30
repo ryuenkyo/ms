@@ -218,9 +218,7 @@ public class GeneraterAction extends BaseAction {
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
-					
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				//进行html的解析
@@ -269,146 +267,175 @@ public class GeneraterAction extends BaseAction {
 			//获取所有的内容管理栏目
 			columns = columnBiz.queryAll(app.getAppId(),modelId);
 		}
-		// 获取栏目列表模版
-		for (ColumnEntity column : columns) {
-			String columnPath = null;// pc端
-			String mobilePath = null;// 手机端
-
-			// 生成列表保存路径
-			FileUtil.mkdir(generatePath + column.getColumnPath());
-			// 判断是否为顶级栏目，进行栏目路径的组合
-			if (column.getCategoryCategoryId() == 0) {
-				FileUtil.mkdir(generatePath + column.getCategoryId());
-				columnPath = generatePath + File.separator + column.getCategoryId();
-				if (!StringUtil.isBlank(mobileStyle)) {
-					FileUtil.mkdir(generatePath + mobileStyle + File.separator + column.getCategoryId());
-					mobilePath = generatePath + mobileStyle + File.separator + column.getCategoryId();
+		FileTemplateLoader ft;
+		try {
+			//1、设置模板文件夹路径
+			ft= new FileTemplateLoader(new File(tmpPath));
+			Configuration cfg = new Configuration();
+			cfg.setTemplateLoader(ft);
+			// 获取栏目列表模版
+			for (ColumnEntity column : columns) {
+				String columnPath = null;// pc端
+				String mobilePath = null;// 手机端
+				// 生成列表保存路径
+				FileUtil.mkdir(generatePath + column.getColumnPath());
+				// 判断是否为顶级栏目，进行栏目路径的组合
+				if (column.getCategoryCategoryId() == 0) {
+					FileUtil.mkdir(generatePath + column.getCategoryId());
+					columnPath = generatePath + File.separator + column.getCategoryId();
+					if (!StringUtil.isBlank(mobileStyle)) {
+						FileUtil.mkdir(generatePath + mobileStyle + File.separator + column.getCategoryId());
+						mobilePath = generatePath + mobileStyle + File.separator + column.getCategoryId();
+					}
+				} else {
+					if (!StringUtil.isBlank(mobileStyle)) {
+						mobilePath = generatePath + mobileStyle + File.separator + column.getColumnPath();
+						FileUtil.mkdir(mobilePath);
+					}
+					columnPath = generatePath + column.getColumnPath();
 				}
-			} else {
-				if (!StringUtil.isBlank(mobileStyle)) {
-					mobilePath = generatePath + mobileStyle + File.separator + column.getColumnPath();
-					FileUtil.mkdir(mobilePath);
-				}
-				columnPath = generatePath + column.getColumnPath();
-			}
-			// 判断列表类型
-			switch (column.getColumnType()) {
-			case ColumnEntity.COLUMN_TYPE_LIST: // 列表
-				// 手机列表模版
-				if (!StringUtil.isBlank(mobileStyle)) {
-					FileUtil.mkdir(mobilePath);
-					String mobileListTtmpContent = FileUtil.readUtf8String(tmpPath + File.separator + mobileStyle + File.separator + column.getColumnListUrl());
-					// 如果模版不为空就进行标签替换
-					if (!StringUtil.isBlank(mobileListTtmpContent)) {
-						// 生成手机端模版
-						// 要生成手机的静态页面数
-						int mobilePageSize = cmsParser.getPageSize(app, mobileListTtmpContent, column);
-						// 根据页面数,循环生成静态页面个数在
-						Map map = new HashMap();
-						for (int i = 0; i < mobilePageSize; i++) {
-							String writePath = mobilePath + File.separator + IParserRegexConstant.PAGE_LIST + (i + 1) + IParserRegexConstant.HTML_SUFFIX;
-							if (i == 0) {
-								writePath = mobilePath + File.separator + IParserRegexConstant.HTML_INDEX;
+				// 判断列表类型
+				switch (column.getColumnType()) {
+				case ColumnEntity.COLUMN_TYPE_LIST: // 列表
+					//判断模板文件是否存在
+	//				if(!FileUtil.exist(tmpPath + File.separator + column.getColumnUrl())){
+	//					continue;
+	//				}
+					// 手机列表模版
+					if (!StringUtil.isBlank(mobileStyle)) {
+						FileUtil.mkdir(mobilePath);
+						String mobileListTtmpContent = FileUtil.readUtf8String(tmpPath + File.separator + mobileStyle + File.separator + column.getColumnListUrl());
+						// 如果模版不为空就进行标签替换
+						if (!StringUtil.isBlank(mobileListTtmpContent)) {
+							// 生成手机端模版
+							// 要生成手机的静态页面数
+							int mobilePageSize = cmsParser.getPageSize(app, mobileListTtmpContent, column);
+							// 根据页面数,循环生成静态页面个数在
+							Map map = new HashMap();
+							for (int i = 0; i < mobilePageSize; i++) {
+								String writePath = mobilePath + File.separator + IParserRegexConstant.PAGE_LIST + (i + 1) + IParserRegexConstant.HTML_SUFFIX;
+								if (i == 0) {
+									writePath = mobilePath + File.separator + IParserRegexConstant.HTML_INDEX;
+								}
+								String pagePath = url + File.separator + mobileStyle + File.separator + column.getColumnPath() + File.separator + IParserRegexConstant.PAGE_LIST ;
+								map.put(CmsParser.LIST_LINK_PATH, pagePath);
+								map.put(CmsParser.CUR_PAGE_NO, i + 1);
+								map.put(CmsParser.MOBILE,IParserRegexConstant.MOBILE);
+								String pageContent = cmsParser.parse(mobileListTtmpContent,app,column,map);
+								FileUtil.writeString(pageContent, writePath, UTF8);// 写文件
 							}
-							String pagePath = url + File.separator + mobileStyle + File.separator + column.getColumnPath() + File.separator + IParserRegexConstant.PAGE_LIST ;
-							map.put(CmsParser.LIST_LINK_PATH, pagePath);
-							map.put(CmsParser.CUR_PAGE_NO, i + 1);
-							map.put(CmsParser.MOBILE,IParserRegexConstant.MOBILE);
-							String pageContent = cmsParser.parse(mobileListTtmpContent,app,column,map);
-							FileUtil.writeString(pageContent, writePath, UTF8);// 写文件
 						}
+	
 					}
-
-				}
-
-				// 读取列表模版地址
-				String listTtmpContent = FileUtil.readUtf8String(tmpPath + File.separator + column.getColumnListUrl());
-				// 要生成的静态页面数
-				int pageSize = cmsParser.getPageSize(app, listTtmpContent, column);// generaterFactory.getPageSize(app, listTtmpContent, column);
-				// 根据页面数,循环生成静态页面个数在
-				Map map = new HashMap();
-				for (int i = 0; i < pageSize; i++) {
-					String writePath = columnPath + File.separator + IParserRegexConstant.PAGE_LIST + (i + 1) + IParserRegexConstant.HTML_SUFFIX;
-					if (i == 0) {
-						writePath = columnPath + File.separator + IParserRegexConstant.HTML_INDEX;
+	
+					// 读取列表模版地址
+					String listTtmpContent = FileUtil.readUtf8String(tmpPath + File.separator + column.getColumnListUrl());
+					// 要生成的静态页面数
+					int pageSize = cmsParser.getPageSize(app, listTtmpContent, column);// generaterFactory.getPageSize(app, listTtmpContent, column);
+					// 根据页面数,循环生成静态页面个数在
+					Map map = new HashMap();
+					for (int i = 0; i < pageSize; i++) {
+						String writePath = columnPath + File.separator + IParserRegexConstant.PAGE_LIST + (i + 1) + IParserRegexConstant.HTML_SUFFIX;
+						if (i == 0) {
+							writePath = columnPath + File.separator + IParserRegexConstant.HTML_INDEX;
+						}
+						String pagePath = app.getAppHostUrl() + File.separator + IParserRegexConstant.HTML_SAVE_PATH + File.separator + app.getAppId() + File.separator + column.getColumnPath() + File.separator + "list";
+						map.put(CmsParser.LIST_LINK_PATH, pagePath);
+						map.put(CmsParser.CUR_PAGE_NO, i + 1);
+						Map parserParams = new HashMap();
+						parserParams.put("typeid", column.getCategoryAppId());
+						//2、读取模板文件
+						Template template = cfg.getTemplate(column.getColumnListUrl(),"UTF-8");
+						//pc端内容
+						StringWriter writer = new StringWriter();
+						try {
+							template.process(null, writer);
+							TagParser tag = new TagParser(writer.toString(),parserParams);
+							String content = tag.rendering();
+							//3、将pcTag.getContent()写入路径
+							FileUtil.writeString(content, writePath, "UTF-8");
+						} catch (TemplateException e) {
+							e.printStackTrace();
+						}
+//						String pageContent = cmsParser.parse(listTtmpContent,app, column,map);
+//						FileUtil.writeString(pageContent, writePath, UTF8);// 写文件
 					}
-					String pagePath = app.getAppHostUrl() + File.separator + IParserRegexConstant.HTML_SAVE_PATH + File.separator + app.getAppId() + File.separator + column.getColumnPath() + File.separator + "list";
-					map.put(CmsParser.LIST_LINK_PATH, pagePath);
-					map.put(CmsParser.CUR_PAGE_NO, i + 1);
-					String pageContent = cmsParser.parse(listTtmpContent,app, column,map);
-					FileUtil.writeString(pageContent, writePath, UTF8);// 写文件
-				}
-				break;
-			case ColumnEntity.COLUMN_TYPE_COVER:// 单页
-				// 取该栏目的最后一篇新闻作为显示内容
-				List<ArticleEntity> list = articleBiz.queryListByColumnId(column.getCategoryId());
-				// 手机端
-				if (!StringUtil.isBlank(mobileStyle)) {
-					String writePath = "";
-					// 读取封面模板内容
-					String coverTtmpContent = FileUtil.readUtf8String(tmpPath + File.separator + mobileStyle + File.separator + column.getColumnUrl());
-					// 如果模版不为空就进行标签替换
-					if (!StringUtil.isBlank(coverTtmpContent)) {
-						map = new HashMap();
-						map.put(CmsParser.MOBILE,IParserRegexConstant.MOBILE);
-						// 文章地址前缀
-						// 表示该栏目下面没有文章
-						if (list == null || list.size() == 0) {
-							FileUtil.mkdir(mobilePath);
-							writePath = mobilePath + File.separator + IParserRegexConstant.HTML_INDEX;
+					break;
+				case ColumnEntity.COLUMN_TYPE_COVER:// 单页
+					// 取该栏目的最后一篇新闻作为显示内容
+					List<ArticleEntity> list = articleBiz.queryListByColumnId(column.getCategoryId());
+					// 手机端
+					if (!StringUtil.isBlank(mobileStyle)) {
+						String writePath = "";
+	//					String ;
+						// 读取封面模板内容
+						String coverTtmpContent = FileUtil.readUtf8String(tmpPath + File.separator + mobileStyle + File.separator + column.getColumnUrl());
+						// 如果模版不为空就进行标签替换
+						if (!StringUtil.isBlank(coverTtmpContent)) {
 							
-							String coverContent = cmsParser.parse(coverTtmpContent,app,column,map); //generaterFactory.builder(app, column, coverTtmpContent, tmpPath, mobileStyle); // 解析标签
+							map = new HashMap();
+							map.put(CmsParser.MOBILE,IParserRegexConstant.MOBILE);
+							// 文章地址前缀
+							// 表示该栏目下面没有文章
+							if (list == null || list.size() == 0) {
+								FileUtil.mkdir(mobilePath);
+								writePath = mobilePath + File.separator + IParserRegexConstant.HTML_INDEX;
+								
+								String coverContent = cmsParser.parse(coverTtmpContent,app,column,map); //generaterFactory.builder(app, column, coverTtmpContent, tmpPath, mobileStyle); // 解析标签
+								// 取最后一篇文章作为栏目内容
+								FileUtil.writeString(coverContent, writePath, UTF8);// 写文件
+								break;
+							}
+							ArticleEntity article = list.get(0);// 取一篇文章作为封面栏目的内容
+							// 判断是否为顶级栏目
+							if (column.getCategoryCategoryId() == 0) {
+								String path = mobilePath + File.separator;
+								FileUtil.mkdir(path);
+								writePath = path + File.separator + IParserRegexConstant.HTML_INDEX;
+								// 设置文章连接地址
+								article.setArticleLinkURL(url + File.separator + mobileStyle + File.separator + column.getColumnPath() + File.separator + IParserRegexConstant.HTML_INDEX);
+							} else {// 子栏目，子栏目需要获取父级栏目的编号
+								writePath = mobilePath + File.separator + IParserRegexConstant.HTML_INDEX;
+								article.setArticleLinkURL(url + File.separator + mobileStyle + column.getColumnPath() + File.separator + IParserRegexConstant.HTML_INDEX);
+							}
+							String coverContent =  cmsParser.parse(coverTtmpContent,app,column,article,map);//generaterFactory.builderArticle(app, column, article, coverTtmpContent, tmpPath, null, null, mobileStyle); // 解析标签
 							// 取最后一篇文章作为栏目内容
 							FileUtil.writeString(coverContent, writePath, UTF8);// 写文件
-							break;
 						}
-						ArticleEntity article = list.get(0);// 取一篇文章作为封面栏目的内容
-						// 判断是否为顶级栏目
-						if (column.getCategoryCategoryId() == 0) {
-							String path = mobilePath + File.separator;
-							FileUtil.mkdir(path);
-							writePath = path + File.separator + IParserRegexConstant.HTML_INDEX;
-							// 设置文章连接地址
-							article.setArticleLinkURL(url + File.separator + mobileStyle + File.separator + column.getColumnPath() + File.separator + IParserRegexConstant.HTML_INDEX);
-						} else {// 子栏目，子栏目需要获取父级栏目的编号
-							writePath = mobilePath + File.separator + IParserRegexConstant.HTML_INDEX;
-							article.setArticleLinkURL(url + File.separator + mobileStyle + column.getColumnPath() + File.separator + IParserRegexConstant.HTML_INDEX);
-						}
-						String coverContent =  cmsParser.parse(coverTtmpContent,app,column,article,map);//generaterFactory.builderArticle(app, column, article, coverTtmpContent, tmpPath, null, null, mobileStyle); // 解析标签
-						// 取最后一篇文章作为栏目内容
-						FileUtil.writeString(coverContent, writePath, UTF8);// 写文件
+	
 					}
-
-				}
-
-				String writePath = "";
-				// 读取封面模板内容
-				String coverTtmpContent = FileUtil.readUtf8String(tmpPath + File.separator + column.getColumnUrl());
-				// 文章地址前缀
-				// 表示该栏目下面没有文章
-				if (list == null || list.size() == 0) {
-					writePath = generatePath + column.getColumnPath() + File.separator + IParserRegexConstant.HTML_INDEX;
-					String coverContent = cmsParser.parse(coverTtmpContent,app,column);//generaterFactory.builder(app, column, coverTtmpContent, tmpPath); // 解析标签
-																											// 取最后一篇文章作为栏目内容
+	
+					String writePath = "";
+					// 读取封面模板内容
+					String coverTtmpContent = FileUtil.readUtf8String(tmpPath + File.separator + column.getColumnUrl());
+					// 文章地址前缀
+					// 表示该栏目下面没有文章
+					if (list == null || list.size() == 0) {
+						writePath = generatePath + column.getColumnPath() + File.separator + IParserRegexConstant.HTML_INDEX;
+						String coverContent = cmsParser.parse(coverTtmpContent,app,column);//generaterFactory.builder(app, column, coverTtmpContent, tmpPath); // 解析标签
+																												// 取最后一篇文章作为栏目内容
+						FileUtil.writeString(coverContent, writePath, UTF8);// 写文件
+						break;
+					}
+					ArticleEntity article = list.get(0);// 取一篇文章作为封面栏目的内容
+					// 判断是否为顶级栏目
+					if (column.getCategoryCategoryId() == 0) {
+						FileUtil.mkdir(generatePath + column.getCategoryId());
+						writePath = generatePath + String.valueOf(column.getCategoryId()) + File.separator + IParserRegexConstant.HTML_INDEX;
+						// 设置文章连接地址
+						article.setArticleLinkURL(url + File.separator + column.getColumnPath() + File.separator + IParserRegexConstant.HTML_INDEX);
+					} else {// 子栏目，子栏目需要获取父级栏目的编号
+						writePath = generatePath + column.getColumnPath() + File.separator + IParserRegexConstant.HTML_INDEX;
+						article.setArticleLinkURL(url + File.separator + column.getColumnPath() + File.separator + IParserRegexConstant.HTML_INDEX);
+					}
+					String coverContent = cmsParser.parse(coverTtmpContent,app,column,article);//generaterFactory.builderArticle(app, column, article, coverTtmpContent, tmpPath, null, null); // 解析标签
+																																		// 取最后一篇文章作为栏目内容
 					FileUtil.writeString(coverContent, writePath, UTF8);// 写文件
 					break;
 				}
-				ArticleEntity article = list.get(0);// 取一篇文章作为封面栏目的内容
-				// 判断是否为顶级栏目
-				if (column.getCategoryCategoryId() == 0) {
-					FileUtil.mkdir(generatePath + column.getCategoryId());
-					writePath = generatePath + String.valueOf(column.getCategoryId()) + File.separator + IParserRegexConstant.HTML_INDEX;
-					// 设置文章连接地址
-					article.setArticleLinkURL(url + File.separator + column.getColumnPath() + File.separator + IParserRegexConstant.HTML_INDEX);
-				} else {// 子栏目，子栏目需要获取父级栏目的编号
-					writePath = generatePath + column.getColumnPath() + File.separator + IParserRegexConstant.HTML_INDEX;
-					article.setArticleLinkURL(url + File.separator + column.getColumnPath() + File.separator + IParserRegexConstant.HTML_INDEX);
-				}
-				String coverContent = cmsParser.parse(coverTtmpContent,app,column,article);//generaterFactory.builderArticle(app, column, article, coverTtmpContent, tmpPath, null, null); // 解析标签
-																																	// 取最后一篇文章作为栏目内容
-				FileUtil.writeString(coverContent, writePath, UTF8);// 写文件
-				break;
 			}
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 		this.outJson(response, true);
 	}
@@ -485,174 +512,204 @@ public class GeneraterAction extends BaseAction {
 		}
 		
 		String url = app.getAppHostUrl() + File.separator + IParserRegexConstant.HTML_SAVE_PATH + File.separator + app.getAppId() + File.separator; // 文章地址前缀
-		// 如果没有选择栏目，生成规则
-		// 1先读取所有的栏目,从最低级的分类取
-		for (ColumnEntity tempColumn : columns) {// 循环分类
-			FileUtil.mkdir(generatePath + tempColumn.getColumnPath());
-			String writePath = null;
-			articleList = articleBiz.query(tempColumn.getCategoryId(), dateTime, app.getAppId());// .queryListByColumnId(tempColumn.getCategoryId());
-			// 有符合条件的新闻就更新
-			if (articleList.size() > 0) {
-				// 生成文档
-				switch (tempColumn.getColumnType()) {
-				case ColumnEntity.COLUMN_TYPE_LIST: // 列表
-					String tmpContent = FileUtil.readUtf8String(tmpPath + File.separator + tempColumn.getColumnUrl());// 读取文章模版地址
-					String mobileTmpContent = null;
-					if (!StringUtil.isBlank(mobileStyle)) {
-						mobileTmpContent = FileUtil.readUtf8String(tmpPath + File.separator + mobileStyle + File.separator + tempColumn.getColumnUrl());// 读取手机端文章模版地址
-					}
-					for (int ai = 0; ai < articleList.size();) {
-						ArticleEntity article = articleList.get(ai);
-						if (tempColumn.getCategoryCategoryId() == 0) { // 如果是顶级下面有文章，那么文章的生成地址就是　分类id/文章编号
-							FileUtil.mkdir(generatePath + tempColumn.getCategoryId());
-							// 组合文章路径如:html/站点id/栏目id/文章id.html
-							writePath = generatePath + tempColumn.getColumnPath() + File.separator + article.getArticleID() + IParserRegexConstant.HTML_SUFFIX;
-							article.setArticleLinkURL(url + tempColumn.getColumnPath() + File.separator + article.getArticleID() + IParserRegexConstant.HTML_SUFFIX);
-						} else { // 如果有父级别编号，需要组合路径。格式如:父ID/子id/文章id.html
-							String path = File.separator + article.getArticleID() + IParserRegexConstant.HTML_SUFFIX;
-							writePath = generatePath + tempColumn.getColumnPath() + File.separator + path;
-							article.setArticleLinkURL(url + tempColumn.getColumnPath() + File.separator + article.getArticleID() + IParserRegexConstant.HTML_SUFFIX);
+		//1、设置模板文件夹路径
+		FileTemplateLoader ft;
+		try {
+			ft = new FileTemplateLoader(new File(tmpPath));
+			Configuration cfg = new Configuration();
+			cfg.setTemplateLoader(ft);
+			// 如果没有选择栏目，生成规则
+			// 1先读取所有的栏目,从最低级的分类取
+			for (ColumnEntity tempColumn : columns) {// 循环分类
+				//模板文件路径
+				String columnPath = tmpPath + File.separator + tempColumn.getColumnUrl();
+				//判断模板文件是否存在
+				if(!FileUtil.exist(columnPath)){
+					continue;
+				}
+				FileUtil.mkdir(generatePath + tempColumn.getColumnPath());
+				String writePath = null;
+				int[] categoryIds = {tempColumn.getCategoryId()};
+				articleList = articleBiz.query(app.getAppId(), categoryIds, null, null, null, true, null, dateTime, null);
+				// 有符合条件的新闻就更新
+				if (articleList.size() > 0) {
+					// 生成文档
+					switch (tempColumn.getColumnType()) {
+					case ColumnEntity.COLUMN_TYPE_LIST: // 列表
+						String tmpContent = FileUtil.readUtf8String(tmpPath + File.separator + tempColumn.getColumnUrl());// 读取文章模版地址
+						String mobileTmpContent = null;
+						if (!StringUtil.isBlank(mobileStyle)) {
+							mobileTmpContent = FileUtil.readUtf8String(tmpPath + File.separator + mobileStyle + File.separator + tempColumn.getColumnUrl());// 读取手机端文章模版地址
 						}
-						ArticleEntity previous = articleBiz.getPrevious(app.getAppId(), article.getArticleID(),article.getBasicCategoryId());// 上一篇文章
-						ArticleEntity next = articleBiz.getNext(app.getAppId(), article.getArticleID(),article.getBasicCategoryId());// 下一篇文章
-						if(article.getColumn()!=null){
-							if (previous != null) {
-								previous.setArticleLinkURL(url + article.getColumn().getColumnPath() + File.separator + previous.getArticleID() + IParserRegexConstant.HTML_SUFFIX);
-							}
-							if (next != null) {
-								next.setArticleLinkURL(url +  article.getColumn().getColumnPath() + File.separator + next.getArticleID() + IParserRegexConstant.HTML_SUFFIX);
-							}
-						}
-						Map map = new HashMap();
-						map.put(CmsParser.PREVIOUS, previous);
-						map.put(CmsParser.NEXT, next);
-						
-						String content =  cmsParser.parse(tmpContent,app,tempColumn,article,map);
-						FileUtil.writeString(content, writePath, UTF8);// 写文件
-
-						// 手机端
-						if (!StringUtil.isBlank(mobileTmpContent)) {
-							FileUtil.mkdir(generatePath + mobileStyle + File.separator + tempColumn.getColumnPath());
+						for (int ai = 0; ai < articleList.size();) {
+							ArticleEntity article = articleList.get(ai);
 							if (tempColumn.getCategoryCategoryId() == 0) { // 如果是顶级下面有文章，那么文章的生成地址就是　分类id/文章编号
-
+								FileUtil.mkdir(generatePath + tempColumn.getCategoryId());
 								// 组合文章路径如:html/站点id/栏目id/文章id.html
-								writePath = generatePath + mobileStyle + File.separator + tempColumn.getColumnPath() + File.separator + article.getArticleID() + IParserRegexConstant.HTML_SUFFIX;
-								article.setArticleLinkURL(url + mobileStyle + File.separator + tempColumn.getColumnPath() + File.separator + article.getArticleID() + IParserRegexConstant.HTML_SUFFIX);
+								writePath = generatePath + tempColumn.getColumnPath() + File.separator + article.getArticleID() + IParserRegexConstant.HTML_SUFFIX;
+								article.setArticleLinkURL(url + tempColumn.getColumnPath() + File.separator + article.getArticleID() + IParserRegexConstant.HTML_SUFFIX);
 							} else { // 如果有父级别编号，需要组合路径。格式如:父ID/子id/文章id.html
 								String path = File.separator + article.getArticleID() + IParserRegexConstant.HTML_SUFFIX;
-								writePath = generatePath + mobileStyle + File.separator + tempColumn.getColumnPath() + File.separator + path;
-								article.setArticleLinkURL(url + mobileStyle + File.separator + tempColumn.getColumnPath() + File.separator + article.getArticleID() + IParserRegexConstant.HTML_SUFFIX);
+								writePath = generatePath + tempColumn.getColumnPath() + File.separator + path;
+								article.setArticleLinkURL(url + tempColumn.getColumnPath() + File.separator + article.getArticleID() + IParserRegexConstant.HTML_SUFFIX);
 							}
-
+							ArticleEntity previous = articleBiz.getPrevious(app.getAppId(), article.getArticleID(),article.getBasicCategoryId());// 上一篇文章
+							ArticleEntity next = articleBiz.getNext(app.getAppId(), article.getArticleID(),article.getBasicCategoryId());// 下一篇文章
 							if(article.getColumn()!=null){
 								if (previous != null) {
-									previous.setArticleLinkURL(url + mobileStyle + File.separator + article.getColumn().getColumnPath() + File.separator + previous.getArticleID() + IParserRegexConstant.HTML_SUFFIX);
+									previous.setArticleLinkURL(url + article.getColumn().getColumnPath() + File.separator + previous.getArticleID() + IParserRegexConstant.HTML_SUFFIX);
 								}
 								if (next != null) {
-									next.setArticleLinkURL(url + mobileStyle + File.separator + article.getColumn().getColumnPath() + File.separator + next.getArticleID() + IParserRegexConstant.HTML_SUFFIX);
+									next.setArticleLinkURL(url +  article.getColumn().getColumnPath() + File.separator + next.getArticleID() + IParserRegexConstant.HTML_SUFFIX);
 								}
 							}
-							map.put(CmsParser.MOBILE,IParserRegexConstant.MOBILE);
-							String tmp = cmsParser.parse(mobileTmpContent,app,tempColumn,article,map);//;generaterFactory.builderArticle(app, tempColumn, article, mobileTmpContent, tmpPath, previous, next, mobileStyle); // 解析标签
-							FileUtil.writeString(tmp, writePath, UTF8);// 写文件
+							Map map = new HashMap();
+							map.put(CmsParser.PREVIOUS, previous);
+							map.put(CmsParser.NEXT, next);
+							
+							Map parserParams = new HashMap();
+							parserParams.put("id", article.getBasicId());
+							//2、读取模板文件
+							Template template = cfg.getTemplate(tempColumn.getColumnUrl(),"UTF-8");
+							//pc端内容
+							StringWriter writer = new StringWriter();
+							try {
+								template.process(null, writer);
+								TagParser tag = new TagParser(writer.toString(),parserParams);
+								String content = tag.rendering();
+								//3、将pcTag.getContent()写入路径
+								FileUtil.writeString(content, writePath, "UTF-8");
+							} catch (TemplateException e) {
+								e.printStackTrace();
+							}
+	
+							// 手机端
+							if (!StringUtil.isBlank(mobileTmpContent)) {
+								FileUtil.mkdir(generatePath + mobileStyle + File.separator + tempColumn.getColumnPath());
+								if (tempColumn.getCategoryCategoryId() == 0) { // 如果是顶级下面有文章，那么文章的生成地址就是　分类id/文章编号
+	
+									// 组合文章路径如:html/站点id/栏目id/文章id.html
+									writePath = generatePath + mobileStyle + File.separator + tempColumn.getColumnPath() + File.separator + article.getArticleID() + IParserRegexConstant.HTML_SUFFIX;
+									article.setArticleLinkURL(url + mobileStyle + File.separator + tempColumn.getColumnPath() + File.separator + article.getArticleID() + IParserRegexConstant.HTML_SUFFIX);
+								} else { // 如果有父级别编号，需要组合路径。格式如:父ID/子id/文章id.html
+									String path = File.separator + article.getArticleID() + IParserRegexConstant.HTML_SUFFIX;
+									writePath = generatePath + mobileStyle + File.separator + tempColumn.getColumnPath() + File.separator + path;
+									article.setArticleLinkURL(url + mobileStyle + File.separator + tempColumn.getColumnPath() + File.separator + article.getArticleID() + IParserRegexConstant.HTML_SUFFIX);
+								}
+	
+								if(article.getColumn()!=null){
+									if (previous != null) {
+										previous.setArticleLinkURL(url + mobileStyle + File.separator + article.getColumn().getColumnPath() + File.separator + previous.getArticleID() + IParserRegexConstant.HTML_SUFFIX);
+									}
+									if (next != null) {
+										next.setArticleLinkURL(url + mobileStyle + File.separator + article.getColumn().getColumnPath() + File.separator + next.getArticleID() + IParserRegexConstant.HTML_SUFFIX);
+									}
+								}
+								map.put(CmsParser.MOBILE,IParserRegexConstant.MOBILE);
+								String tmp = cmsParser.parse(mobileTmpContent,app,tempColumn,article,map);//;generaterFactory.builderArticle(app, tempColumn, article, mobileTmpContent, tmpPath, previous, next, mobileStyle); // 解析标签
+								FileUtil.writeString(tmp, writePath, UTF8);// 写文件
+							}
+	
+							ai++;
+	
 						}
-
-						ai++;
-
+						break;
+					// case ColumnEntity.COLUMN_TYPE_COVER:// 单页
+					// writePath = null;
+					// // 取该栏目的最后一篇新闻作为显示内容
+					// List<ArticleEntity> list =
+					// articleBiz.queryListByColumnId(tempColumn.getCategoryId());
+					//
+					// String coverTtmpContent = FileUtil.readUtf8String(tmpPath +
+					// File.separator + tempColumn.getColumnUrl());// 读取文章模版地址
+					// if (list == null || list.size() == 0) { // 表示该栏目下面没有文章
+					// break;
+					// }
+					// ArticleEntity article = list.get(0);// 取一篇文章作为封面栏目的内容
+					// // 判断是否 顶级栏目
+					// if (tempColumn.getCategoryCategoryId() == 0) {
+					// FileUtil.mkdir(generatePath +
+					// tempColumn.getCategoryId());
+					// writePath = generatePath +
+					// String.valueOf(tempColumn.getCategoryId()) + File.separator +
+					// RegexConstant.HTML_INDEX;
+					// // 设置文章连接地址
+					// article.setArticleLinkURL(url + tempColumn.getColumnPath() +
+					// File.separator + RegexConstant.HTML_INDEX);
+					// } else {// 子栏目，子栏目需要获取父级栏目的编号
+					// writePath = generatePath + tempColumn.getColumnPath() +
+					// File.separator + RegexConstant.HTML_INDEX;
+					// article.setArticleLinkURL(url + tempColumn.getColumnPath() +
+					// File.separator + RegexConstant.HTML_INDEX);
+					// }
+					//
+					// String coverContent = generaterFactory.builderArticle(app,
+					// tempColumn, article, coverTtmpContent, tmpPath, null, null);
+					// // 解析标签
+					//
+					// FileUtil.writeString(coverContent, writePath, UTF8);//
+					// 写文件
+					//
+					// //移动端
+					// if (!StringUtil.isBlank(mobileStyle)) {
+					// String temContent = FileUtil.readUtf8String(tmpPath +
+					// File.separator + mobileStyle + File.separator +
+					// tempColumn.getColumnUrl());// 读取文章模版地址
+					// if (list == null || list.size() == 0) { // 表示该栏目下面没有文章
+					// break;
+					// }
+					// // 判断是否 顶级栏目
+					// if (tempColumn.getCategoryCategoryId() == 0) {
+					// FileUtil.mkdir(generatePath + mobileStyle +
+					// File.separator + tempColumn.getCategoryId());
+					// writePath = generatePath +mobileStyle+ File.separator +
+					// String.valueOf(tempColumn.getCategoryId()) + File.separator +
+					// RegexConstant.HTML_INDEX;
+					// // 设置文章连接地址
+					// article.setArticleLinkURL(url + File.separator + mobileStyle
+					// + tempColumn.getColumnPath() + File.separator +
+					// RegexConstant.HTML_INDEX);
+					// } else {// 子栏目，子栏目需要获取父级栏目的编号
+					// writePath = generatePath +mobileStyle+ File.separator +
+					// tempColumn.getColumnPath() + File.separator +
+					// RegexConstant.HTML_INDEX;
+					// FileUtil.mkdir(generatePath + mobileStyle +
+					// File.separator + tempColumn.getColumnPath());
+					// article.setArticleLinkURL(url + File.separator + mobileStyle
+					// + tempColumn.getColumnPath() + File.separator +
+					// RegexConstant.HTML_INDEX);
+					// }
+					//
+					// String temp = generaterFactory.builderArticle(app,
+					// tempColumn, article, coverTtmpContent, tmpPath, null,
+					// null,mobileStyle); // 解析标签
+					//
+					// FileUtil.writeString(temp, writePath, UTF8);// 写文件
+					// }
+					//
+					//
+					// break;
 					}
-					break;
-				// case ColumnEntity.COLUMN_TYPE_COVER:// 单页
-				// writePath = null;
-				// // 取该栏目的最后一篇新闻作为显示内容
-				// List<ArticleEntity> list =
-				// articleBiz.queryListByColumnId(tempColumn.getCategoryId());
-				//
-				// String coverTtmpContent = FileUtil.readUtf8String(tmpPath +
-				// File.separator + tempColumn.getColumnUrl());// 读取文章模版地址
-				// if (list == null || list.size() == 0) { // 表示该栏目下面没有文章
-				// break;
-				// }
-				// ArticleEntity article = list.get(0);// 取一篇文章作为封面栏目的内容
-				// // 判断是否 顶级栏目
-				// if (tempColumn.getCategoryCategoryId() == 0) {
-				// FileUtil.mkdir(generatePath +
-				// tempColumn.getCategoryId());
-				// writePath = generatePath +
-				// String.valueOf(tempColumn.getCategoryId()) + File.separator +
-				// RegexConstant.HTML_INDEX;
-				// // 设置文章连接地址
-				// article.setArticleLinkURL(url + tempColumn.getColumnPath() +
-				// File.separator + RegexConstant.HTML_INDEX);
-				// } else {// 子栏目，子栏目需要获取父级栏目的编号
-				// writePath = generatePath + tempColumn.getColumnPath() +
-				// File.separator + RegexConstant.HTML_INDEX;
-				// article.setArticleLinkURL(url + tempColumn.getColumnPath() +
-				// File.separator + RegexConstant.HTML_INDEX);
-				// }
-				//
-				// String coverContent = generaterFactory.builderArticle(app,
-				// tempColumn, article, coverTtmpContent, tmpPath, null, null);
-				// // 解析标签
-				//
-				// FileUtil.writeString(coverContent, writePath, UTF8);//
-				// 写文件
-				//
-				// //移动端
-				// if (!StringUtil.isBlank(mobileStyle)) {
-				// String temContent = FileUtil.readUtf8String(tmpPath +
-				// File.separator + mobileStyle + File.separator +
-				// tempColumn.getColumnUrl());// 读取文章模版地址
-				// if (list == null || list.size() == 0) { // 表示该栏目下面没有文章
-				// break;
-				// }
-				// // 判断是否 顶级栏目
-				// if (tempColumn.getCategoryCategoryId() == 0) {
-				// FileUtil.mkdir(generatePath + mobileStyle +
-				// File.separator + tempColumn.getCategoryId());
-				// writePath = generatePath +mobileStyle+ File.separator +
-				// String.valueOf(tempColumn.getCategoryId()) + File.separator +
-				// RegexConstant.HTML_INDEX;
-				// // 设置文章连接地址
-				// article.setArticleLinkURL(url + File.separator + mobileStyle
-				// + tempColumn.getColumnPath() + File.separator +
-				// RegexConstant.HTML_INDEX);
-				// } else {// 子栏目，子栏目需要获取父级栏目的编号
-				// writePath = generatePath +mobileStyle+ File.separator +
-				// tempColumn.getColumnPath() + File.separator +
-				// RegexConstant.HTML_INDEX;
-				// FileUtil.mkdir(generatePath + mobileStyle +
-				// File.separator + tempColumn.getColumnPath());
-				// article.setArticleLinkURL(url + File.separator + mobileStyle
-				// + tempColumn.getColumnPath() + File.separator +
-				// RegexConstant.HTML_INDEX);
-				// }
-				//
-				// String temp = generaterFactory.builderArticle(app,
-				// tempColumn, article, coverTtmpContent, tmpPath, null,
-				// null,mobileStyle); // 解析标签
-				//
-				// FileUtil.writeString(temp, writePath, UTF8);// 写文件
-				// }
-				//
-				//
-				// break;
 				}
+	
+				/*
+				 * else { switch (tempColumn.getColumnType()) { case
+				 * ColumnEntity.COLUMN_TYPE_COVER: String coverTtmpContent =
+				 * FileUtil.readUtf8String(tmpPath + File.separator +
+				 * tempColumn.getColumnUrl()); if
+				 * (tempColumn.getCategoryCategoryId() == 0) { // 顶级栏目
+				 * FileUtil.mkdir(generatePath + tempColumn.getCategoryId());
+				 * } writePath = generatePath + tempColumn.getColumnPath() +
+				 * File.separator + RegexConstant.HTML_INDEX; String coverContent =
+				 * generaterFactory.builderIndex(app, tempColumn, coverTtmpContent,
+				 * tmpPath); // 解析标签 // 取最后一篇文章作为栏目内容
+				 * FileUtil.writeString(coverContent, writePath, UTF8);// 写文件
+				 * break; } }
+				 */
 			}
-
-			/*
-			 * else { switch (tempColumn.getColumnType()) { case
-			 * ColumnEntity.COLUMN_TYPE_COVER: String coverTtmpContent =
-			 * FileUtil.readUtf8String(tmpPath + File.separator +
-			 * tempColumn.getColumnUrl()); if
-			 * (tempColumn.getCategoryCategoryId() == 0) { // 顶级栏目
-			 * FileUtil.mkdir(generatePath + tempColumn.getCategoryId());
-			 * } writePath = generatePath + tempColumn.getColumnPath() +
-			 * File.separator + RegexConstant.HTML_INDEX; String coverContent =
-			 * generaterFactory.builderIndex(app, tempColumn, coverTtmpContent,
-			 * tmpPath); // 解析标签 // 取最后一篇文章作为栏目内容
-			 * FileUtil.writeString(coverContent, writePath, UTF8);// 写文件
-			 * break; } }
-			 */
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		this.outJson(response, true);
 	}
