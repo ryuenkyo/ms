@@ -353,7 +353,7 @@ public class CmsParser extends IGeneralParser {
 				}
 				// 从数据库取出文章列表数组
 				BasicUtil.startPage(0,size,false);
-				List<ArticleEntity> listArticles = articleBiz.query(app.getAppId(), columnIds, flag, noFlag,orderBy, order.equals("desc") ? true : false,null);
+				List<ArticleEntity> listArticles = articleBiz.query(app.getAppId(), columnIds, flag, noFlag,orderBy, order.equals("desc") ? true : false,null,null,null);
 				BasicUtil.endPage(listArticles);
 				// 替换列表标签
 				htmlContent = new com.mingsoft.cms.parser.impl.ListParser(app,htmlContent, listArticles,  this.getWebsiteUrl(), property, false, fieldBiz, contentBiz).parse();
@@ -699,7 +699,7 @@ public class CmsParser extends IGeneralParser {
 					
 					BasicUtil.startPage(page.getPageNo()+1,page.getPageSize(),false);
 					// 从数据库取出文章列表数组
-					List<ArticleEntity> listArticles = articleBiz.query(this.app.getAppId(), columnIds, flag, noFlag,  orderBy, order.equals("desc") ? true : false,null);
+					List<ArticleEntity> listArticles = articleBiz.query(this.app.getAppId(), columnIds, flag, noFlag,  orderBy, order.equals("desc") ? true : false,null,null,null);
 					// 替换列表标签
 					htmlContent = new com.mingsoft.cms.parser.impl.ListParser(app,htmlContent, listArticles,  this.getWebsiteUrl(), property, true, fieldBiz, contentBiz).parse();
 				}else{

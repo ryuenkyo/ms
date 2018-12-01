@@ -21,15 +21,10 @@ The MIT License (MIT) * Copyright (c) 2016 铭飞科技(mingsoft.net)
 
 package com.mingsoft.cms.biz;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.ibatis.annotations.Param;
-
-import com.mingsoft.base.entity.BaseEntity;
 import com.mingsoft.basic.biz.IBasicBiz;
-import com.mingsoft.basic.entity.ColumnEntity;
 import com.mingsoft.cms.entity.ArticleEntity;
 import com.mingsoft.mdiy.entity.ContentModelEntity;
 import com.mingsoft.util.PageUtil;
@@ -58,17 +53,6 @@ public interface IArticleBiz extends IBasicBiz {
 	 * @return
 	 */
 	int count(int webId, int[] basicCategoryId, String flag, String noFlag, ArticleEntity article);
-
-	/**
-	 * 通过视图表来查询文章总数
-	 * 
-	 * @param categoryId
-	 *            分类编号
-	 * @return 总数
-	 * @see IArticleBiz.count
-	 */
-	@Deprecated
-	public int countByCategoryId(int categoryId);
 
 
 	/**
@@ -163,10 +147,12 @@ public interface IArticleBiz extends IBasicBiz {
 	 *            true 升序 false 降序 排序方式
 	 * @param article
 	 *            文章实体，便于扩展查询
+	 * @param beginTime 开始时间    
+	 * @param endTime 结束时间             
 	 * @return 文章集合
 	 */
 	List<ArticleEntity> query(int webId, int[] basicCategoryIds, String flag, String noFlag, String orderBy,
-			boolean order, ArticleEntity article);
+			boolean order, ArticleEntity article,String beginTime,String endTime);
 
 	/**
 	 * 根据分类与时间查询文章列表
@@ -217,43 +203,5 @@ public interface IArticleBiz extends IBasicBiz {
 	@Deprecated
 	public List<ArticleEntity> queryListForSearch(ContentModelEntity conntentModel, Map whereMap, PageUtil page,
 			int appId, List ids, Map orders);
-
-	/**
-	 * 通过视图表来查询文章列表
-	 * 
-	 * @param categoryId
-	 *            分类编号
-	 * @param page
-	 *            分頁
-	 * @param _isHasChilds
-	 *            ture:取categoryId下面的子栏目 false:只取categoryId栏目
-	 * @return 文章列表
-	 */
-	@Deprecated
-	public List<BaseEntity> queryPageByCategoryId(int categoryId, int appId, PageUtil page, boolean _isHasChilds);
-
-
-	/**
-	 * 显示本网站下文章列表
-	 * 
-	 * @param webId网站id
-	 * @param page
-	 *            PageUtil对象，主要封装分页的方法 <br/>
-	 * @param orderBy
-	 *            排序字段 <br/>
-	 * @param order
-	 *            排序方式true:asc false:desc <br/>
-	 * @return 返回所查询的文章集合
-	 */
-	@Deprecated
-	public List<ArticleEntity> queryPageListByWebsiteId(int webId, PageUtil page, String orderBy, boolean order);
-	/**
-	 * 查询本网站下文章列表数目
-	 * 
-	 * @param webId网站id
-	 * @return 文章条数
-	 */
-	@Deprecated
-	public int getCountByWebsiteId(int webId);
 
 }

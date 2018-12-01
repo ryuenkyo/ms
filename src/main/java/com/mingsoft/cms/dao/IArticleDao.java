@@ -181,11 +181,14 @@ public interface IArticleDao extends IBaseDao {
 	 *            true 升序 false 降序 排序方式
 	 * @param article
 	 *            文章实体，便于扩展查询
+	 * @param beginTime 开始时间    
+	 * @param endTime 结束时间 
 	 * @return 文章集合
 	 */
 	List<ArticleEntity> query(@Param("webId") int webId, @Param("basicCategoryIds") int[] basicCategoryIds,
 			@Param("flag") String flag, @Param("noFlag") String noFlag, @Param("orderBy") String orderBy,
-			@Param("order") boolean order, @Param("article") ArticleEntity article);
+			@Param("order") boolean order, @Param("article") ArticleEntity article, 
+			@Param("beginTime") String beginTime,@Param("endTime") String endTime);
 
 	/**
 	 * 通过文章标题来查询文章集合

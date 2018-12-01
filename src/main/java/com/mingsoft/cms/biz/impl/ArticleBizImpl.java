@@ -22,33 +22,23 @@ The MIT License (MIT) * Copyright (c) 2016 铭飞科技(mingsoft.net)
 package com.mingsoft.cms.biz.impl;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mingsoft.base.dao.IBaseDao;
-import com.mingsoft.base.entity.BaseEntity;
 import com.mingsoft.basic.biz.ICategoryBiz;
 import com.mingsoft.basic.biz.IColumnBiz;
 import com.mingsoft.basic.biz.IModelBiz;
 import com.mingsoft.basic.biz.impl.BasicBizImpl;
-import com.mingsoft.basic.entity.CategoryEntity;
-import com.mingsoft.basic.entity.ColumnEntity;
 import com.mingsoft.cms.biz.IArticleBiz;
-import com.mingsoft.cms.constant.ModelCode;
 import com.mingsoft.cms.dao.IArticleDao;
 import com.mingsoft.cms.entity.ArticleEntity;
 import com.mingsoft.mdiy.biz.IContentModelBiz;
 import com.mingsoft.mdiy.entity.ContentModelEntity;
 import com.mingsoft.util.PageUtil;
-import com.mingsoft.util.StringUtil;
-
-import cn.hutool.core.util.ArrayUtil;
 
 /**
  * 
@@ -99,11 +89,6 @@ public class ArticleBizImpl extends BasicBizImpl implements IArticleBiz {
 		return articleDao.count(webId, basicCategoryId, flag, noFlag,article);
 	}
 
-	@Override
-	public int countByCategoryId(int categoryId) {
-		// TODO Auto-generated method stub
-		return articleDao.countByCategoryId(categoryId);
-	}
 
 	/**
 	 * 获取Article的持久化层
@@ -197,43 +182,17 @@ public class ArticleBizImpl extends BasicBizImpl implements IArticleBiz {
 
 	@Override
 	public List<ArticleEntity> query(int webId, int[] basicCategoryIds, String flag, String noFlag, String orderBy,
-			boolean order, ArticleEntity article) {
+			boolean order, ArticleEntity article,String beginTime,String endTime) {
 		// TODO Auto-generated method stub
 		if(article == null) {
 			article = new ArticleEntity();
 		}
-		return articleDao.query(webId, basicCategoryIds, flag, noFlag, orderBy, order, article);
+		return articleDao.query(webId, basicCategoryIds, flag, noFlag, orderBy, order, article, beginTime, endTime);
 	}
 
 	@Override
 	public List<ArticleEntity> query(int categoryId, String dateTime,int appId) {
 		return articleDao.queryListByTime(categoryId, dateTime,appId);
-	}
-
-
-
-	/**
-	 * 根据文章标题查询文章
-	 * 
-	 * @param articleTitle
-	 *            文章标题
-	 * @param webId
-	 *            应用Id
-	 * @param modelCode
-	 *            模块编号
-	 * @return 文章集合
-	 */
-	public List queryListByArticleTitle(String articleTitle, int webId, ModelCode modelCode) {
-		// 将文章标题截断
-		String[] _articleTitle = articleTitle.split(",");
-		if (_articleTitle.length > 1) {
-			articleTitle = _articleTitle[1];
-		} else {
-			articleTitle = _articleTitle[0];
-		}
-		// 查询文章集合
-		List<ArticleEntity> articleList = this.articleDao.queryByArticleTitle(articleTitle, webId, modelCode.toString());
-		return articleList;
 	}
 
 	/**
@@ -261,37 +220,6 @@ public class ArticleBizImpl extends BasicBizImpl implements IArticleBiz {
 		return articleList;
 	}
 
-	@Override
-	public List<BaseEntity> queryPageByCategoryId(int categoryId,int appId, PageUtil page, boolean _isHasChilds) {
-		// TODO Auto-generated method stub
-		// return articleDao.queryByView(categoryId, page);
-		Integer modelId = modelBiz.getEntityByModelCode(ModelCode.CMS_COLUMN).getModelId(); // 查询当前模块编号
-		List list = categoryBiz.queryChildrenCategory(categoryId,appId,modelId);
-		// 分类不存在直接返回
-		if (list == null || list.size() == 0) {
-			return null;
-		}
-
-		// 如果是最低级栏目需要查询该栏目是否存在自定义模型，如果存在需要再关联自定义模型查询
-		if (list.size() == 1) { // 最低级栏目
-			ColumnEntity column = (ColumnEntity) columnBiz.getEntity(categoryId);
-			if (column.getColumnContentModelId() != 0) { // 存在自定义模型
-				ContentModelEntity contentModel = (ContentModelEntity) contentModelBiz.getEntity(column.getColumnContentModelId());
-				return articleDao.queryPageByCategoryId(categoryId, null, page, contentModel.getCmTableName());
-			} else {
-				return articleDao.queryPageByCategoryId(categoryId, null, page, null);
-			}
-		} else {
-			if (_isHasChilds) {
-				return articleDao.queryPageByCategoryId(categoryId, list, page, null);
-			} else {
-				return articleDao.queryPageByCategoryId(categoryId, null, page, null);
-			}
-		}
-
-	}
-
-
 	/**
 	 * 设置Article的持久化层
 	 * 
@@ -301,38 +229,4 @@ public class ArticleBizImpl extends BasicBizImpl implements IArticleBiz {
 	public void setArticleDao(IArticleDao articleDao) {
 		this.articleDao = articleDao;
 	}
-	
-	/**
-	 * 显示本网站下文章列表
-	 * 
-	 * @param webId网站id
-	 * @param page
-	 *            PageUtil对象，主要封装分页的方法 <br/>
-	 * @param orderBy
-	 *            排序字段 <br/>
-	 * @param order
-	 *            排序方式true:asc false:desc <br/>
-	 * @return 返回所查询的文章集合
-	 */
-	@Override
-	@Deprecated
-	public List<ArticleEntity> queryPageListByWebsiteId(int webId, PageUtil page, String orderBy, boolean order) {
-		// TODO Auto-generated method stub
-		return articleDao.queryPageListByWebsiteId(webId, page.getPageNo(), page.getPageSize(), orderBy, order);
-	}
-	/**
-	 * 查询本网站下文章列表数目
-	 * 
-	 * @param webId网站id
-	 * @return 文章条数
-	 */
-	@Override
-	@Deprecated
-	public int getCountByWebsiteId(int webId) {
-		// TODO Auto-generated method stub
-		return articleDao.getCountByWebsiteId(webId);
-	}
-	
-
-
 }
