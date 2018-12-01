@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html>
     <head>
-        {ms:include filename=head-file.htm/}
+        <#include "head-file.htm"/>
     </head>
 
     <body>
-        {ms:include filename=head.htm/}
-        <div class="ms-banner" style="background:url({ms:globalskin.url/}images/about_us.jpg) no-repeat center;">
+        <#include "head.htm"/>
+        <div class="ms-banner" style="background:url({ms:global.host/}/{ms:global.style/}images/about_us.jpg) no-repeat center;">
             <p class="banner_tit_about animated fadeInLeft">关于我们</p>
             <p class="banner_tit_about_des animated fadeInRight">About us</p>
         </div>
         <div class="ms-content-about">
             <div class="ms-content-main">
-                {ms:include filename=menu-left.htm/}
+                <#include "menu-left.htm"/>
                 <div class="ms-content-right">
                     <div class="ms-content-right-position">
                         <a href="{ms:global.host/}">首页</a>
@@ -26,6 +26,6 @@
                 </div>
             </div>
         </div>
-        {ms:include filename=footer.htm/}
+        <#include "footer.htm"/>
     </body>
 </html>
