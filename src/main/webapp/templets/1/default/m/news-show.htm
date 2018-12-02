@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
     <head>
-        {ms:include filename=head-file.htm/}
-        <link rel="stylesheet" type="text/css" href="{ms:globalskin.url/}/css/jquery.sinaemotion.css" />
-        <script type="text/javascript" src="{ms:globalskin.url/}/js/jquery.sinaEmotion.js"></script>
+        <#include "m/head-file.htm"/>
+        <link rel="stylesheet" type="text/css" href="{ms:global.host/}/{ms:global.style/}/css/jquery.sinaemotion.css" />
+        <script type="text/javascript" src="{ms:global.host/}/{ms:global.style/}/js/jquery.sinaEmotion.js"></script>
     </head>
     <body>
-        {ms:include filename=head.htm/}
+        <#include "m/head.htm"/>
         <div class="ms-banner">
-            <img src="{ms:globalskin.url/}/images/case.png" class="am-img-responsive" alt="" />
+            <img src="{ms:global.host/}/{ms:global.style/}/images/case.png" class="am-img-responsive" alt="" />
         </div>
         <div class="ms-news-show" id="news-show-vue">
             <article class="am-article">
@@ -19,7 +19,7 @@
                             <div class="ms-news-show-icon-source"><lable class="ms-news-show-icon-title">来源：</lable><lable class="ms-news-show-icon-con">{ms:field.source/}</lable>
                                 <span>|</span>
                             </div>
-                            <div class="ms-news-show-icon-time">{ms:field.date fmt=yyyy-MM-dd/}
+                            <div class="ms-news-show-icon-time">
                                 <span>|</span>
                             </div>
                             <div class="ms-news-show-icon-clicks"></div>
@@ -77,7 +77,7 @@
                 </div>
             </div>
         </div>
-        {ms:include filename=footer.htm/}
+        <#include "m/footer.htm"/>
     </body>
     <script>
         var newsShowVue = new Vue({
