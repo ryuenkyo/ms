@@ -145,14 +145,14 @@ public interface IArticleBiz extends IBasicBiz {
 	 *            排序字段
 	 * @param order
 	 *            true 升序 false 降序 排序方式
+	 * @param beginTime 开始时间    
+	 * @param endTime 结束时间                
 	 * @param article
 	 *            文章实体，便于扩展查询
-	 * @param beginTime 开始时间    
-	 * @param endTime 结束时间             
 	 * @return 文章集合
 	 */
 	List<ArticleEntity> query(int webId, int[] basicCategoryIds, String flag, String noFlag, String orderBy,
-			boolean order, ArticleEntity article,String beginTime,String endTime);
+			boolean order, String beginTime,String endTime, ArticleEntity article);
 
 	/**
 	 * 根据分类与时间查询文章列表

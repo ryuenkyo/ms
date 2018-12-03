@@ -199,7 +199,7 @@ public class ArticleAction extends BaseAction {
 			}
 		}
 		BasicUtil.startPage();
-		List<ArticleEntity> list = articleBiz.query(appId, ids, null, null, article.getOrderBy(), isOrder, article, null, null);
+		List<ArticleEntity> list = articleBiz.query(appId, ids, null, null, article.getOrderBy(), isOrder, null, null, article);
 		
 		for(ArticleEntity _article : list){
 			// 获取文章栏目id获取栏目实体
