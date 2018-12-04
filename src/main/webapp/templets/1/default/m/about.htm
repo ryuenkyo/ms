@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
-    {ms:include filename=head-file.htm/}
+    <#include "m/head-file.htm"/>
     <body>
-		{ms:include filename=head.htm/}
+		<#include "m/head.htm"/>
         <div class="ms-banner">
-            <img src="{ms:globalskin.url/}/images/about.png" class="am-img-responsive" alt=""/>
+            <img src="{ms:global.host/}/{ms:global.style/}/images/about.png" class="am-img-responsive" alt=""/>
         </div>
         <div class="ms-about-content">
             <div class="am-tabs am-tabs-default ms-about-content-div">
@@ -30,6 +30,6 @@
                 </div>
             </div>
         </div>
-       {ms:include filename=footer.htm/}
+       <#include "m/footer.htm"/>
     </body>
 </html>

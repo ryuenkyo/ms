@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
     <head>
-        {ms:include filename=head-file.htm/}
+        <#include "head-file.htm"/>
     </head>
     <body>
-        {ms:include filename=head.htm/}
-        <div class="ms-banner" style="background:url({ms:globalskin.url/}images/talk_online.jpeg) no-repeat center;">
+        <#include "head.htm"/>
+        <div class="ms-banner" style="background:url({ms:global.host/}/{ms:global.style/}images/talk_online.jpeg) no-repeat center;">
             <p class="banner_tit_other animated fadeInLeft">在线留言</p>
             <p class="banner_tit_other_des animated fadeInRight">Talk online</p>
         </div>
@@ -19,7 +19,7 @@
                 </form>
             </div>
         </div>
-        {ms:include filename=footer.htm/}
+        <#include "footer.htm"/>
     </body>
 </html>
 <script>

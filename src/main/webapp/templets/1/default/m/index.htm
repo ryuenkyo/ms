@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
-    <#include "head-file.htm">
+    <#include "m/head-file.htm">
     <link rel="stylesheet" type="text/css" href="http://cdn.mingsoft.net/plugins/bootstrap/3.3.5/css/bootstrap.min.css">
     <script type="text/javascript" src="http://cdn.mingsoft.net/plugins/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <body>
-        <#include "head.htm">
+        <#include "m/head.htm">
         <div id="indexVue">
             <div class="ms-banner">
                 <div data-am-widget="slider" class="am-slider am-slider-a1" data-am-slider='{&quot;directionNav&quot;:false}'>
@@ -21,7 +21,7 @@
                 <div>
                     <ul class="nav nav-tabs ms-index-tabs" role="tablist">
                         <li role="presentation" id="ms-model" class="active ms-active">
-                            <a @click="tabShow('model')" href="#model">模板</a>
+                            <a @click="tabShow('model')" href="#model">模板1</a>
                         </li>
                         <li role="presentation" id="ms-plug" class="ms-active">
                             <a @click="tabShow('plug')" href="#plug">插件</a>
@@ -146,7 +146,7 @@
                             <ul class="am-list">
                                 {ms:arclist typeid=59 size=6}
                                 <li class="am-g am-list-item-dated ms-product-news-list-li">
-                                    <a href="[field.link/]" class="am-list-item-hd ">[field.title/]</a>
+                                    <a href="{ms:global.url/}[field.link/]" class="am-list-item-hd ">[field.title/]</a>
                                     <span class="am-list-date">[field.date?string("yyyy-mm-dd")/]</span>
                                 </li>
                                 {/ms:arclist}
@@ -156,7 +156,7 @@
                 </div>
             </div>
         </div>
-        <#include "footer.htm">
+        <#include "m/footer.htm">
     </body>
     <script>
         var index = new Vue({

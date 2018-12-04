@@ -61,6 +61,7 @@ import com.mingsoft.parser.IParserRegexConstant;
 import com.mingsoft.util.StringUtil;
 
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.http.HttpUtil;
 import freemarker.cache.FileTemplateLoader;
 import freemarker.template.Configuration;
@@ -193,11 +194,9 @@ public class GeneraterAction extends BaseAction {
 					cfg.setTemplateLoader(ft);
 					try {
 						//2、读取模板文件
-						Template template = cfg.getTemplate(tmpFileName,"UTF-8");
+						Template template = cfg.getTemplate(tmpFileName,UTF8);
 						//pc端内容
 						StringWriter pcWriter = new StringWriter();
-						//手机端m
-						StringWriter mWriter = new StringWriter();
 						try {
 							template.process(null, pcWriter);
 							TagParser tag = new TagParser(pcWriter.toString());
@@ -205,13 +204,16 @@ public class GeneraterAction extends BaseAction {
 							//LOG.debug(tag.getContent());
 							//3、将tag.getContent()写入路径
 							FileUtil.writeString(content, generatePath, UTF8);
-							
-							template = cfg.getTemplate("m/"+tmpFileName,"UTF-8");
-							template.process(null, mWriter);
-							TagParser mTag = new TagParser(mWriter.toString());
-							String mContent = mTag.rendering(map);
-							FileUtil.writeString(mContent, generateMobilePath, UTF8);
-							
+							if(ObjectUtil.isNotNull(app.getAppMobileStyle())){
+								//手机端m
+								StringWriter mobileWriter = new StringWriter();
+								template = cfg.getTemplate(app.getAppMobileStyle() + File.separator +tmpFileName, UTF8);
+								template.process(null, mobileWriter);
+								map.put(app.getAppMobileStyle(), app.getAppMobileStyle());
+								TagParser mobileTag = new TagParser(mobileWriter.toString(),map);
+								String mobileContent = mobileTag.rendering(map);
+								FileUtil.writeString(mobileContent, generateMobilePath, UTF8);
+							}
 						} catch (TemplateException e) {
 							e.printStackTrace();
 						}
@@ -277,6 +279,10 @@ public class GeneraterAction extends BaseAction {
 			for (ColumnEntity column : columns) {
 				String columnPath = null;// pc端
 				String mobilePath = null;// 手机端
+				//判断模板文件是否存在
+				if(!FileUtil.exist(tmpPath + File.separator + column.getColumnUrl())){
+					continue;
+				}
 				// 生成列表保存路径
 				FileUtil.mkdir(generatePath + column.getColumnPath());
 				// 判断是否为顶级栏目，进行栏目路径的组合
@@ -294,13 +300,12 @@ public class GeneraterAction extends BaseAction {
 					}
 					columnPath = generatePath + column.getColumnPath();
 				}
+				Map map = new HashMap();
 				// 判断列表类型
 				switch (column.getColumnType()) {
 				case ColumnEntity.COLUMN_TYPE_LIST: // 列表
-					//判断模板文件是否存在
-	//				if(!FileUtil.exist(tmpPath + File.separator + column.getColumnUrl())){
-	//					continue;
-	//				}
+					//2、读取模板文件
+					Template template = cfg.getTemplate(column.getColumnListUrl(),UTF8);
 					// 手机列表模版
 					if (!StringUtil.isBlank(mobileStyle)) {
 						FileUtil.mkdir(mobilePath);
@@ -311,127 +316,84 @@ public class GeneraterAction extends BaseAction {
 							// 要生成手机的静态页面数
 							int mobilePageSize = cmsParser.getPageSize(app, mobileListTtmpContent, column);
 							// 根据页面数,循环生成静态页面个数在
-							Map map = new HashMap();
 							for (int i = 0; i < mobilePageSize; i++) {
 								String writePath = mobilePath + File.separator + IParserRegexConstant.PAGE_LIST + (i + 1) + IParserRegexConstant.HTML_SUFFIX;
 								if (i == 0) {
 									writePath = mobilePath + File.separator + IParserRegexConstant.HTML_INDEX;
 								}
 								String pagePath = url + File.separator + mobileStyle + File.separator + column.getColumnPath() + File.separator + IParserRegexConstant.PAGE_LIST ;
-								map.put(CmsParser.LIST_LINK_PATH, pagePath);
-								map.put(CmsParser.CUR_PAGE_NO, i + 1);
-								map.put(CmsParser.MOBILE,IParserRegexConstant.MOBILE);
+//								map.put(CmsParser.LIST_LINK_PATH, pagePath);
+//								map.put(CmsParser.CUR_PAGE_NO, i + 1);
+//								map.put(CmsParser.MOBILE,IParserRegexConstant.MOBILE);
 								String pageContent = cmsParser.parse(mobileListTtmpContent,app,column,map);
 								FileUtil.writeString(pageContent, writePath, UTF8);// 写文件
 							}
 						}
 	
 					}
-	
-					// 读取列表模版地址
-					String listTtmpContent = FileUtil.readUtf8String(tmpPath + File.separator + column.getColumnListUrl());
-					// 要生成的静态页面数
-					int pageSize = cmsParser.getPageSize(app, listTtmpContent, column);// generaterFactory.getPageSize(app, listTtmpContent, column);
-					// 根据页面数,循环生成静态页面个数在
-					Map map = new HashMap();
-					for (int i = 0; i < pageSize; i++) {
-						String writePath = columnPath + File.separator + IParserRegexConstant.PAGE_LIST + (i + 1) + IParserRegexConstant.HTML_SUFFIX;
-						if (i == 0) {
-							writePath = columnPath + File.separator + IParserRegexConstant.HTML_INDEX;
-						}
-						String pagePath = app.getAppHostUrl() + File.separator + IParserRegexConstant.HTML_SAVE_PATH + File.separator + app.getAppId() + File.separator + column.getColumnPath() + File.separator + "list";
-						map.put(CmsParser.LIST_LINK_PATH, pagePath);
-						map.put(CmsParser.CUR_PAGE_NO, i + 1);
-						Map parserParams = new HashMap();
-						parserParams.put("typeid", column.getCategoryAppId());
-						//2、读取模板文件
-						Template template = cfg.getTemplate(column.getColumnListUrl(),"UTF-8");
-						//pc端内容
+					try {
 						StringWriter writer = new StringWriter();
-						try {
-							template.process(null, writer);
-							TagParser tag = new TagParser(writer.toString(),parserParams);
-							String content = tag.rendering();
-							//3、将pcTag.getContent()写入路径
-							FileUtil.writeString(content, writePath, "UTF-8");
-						} catch (TemplateException e) {
-							e.printStackTrace();
-						}
-//						String pageContent = cmsParser.parse(listTtmpContent,app, column,map);
-//						FileUtil.writeString(pageContent, writePath, UTF8);// 写文件
+						Map parserParams = new HashMap();
+						parserParams.put("typeid", column.getCategoryId());
+						template.process(null, writer);
+						TagParser tag = new TagParser(writer.toString(),parserParams);
+						// 读取列表模版地址
+						String listTtmpContent = tag.rendering();
+						// 要生成的静态页面数
+						// 根据页面数,循环生成静态页面个数在
+						//3、将tag.getContent()写入路径
+						FileUtil.writeString(listTtmpContent, columnPath + File.separator + IParserRegexConstant.HTML_INDEX, UTF8);
+					} catch (TemplateException e) {
+						e.printStackTrace();
 					}
 					break;
 				case ColumnEntity.COLUMN_TYPE_COVER:// 单页
 					// 取该栏目的最后一篇新闻作为显示内容
 					List<ArticleEntity> list = articleBiz.queryListByColumnId(column.getCategoryId());
-					// 手机端
-					if (!StringUtil.isBlank(mobileStyle)) {
-						String writePath = "";
-	//					String ;
-						// 读取封面模板内容
-						String coverTtmpContent = FileUtil.readUtf8String(tmpPath + File.separator + mobileStyle + File.separator + column.getColumnUrl());
-						// 如果模版不为空就进行标签替换
-						if (!StringUtil.isBlank(coverTtmpContent)) {
-							
-							map = new HashMap();
-							map.put(CmsParser.MOBILE,IParserRegexConstant.MOBILE);
-							// 文章地址前缀
-							// 表示该栏目下面没有文章
-							if (list == null || list.size() == 0) {
-								FileUtil.mkdir(mobilePath);
-								writePath = mobilePath + File.separator + IParserRegexConstant.HTML_INDEX;
-								
-								String coverContent = cmsParser.parse(coverTtmpContent,app,column,map); //generaterFactory.builder(app, column, coverTtmpContent, tmpPath, mobileStyle); // 解析标签
-								// 取最后一篇文章作为栏目内容
-								FileUtil.writeString(coverContent, writePath, UTF8);// 写文件
-								break;
-							}
-							ArticleEntity article = list.get(0);// 取一篇文章作为封面栏目的内容
-							// 判断是否为顶级栏目
-							if (column.getCategoryCategoryId() == 0) {
-								String path = mobilePath + File.separator;
-								FileUtil.mkdir(path);
-								writePath = path + File.separator + IParserRegexConstant.HTML_INDEX;
-								// 设置文章连接地址
-								article.setArticleLinkURL(url + File.separator + mobileStyle + File.separator + column.getColumnPath() + File.separator + IParserRegexConstant.HTML_INDEX);
-							} else {// 子栏目，子栏目需要获取父级栏目的编号
-								writePath = mobilePath + File.separator + IParserRegexConstant.HTML_INDEX;
-								article.setArticleLinkURL(url + File.separator + mobileStyle + column.getColumnPath() + File.separator + IParserRegexConstant.HTML_INDEX);
-							}
-							String coverContent =  cmsParser.parse(coverTtmpContent,app,column,article,map);//generaterFactory.builderArticle(app, column, article, coverTtmpContent, tmpPath, null, null, mobileStyle); // 解析标签
-							// 取最后一篇文章作为栏目内容
-							FileUtil.writeString(coverContent, writePath, UTF8);// 写文件
-						}
-	
-					}
-	
-					String writePath = "";
-					// 读取封面模板内容
-					String coverTtmpContent = FileUtil.readUtf8String(tmpPath + File.separator + column.getColumnUrl());
-					// 文章地址前缀
-					// 表示该栏目下面没有文章
-					if (list == null || list.size() == 0) {
-						writePath = generatePath + column.getColumnPath() + File.separator + IParserRegexConstant.HTML_INDEX;
-						String coverContent = cmsParser.parse(coverTtmpContent,app,column);//generaterFactory.builder(app, column, coverTtmpContent, tmpPath); // 解析标签
-																												// 取最后一篇文章作为栏目内容
-						FileUtil.writeString(coverContent, writePath, UTF8);// 写文件
-						break;
-					}
 					ArticleEntity article = list.get(0);// 取一篇文章作为封面栏目的内容
-					// 判断是否为顶级栏目
-					if (column.getCategoryCategoryId() == 0) {
-						FileUtil.mkdir(generatePath + column.getCategoryId());
-						writePath = generatePath + String.valueOf(column.getCategoryId()) + File.separator + IParserRegexConstant.HTML_INDEX;
-						// 设置文章连接地址
-						article.setArticleLinkURL(url + File.separator + column.getColumnPath() + File.separator + IParserRegexConstant.HTML_INDEX);
-					} else {// 子栏目，子栏目需要获取父级栏目的编号
-						writePath = generatePath + column.getColumnPath() + File.separator + IParserRegexConstant.HTML_INDEX;
-						article.setArticleLinkURL(url + File.separator + column.getColumnPath() + File.separator + IParserRegexConstant.HTML_INDEX);
+					//手机端路径
+					String mobileWritePath = "";
+					String writePath = "";
+					try {
+						//2、读取单页模板文件
+						Template coverTemplate = cfg.getTemplate(column.getColumnUrl(),UTF8);
+						StringWriter writer = new StringWriter();
+						Map parserParams = new HashMap();
+						parserParams.put("id", article.getBasicId());
+						coverTemplate.process(null, writer);
+						TagParser tag = new TagParser(writer.toString(),parserParams);
+						// 读取列表模版地址
+						String content = tag.rendering();
+						//3、将tag.getContent()写入路径
+						// 判断是否为顶级栏目
+						if (column.getCategoryCategoryId() == 0) {
+							FileUtil.mkdir(generatePath + column.getCategoryId());
+							writePath = generatePath + String.valueOf(column.getCategoryId()) + File.separator + IParserRegexConstant.HTML_INDEX;
+							mobileWritePath = generatePath + mobileStyle + File.separator + String.valueOf(column.getCategoryId()) + File.separator + IParserRegexConstant.HTML_INDEX;
+						} else {// 子栏目，子栏目需要获取父级栏目的编号
+							writePath = generatePath + column.getColumnPath() + File.separator + IParserRegexConstant.HTML_INDEX;
+							mobileWritePath = generatePath + mobileStyle + File.separator + column.getColumnPath() + File.separator + IParserRegexConstant.HTML_INDEX;
+						}
+						FileUtil.writeString(content, writePath, UTF8);
+						// 手机端
+						if (!StringUtil.isBlank(mobileStyle)) {
+							//2、读取单页模板文件
+							Template mobileCoverTemplate = cfg.getTemplate(mobileStyle + File.separator + column.getColumnUrl(),UTF8);
+							StringWriter mobileWriter = new StringWriter();
+							mobileCoverTemplate.process(null, mobileWriter);
+							Map mobileParserParams = new HashMap();
+							mobileParserParams.put("id", article.getBasicId());
+							//设置手机端style
+							mobileParserParams.put(mobileStyle, mobileStyle);
+							TagParser mobileTag = new TagParser(mobileWriter.toString(),mobileParserParams);
+							// 读取列表模版地址
+							String mobileContent = mobileTag.rendering();
+							FileUtil.writeString(mobileContent, mobileWritePath, UTF8);
+						}
+						break;
+					} catch (TemplateException e) {
+						e.printStackTrace();
 					}
-					String coverContent = cmsParser.parse(coverTtmpContent,app,column,article);//generaterFactory.builderArticle(app, column, article, coverTtmpContent, tmpPath, null, null); // 解析标签
-																																		// 取最后一篇文章作为栏目内容
-					FileUtil.writeString(coverContent, writePath, UTF8);// 写文件
-					break;
 				}
 			}
 		} catch (IOException e) {
@@ -570,7 +532,7 @@ public class GeneraterAction extends BaseAction {
 							Map parserParams = new HashMap();
 							parserParams.put("id", article.getBasicId());
 							//2、读取模板文件
-							Template template = cfg.getTemplate(tempColumn.getColumnUrl(),"UTF-8");
+							Template template = cfg.getTemplate(tempColumn.getColumnUrl(),UTF8);
 							//pc端内容
 							StringWriter writer = new StringWriter();
 							try {
@@ -578,7 +540,7 @@ public class GeneraterAction extends BaseAction {
 								TagParser tag = new TagParser(writer.toString(),parserParams);
 								String content = tag.rendering();
 								//3、将pcTag.getContent()写入路径
-								FileUtil.writeString(content, writePath, "UTF-8");
+								FileUtil.writeString(content, writePath, UTF8);
 							} catch (TemplateException e) {
 								e.printStackTrace();
 							}
@@ -605,9 +567,20 @@ public class GeneraterAction extends BaseAction {
 										next.setArticleLinkURL(url + mobileStyle + File.separator + article.getColumn().getColumnPath() + File.separator + next.getArticleID() + IParserRegexConstant.HTML_SUFFIX);
 									}
 								}
-								map.put(CmsParser.MOBILE,IParserRegexConstant.MOBILE);
-								String tmp = cmsParser.parse(mobileTmpContent,app,tempColumn,article,map);//;generaterFactory.builderArticle(app, tempColumn, article, mobileTmpContent, tmpPath, previous, next, mobileStyle); // 解析标签
-								FileUtil.writeString(tmp, writePath, UTF8);// 写文件
+//								map.put(CmsParser.MOBILE,IParserRegexConstant.MOBILE);
+								StringWriter mobileWriter = new StringWriter();
+								template = cfg.getTemplate(app.getAppMobileStyle() + File.separator +tempColumn.getColumnUrl(), UTF8);
+								map.put(app.getAppMobileStyle(), app.getAppMobileStyle());
+								map.put("id", article.getBasicId());
+								TagParser mobileTag = new TagParser(mobileWriter.toString(),map);
+								String mobileContent = mobileTag.rendering(map);
+								FileUtil.writeString(mobileContent, writePath, UTF8);
+								try {
+									template.process(null, mobileWriter);
+								} catch (TemplateException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
 							}
 	
 							ai++;

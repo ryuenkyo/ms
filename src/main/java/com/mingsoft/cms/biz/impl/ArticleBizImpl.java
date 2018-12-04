@@ -182,7 +182,7 @@ public class ArticleBizImpl extends BasicBizImpl implements IArticleBiz {
 
 	@Override
 	public List<ArticleEntity> query(int webId, int[] basicCategoryIds, String flag, String noFlag, String orderBy,
-			boolean order, ArticleEntity article,String beginTime,String endTime) {
+			boolean order,String beginTime,String endTime, ArticleEntity article) {
 		// TODO Auto-generated method stub
 		if(article == null) {
 			article = new ArticleEntity();
