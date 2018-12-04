@@ -40,6 +40,8 @@ import com.mingsoft.mdiy.biz.IContentModelBiz;
 import com.mingsoft.mdiy.entity.ContentModelEntity;
 import com.mingsoft.util.PageUtil;
 
+import net.mingsoft.basic.util.BasicUtil;
+
 /**
  * 
  * @ClassName:  ArticleBizImpl   
@@ -85,6 +87,7 @@ public class ArticleBizImpl extends BasicBizImpl implements IArticleBiz {
 	private IModelBiz modelBiz;
 
 	@Override
+	@Deprecated
 	public int count(int webId, int[] basicCategoryId, String flag, String noFlag,ArticleEntity article) {
 		return articleDao.count(webId, basicCategoryId, flag, noFlag,article);
 	}
@@ -100,6 +103,7 @@ public class ArticleBizImpl extends BasicBizImpl implements IArticleBiz {
 	}
 
 	@Override
+	@Deprecated
 	public ArticleEntity getByCategoryId(int categoryId) {
 		// TODO Auto-generated method stub
 		List list = articleDao.getByCategoryId(categoryId);
@@ -129,28 +133,6 @@ public class ArticleBizImpl extends BasicBizImpl implements IArticleBiz {
 
 
 	/**
-	 * 根据站点Id,栏目列表Id，栏目属性，和栏目不推荐属性查找栏目下的文章总数
-	 * 
-	 * @param webId
-	 *            :站点id
-	 * @param basicCategoryIds
-	 *            :栏目列表id
-	 * @param flag
-	 *            :文章推荐属性
-	 * @param noFlag
-	 *            :文章不推荐属性
-	 * @return 文章总数
-	 */
-	@Override
-	public int getCountByColumnId(int webId,int[] basicCategoryIds, String flag, String noFlag) {
-		if(basicCategoryIds==null || basicCategoryIds.length==0 ) {
-			return 0;
-		}
-		return articleDao.getCountByColumnId(webId, basicCategoryIds, flag, noFlag);
-	} 
-
-
-	/**
 	 * 获取IBaseDao的持久化层
 	 * 
 	 * @return 返回持articleDao的久化对象
@@ -162,17 +144,20 @@ public class ArticleBizImpl extends BasicBizImpl implements IArticleBiz {
 	}
 
 	@Override
+	@Deprecated
 	public ArticleEntity getNext(int appId, int basicId,Integer categoryId) {
 		// TODO Auto-generated method stub
 		return articleDao.getNextOrPrevious(appId, basicId, true,categoryId);
 	}
 
 	@Override
+	@Deprecated
 	public ArticleEntity getPrevious(int appId, int basicId,Integer categoryId) {
 		// TODO Auto-generated method stub
 		return articleDao.getNextOrPrevious(appId, basicId, false,categoryId);
 	}
-
+	@Override
+	@Deprecated
 	public int getSearchCount(ContentModelEntity contentModel,Map wherMap, int websiteId,List  ids) {
 		if (contentModel!=null) {
 			return articleDao.getSearchCount(contentModel.getCmTableName(),wherMap, websiteId,ids);
@@ -187,12 +172,7 @@ public class ArticleBizImpl extends BasicBizImpl implements IArticleBiz {
 		if(article == null) {
 			article = new ArticleEntity();
 		}
-		return articleDao.query(webId, basicCategoryIds, flag, noFlag, orderBy, order, article, beginTime, endTime);
-	}
-
-	@Override
-	public List<ArticleEntity> query(int categoryId, String dateTime,int appId) {
-		return articleDao.queryListByTime(categoryId, dateTime,appId);
+		return articleDao.query(webId, basicCategoryIds, flag, noFlag, orderBy, order, beginTime, endTime, article);
 	}
 
 	/**
@@ -202,13 +182,14 @@ public class ArticleBizImpl extends BasicBizImpl implements IArticleBiz {
 	 * @return 文章实体
 	 */
 	@Override
+	@Deprecated
 	public List<ArticleEntity> queryListByColumnId(int basicCategoryId) {
 		// TODO Auto-generated method stub
 		return articleDao.queryListByColumnId(basicCategoryId);
 	}
 
 
-
+	@Deprecated
 	public List<ArticleEntity> queryListForSearch(ContentModelEntity conntentModel, Map whereMap, PageUtil page, int websiteId,List ids,Map orders) {
 		List<ArticleEntity> articleList = new ArrayList<ArticleEntity>();
 		String tableName = null;
@@ -228,5 +209,11 @@ public class ArticleBizImpl extends BasicBizImpl implements IArticleBiz {
 	@Autowired
 	public void setArticleDao(IArticleDao articleDao) {
 		this.articleDao = articleDao;
+	}
+
+
+	@Override
+	public List<Integer> queryIdsByCategoryId(int categoryId, String beginTime,String endTime) {
+		return this.articleDao.queryIdsByCategoryId(categoryId,BasicUtil.getAppId(), beginTime, endTime);
 	}
 }

@@ -261,7 +261,7 @@
 		</where>
 	</select>
 	<!-- 列表查询结束 -->
-
+	
 	<!-- 列表查询开始 -->
 	<select id="query" resultMap="resultMap" >
 		select
@@ -320,86 +320,28 @@
 		<if test="order == false">asc</if>
 	</select>
 
-
-	<!-- ======= 站点下文章列表显示 开始======= -->
-	<!-- 查询本站点下文章条数 开始 -->
-	<select id="countByWebsiteId" resultType="int">
-		select count(*)
-		from
-		cms_article a left join basic b on b.basic_id=a.ARTICLE_BASICID
-		where
-		a.ARTICLE_WEBID=#{webId}
-	</select>
-	<!-- 查询本站点下文章条数 结束 -->
-
-
-
-
-
-	<!-- ======= 站点下文章列表显示 结束======= -->
-
-	<!-- 正则查询指定文章条数 开始 -->
-	<select id="getCountByColumnId" resultType="int">
-		select count(*)
-		from cms_article a left join basic b on
-		b.basic_id=a.ARTICLE_BASICID
-		where a.ARTICLE_WEBID = #{webId}
-		<if test="basicCategoryIds != null">
-			and
-			b.BASIC_CATEGORYID in
-			<foreach collection="basicCategoryIds" item="id" open="("
-				separator="," close=")">
-				#{id}
-			</foreach>
-		</if>
-		<if test="flag != null">
-			and a.ARTICLE_TYPE like <include refid="queryWhereFlag"></include>
-		</if>
-		<if test="noFlag != null">
-			and a.ARTICLE_TYPE not like <include refid="queryWhereNoFlag"></include>
-		</if>
-	</select>
-	<!-- 正则查询指定文章条数 结束 -->
-
-
-	<!--根据文章列表id查找文章列表开始 -->
-	<select id="queryListByListArticleId" resultMap="resultMap">
+	<!-- 根据站点编号和栏目编号查询文章编号集合 -->
+	<select id="queryIdsByCategoryId" resultType="Integer" >
 		select
-		<include refid="column_list" />
-		,c.CATEGORY_TITLE,cl.column_path,c.CATEGORY_id,cl.COLUMN_CM_ID,cl.column_type
-		FROM
-		basic b
-		LEFT JOIN
-		category c ON b.BASIC_CATEGORYID = c.CATEGORY_ID
-		LEFT JOIN basic_column
-		cl ON c.CATEGORY_ID = cl.COLUMN_CATEGORY_ID
-		LEFT
-		JOIN cms_article a ON
-		a.ARTICLE_BASICID = b.BASIC_ID
-		where
-		a.ARTICLE_WEBID = #{webId}
-		<if test="articleIds != null">
-			and
-			b.BASIC_ID in
-			<foreach collection="articleIds" item="id" open="("
-				separator="," close=")">
-				#{id}
-			</foreach>
+		ARTICLE_BASICID
+		FROM cms_article a LEFT JOIN basic b  ON a.ARTICLE_BASICID = b.BASIC_ID 
+		LEFT JOIN basic_column cl ON b.BASIC_CATEGORYID = cl.COLUMN_CATEGORY_ID 
+		JOIN category c ON c.CATEGORY_ID = cl.COLUMN_CATEGORY_ID
+		where 
+		<if test="appId &gt; 0">
+			a.ARTICLE_WEBID = #{appId}
 		</if>
-		<if test="flag != null">
-			and a.ARTICLE_TYPE like <include refid="queryWhereFlag"></include>
+		<if test="categoryId &gt; 0">
+			and b.BASIC_CATEGORYID = #{categoryId}
 		</if>
-		<if test="noFlag != null">
-			and a.ARTICLE_TYPE not like <include refid="queryWhereNoFlag"></include>
+		<if test="beginTime!=null and beginTime!=''">
+			and b.basic_updatetime &gt;= #{beginTime}
 		</if>
-		<if test="orderBy != null">order by ${orderBy}</if>
-		<if test="orderBy==null">
-			order by b.basic_id
+		<if test="endTime!=null and endTime!=''">
+			and b.basic_updatetime &gt;= #{endTime}
 		</if>
-		<if test="order == true">desc</if>
-		<if test="order == false">asc</if>
 	</select>
-	<!-- 根据文章列表id查找文章列表结束 -->
+
 
 
 	<!--查询页面栏目的文章 开始 -->
@@ -436,6 +378,7 @@
 			</foreach>
 			 +'%')
 	</sql>
+	<!-- 已过期 -->
 	<select id="queryListForSearch" resultMap="resultMap">
 		select
 		<include refid="column_list" />
@@ -502,7 +445,7 @@
 	</select>
 	<!-- 根据字段条件查找文章实体结束 -->
 
-	<!-- 根据字段条件查找文章实体总数开始 -->
+	<!--已过期 根据字段条件查找文章实体总数开始 -->
 	<select id="getSearchCount" resultType="int">
 		select count(*) from
 		cms_article a
@@ -581,30 +524,6 @@
 		</if>
 		where basic_id=#{basicId}
 	</select>
-	<select id="queryByBasicIds" resultMap="resultMap">
-		select
-		<include refid="column_list" />
-		,c.CATEGORY_TITLE,cl.column_path,c.CATEGORY_id,cl.COLUMN_CM_ID,cl.column_type
-		FROM basic b LEFT JOIN category c ON b.BASIC_CATEGORYID =
-		c.CATEGORY_ID LEFT JOIN basic_column cl ON c.CATEGORY_ID =
-		cl.COLUMN_CATEGORY_ID LEFT JOIN cms_article a ON a.ARTICLE_BASICID =
-		b.BASIC_ID where a.ARTICLE_WEBID = #{webId}
-		b.BASIC_ID=#{basicId}
-		<if test="basicIds!=null">
-			<foreach item="id" index="index" collection="basicIds" open=""
-				separator="" close="">
-				UNION ALL ( select
-				<include refid="column_list" />
-				,c.CATEGORY_TITLE,cl.column_path,c.CATEGORY_id,cl.COLUMN_CM_ID,cl.column_type
-				FROM basic b LEFT JOIN category c ON b.BASIC_CATEGORYID =
-				c.CATEGORY_ID LEFT JOIN basic_column cl ON c.CATEGORY_ID =
-				cl.COLUMN_CATEGORY_ID LEFT JOIN cms_article a ON a.ARTICLE_BASICID =
-				b.BASIC_ID where a.ARTICLE_WEBID = #{webId} and
-				BASIC_ID=#{id})
-			</foreach>
-		</if>
-	</select>
-	<!-- 视图查询结束 -->
 
 
 	<!-- 通过文章标题、应用ID、模块编号来查询文章集合开始 -->
@@ -616,72 +535,7 @@
 		<result column="model_id" property="modelId" />
 
 	</resultMap>
-	<select id="queryByArticleTitle" resultMap="resultTitleMap">
-		select
-		basic_title,basic_id,basic_categoryid,basic_hit,model_id from basic
-		inner join category on basic_categoryid=category_id inner join model
-		on category_modelid=model_id where category_appid=#{webId} and
-		model_code = #{modelCode} and basic_title=#{articleTitle}
-	</select>
-	<!-- 通过文章标题、应用ID、模块编号来查询文章集合结束 -->
-<!-- 查找上一篇下一篇 -->
-	<sql id="selectOne">
-		from 
-		(((basic JOIN cms_article ON (BASIC_ID = ARTICLE_BASICID))
-			JOIN basic_column ON (BASIC_CATEGORYID = COLUMN_CATEGORY_ID))
-			JOIN category ON (COLUMN_CATEGORY_ID = CATEGORY_ID))
-		
-		 where category_appid=#{appId}
-		<if test="flag==false">
-			and basic_id &lt; ${basicId}
-
-		</if>
-		<if test="flag==true">
-			and basic_id &gt; ${basicId}
-
-		</if>
-		<if test="categoryId!=null">
-			and BASIC_CATEGORYID = #{categoryId}
-		</if>
-	</sql>
 	
-	<select id="getNextOrPrevious" resultMap="resultMap" databaseId="mysql">
-		select 
-		<include refid="basic_data_list" />
-		<include refid="selectOne"></include>
-		<if test="flag==false">
-			order by basic_id desc
-		</if>
-		<if test="flag==true">
-			order by basic_id asc
-		</if>
-		limit 0,1
-	</select>
-	
-	<select id="getNextOrPrevious" resultMap="resultMap" databaseId="oracle">
-		select 
-		<include refid="basic_data_list" />
-		<include refid="selectOne"></include>
-		and rownum=1
-		<if test="flag==false">
-			order by basic_id desc
-		</if>
-		<if test="flag==true">
-			order by basic_id asc
-		</if>
-	</select>
-	
-	<select id="getNextOrPrevious" resultMap="resultMap" databaseId="sqlServer">
-		select top(1)
-		<include refid="basic_data_list" />
-		<include refid="selectOne"></include>
-		<if test="flag==false">
-			order by basic_id desc
-		</if>
-		<if test="flag==true">
-			order by basic_id asc
-		</if>
-	</select>
 	<sql id="queryTime" databaseId="oracle">
 		to_date(#{dateTime},'yyyy-MM-dd HH24:mi:ss')
 	</sql>
@@ -691,21 +545,6 @@
 	<sql id="queryTime" databaseId="sqlServer">
 		#{dateTime}
 	</sql>
-	<select id="queryListByTime" resultMap="resultMap" >
-		select 
-		<include refid="basic_data_list" />
-		 from 
-		(((basic JOIN cms_article ON (BASIC_ID = ARTICLE_BASICID))
-			JOIN basic_column ON (BASIC_CATEGORYID = COLUMN_CATEGORY_ID))
-			JOIN category ON (COLUMN_CATEGORY_ID = CATEGORY_ID))
-		 where article_webid=#{appId}
-		<if test="dateTime!=null">
-			and basic_updatetime > <include refid="queryTime"></include>
-		</if>
-		<if test="basicCategoryId!=null">
-			and basic_categoryId = #{basicCategoryId}
-		</if>
-	</select>
 
 	<select id="getByCategoryId" resultMap="resultMap">
 		select 

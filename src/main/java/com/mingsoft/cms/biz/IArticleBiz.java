@@ -52,6 +52,7 @@ public interface IArticleBiz extends IBasicBiz {
 	 *            文件实体
 	 * @return
 	 */
+	@Deprecated
 	int count(int webId, int[] basicCategoryId, String flag, String noFlag, ArticleEntity article);
 
 
@@ -75,24 +76,6 @@ public interface IArticleBiz extends IBasicBiz {
 
 
 	/**
-	 * 根据站点Id,栏目列表Id，栏目属性，和栏目不推荐属性查找栏目下的文章总数
-	 * 
-	 * @param webId
-	 *            :站点id
-	 * @param basicCategoryIds
-	 *            :栏目列表id
-	 * @param flag
-	 *            :文章推荐属性
-	 * @param noFlag
-	 *            :文章不推荐属性
-	 * @return 文章总数
-	 * @see IArticleBiz.count
-	 */
-	@Deprecated
-	public int getCountByColumnId(int webId, int[] basicCategoryIds, String flag, String noFlag);
-
-
-	/**
 	 * 查找basicId下一篇文章
 	 * 
 	 * @param appId
@@ -101,6 +84,7 @@ public interface IArticleBiz extends IBasicBiz {
 	 *            文章编号
 	 * @return
 	 */
+	@Deprecated
 	public ArticleEntity getNext(int appId, int basicId, Integer categoryId);
 
 	/**
@@ -112,6 +96,7 @@ public interface IArticleBiz extends IBasicBiz {
 	 *            文章编号
 	 * @return
 	 */
+	@Deprecated
 	public ArticleEntity getPrevious(int appId, int basicId, Integer categoryId);
 
 	/**
@@ -155,23 +140,13 @@ public interface IArticleBiz extends IBasicBiz {
 			boolean order, String beginTime,String endTime, ArticleEntity article);
 
 	/**
-	 * 根据分类与时间查询文章列表
-	 * 
-	 * @param categoryId
-	 *            分类编号
-	 * @param dateTime
-	 *            时间
-	 * @param appId
-	 *            应用编号
-	 * @return 文章
+	 * 查询文章编号集合
+	 * @param categoryId 栏目编号
+	 * @param beginTime 开始时间
+	 * @param endTime 结束时间
+	 * @return
 	 */
-	@Deprecated
-	public List<ArticleEntity> query(int categoryId, String dateTime, int appId);
-
-
-
-
-
+	public List<Integer> queryIdsByCategoryId(int categoryId, String beginTime,String endTime);
 
 	/**
 	 * 根据页面栏目的id获取与其绑定的文章实体

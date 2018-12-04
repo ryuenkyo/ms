@@ -50,6 +50,10 @@
                         <div class="ms-content-right-main-content">
                             <p>{ms:field.content?default('')/}</p>
                         </div>
+                        <div class="metPage">
+					        <p>上一篇：<a href="{ms:field.prelink/}">{ms:field.pretitle/}</a></p>
+					        <p>下一篇：<a href="{ms:field.nextlink/}">{ms:field.nexttitle/}</a></p>
+					    </div>
                     </div>
                     <div class="ms-content-right-main-content-Fabulous">
                         <div class="ms-content-right-main-content-icon" @click="attentionNews" :class="{'ms-is-attention':isAttention}"></div>

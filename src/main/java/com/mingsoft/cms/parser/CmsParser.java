@@ -337,7 +337,7 @@ public class CmsParser extends IGeneralParser {
 				columnIds = columnBiz.queryChildrenCategoryIds(columnId, app.getAppId(),modelId);
 			}
 			// 数据库中该栏目下文章的总数
-			int articleCount = articleBiz.getCountByColumnId(app.getAppId(), columnIds, flag, noFlag);
+			int articleCount = 0;//articleBiz.getCountByColumnId(app.getAppId(), columnIds, flag, noFlag);
 
 			// 如果没有指定文章每页显示数量则显示所有数量
 			if (size <= 0 || size > articleCount) {
@@ -679,7 +679,7 @@ public class CmsParser extends IGeneralParser {
 				String orderBy = property.get(ListParser.LIST_ORDERBY);
 				String order = property.get(ListParser.LIST_ORDER);
 				// 数据库中该栏目下文章的总数
-				int articleCount = articleBiz.getCountByColumnId(app.getAppId(), columnIds, flag, noFlag);
+				int articleCount =0;// articleBiz.getCountByColumnId(app.getAppId(), columnIds, flag, noFlag);
 				// 如果没有指定文章每页显示数量则显示所有数量
 				if (size <= 0 || size > articleCount) {
 					size = articleCount;
