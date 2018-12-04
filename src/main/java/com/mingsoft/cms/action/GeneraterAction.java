@@ -45,6 +45,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSONArray;
+import com.mingsoft.base.constant.Const;
 import com.mingsoft.basic.action.BaseAction;
 import com.mingsoft.basic.biz.IAppBiz;
 import com.mingsoft.basic.biz.IColumnBiz;
@@ -56,8 +57,6 @@ import com.mingsoft.cms.biz.IArticleBiz;
 import com.mingsoft.cms.constant.ModelCode;
 import com.mingsoft.cms.constant.e.ColumnTypeEnum;
 import com.mingsoft.cms.entity.ArticleEntity;
-import com.mingsoft.cms.parser.CmsParser;
-import com.mingsoft.parser.IParserRegexConstant;
 import com.mingsoft.util.StringUtil;
 
 import cn.hutool.core.io.FileUtil;
@@ -83,13 +82,40 @@ import net.mingsoft.mdiy.parser.TagParser;
 @RequestMapping("/${managerPath}/cms/generate")
 @Scope("request")
 public class GeneraterAction extends BaseAction {
-
+	/**
+	 * 存放模版的文件夹
+	 */
+	final String TEMPLATES="templets";
+	/**
+	 * 静态文件生成路径;例如：mcms/html/1
+	 */
+	final String HTML="html";
+	/**
+	 * 移动端生成的目录
+	 */
+	final String MOBILE="m";
+	/**
+	 * index
+	 */
+	final String INDEX="index";
+	/**
+	 * 文件夹路径名;例如：1/58/71.html
+	 */
+	final String HTML_SUFFIX = ".html";
+	/**
+	 * 生成的静态列表页面名;例如：list1.html
+	 */
+	final String PAGE_LIST = "list";
+	/**
+	 * 模版文件后缀名;例如：index.html
+	 */
+	final String HTM_SUFFIX = ".htm";
 	/**
 	 * 文章管理业务层
 	 */
 	@Autowired
 	private IArticleBiz articleBiz;
-	private static final String UTF8 = "UTF-8";
+	
 	/**
 	 * 栏目管理业务层
 	 */
@@ -107,12 +133,6 @@ public class GeneraterAction extends BaseAction {
 	 */
 	@Autowired
 	private IModelBiz modelBiz;
-
-	/**
-	 * 文章解析器
-	 */
-	@Autowired
-	private CmsParser cmsParser;
 	
 	@Value("${managerPath}")
 	private String managerPath;
@@ -159,33 +179,25 @@ public class GeneraterAction extends BaseAction {
 		String generateFileName = request.getParameter("position");// 生成后的文件名称
 
 		// 获取站点信息
-		int websiteId = getManagerBySession(request).getBasicId();
-		AppEntity app = (AppEntity) appBiz.getEntity(websiteId);
-		String tmpName = app.getAppStyle();// 获取模版名称
-		String tmpPath = getRealPath(request, IParserRegexConstant.REGEX_SAVE_TEMPLATE); // 获取系统模版存放物理路径
-		String webSiteTmpPath = tmpPath + File.separator + app.getAppId() + File.separator + tmpName;// 根据站点id组装站点信息路径　格式：templets／站点ID/模版风格
+		AppEntity app = BasicUtil.getApp();
+		// 根据站点id组装站点信息路径　格式：templets／站点ID/模版风格
+		String webSiteTmpPath = getRealPath(request, TEMPLATES) + File.separator + app.getAppId() + File.separator + app.getAppStyle();
 		// 模版路径加上(用户选择的主页的模版的路径)default/index.html
 		String tmpFilePath = webSiteTmpPath + File.separator + tmpFileName;
-		//读取手机端的模板
-		String tmpMobileFilePath = webSiteTmpPath + File.separator + IParserRegexConstant.MOBILE + File.separator + tmpFileName;// 手机端
-
+		//要生成html地址的文件夹
+		String filePath = getRealPath(request, HTML) + File.separator + app.getAppId() + File.separator;
 		// 生成地址
-		String generatePath = getRealPath(request, IParserRegexConstant.HTML_SAVE_PATH) + File.separator + websiteId + File.separator + generateFileName;
-		String generateMobilePath = getRealPath(request, IParserRegexConstant.HTML_SAVE_PATH) + File.separator + websiteId + File.separator + IParserRegexConstant.MOBILE + File.separator + generateFileName;
+		String generatePath = filePath + generateFileName;
+		String generateMobilePath = filePath + MOBILE + File.separator + generateFileName;
 		//生成保存htm页面的文件夹
-		FileUtil.mkdir(getRealPath(request, IParserRegexConstant.HTML_SAVE_PATH) + File.separator + websiteId);
-		FileUtil.mkdir(getRealPath(request, IParserRegexConstant.HTML_SAVE_PATH) + File.separator + websiteId + File.separator + IParserRegexConstant.MOBILE); // 手机端
+		FileUtil.mkdir(filePath + File.separator + MOBILE); // 手机端
 		// 获取文件所在路径 首先判断用户输入的模版文件是否存在
 		File file = new File(tmpFilePath);
-
 		// 判断文件是否存在，若不存在弹出返回信息
 		if (!file.exists()) {
 			this.outJson(response, false,"模板不存在");
 		} else {
 			// 当前模版的物理路径
-			String htmlContent = FileUtil.readUtf8String(tmpFilePath); // 读取模版文件内容
-			String mobileHtmlContent = FileUtil.readUtf8String(tmpMobileFilePath); // 读取手机端模版文件内容
-			if (!StringUtil.isBlank(htmlContent)) {
 				try {
 					Map map = new HashMap();
 					//1、设置模板文件夹路径
@@ -194,45 +206,39 @@ public class GeneraterAction extends BaseAction {
 					cfg.setTemplateLoader(ft);
 					try {
 						//2、读取模板文件
-						Template template = cfg.getTemplate(tmpFileName,UTF8);
+						Template template = cfg.getTemplate(tmpFileName, Const.UTF8);
 						//pc端内容
-						StringWriter pcWriter = new StringWriter();
+						StringWriter writer = new StringWriter();
 						try {
-							template.process(null, pcWriter);
-							TagParser tag = new TagParser(pcWriter.toString());
+							template.process(null, writer);
+							TagParser tag = new TagParser(writer.toString());
 							String content = tag.rendering(map);
 							//LOG.debug(tag.getContent());
 							//3、将tag.getContent()写入路径
-							FileUtil.writeString(content, generatePath, UTF8);
+							FileUtil.writeString(content, generatePath, Const.UTF8);
 							if(ObjectUtil.isNotNull(app.getAppMobileStyle())){
 								//手机端m
-								StringWriter mobileWriter = new StringWriter();
-								template = cfg.getTemplate(app.getAppMobileStyle() + File.separator +tmpFileName, UTF8);
-								template.process(null, mobileWriter);
-								map.put(app.getAppMobileStyle(), app.getAppMobileStyle());
-								TagParser mobileTag = new TagParser(mobileWriter.toString(),map);
-								String mobileContent = mobileTag.rendering(map);
-								FileUtil.writeString(mobileContent, generateMobilePath, UTF8);
+								writer = new StringWriter();
+								template = cfg.getTemplate(app.getAppMobileStyle() + File.separator +tmpFileName, Const.UTF8);
+								template.process(null, writer);
+								map.put(MOBILE, app.getAppMobileStyle());
+								tag = new TagParser(writer.toString(),map);
+								content = tag.rendering(map);
+								FileUtil.writeString(content, generateMobilePath, Const.UTF8);
 							}
+							this.outJson(response, true);
 						} catch (TemplateException e) {
 							e.printStackTrace();
+							this.outJson(response, false);
 						}
 					} catch (IOException e) {
 						e.printStackTrace();
+						this.outJson(response, false);
 					}
 				} catch (IOException e) {
 					e.printStackTrace();
+					this.outJson(response, false);
 				}
-				//进行html的解析
-//				htmlContent = cmsParser.parse(htmlContent,app);
-//				Map map = new HashMap();
-//				map.put(CmsParser.MOBILE,IParserRegexConstant.MOBILE);
-//				mobileHtmlContent = cmsParser.parse(mobileHtmlContent,app,map);
-//				// 解析HTML上的标签
-//				FileUtil.writeString(htmlContent, generatePath, UTF8);
-//				FileUtil.writeString(mobileHtmlContent, generateMobilePath, UTF8);
-				this.outJson(response, true);
-			} 
 		} 
 	}
 
@@ -250,12 +256,12 @@ public class GeneraterAction extends BaseAction {
 		// 获取站点id
 		AppEntity app = BasicUtil.getApp();
 		String mobileStyle = app.getAppMobileStyle(); // 手机端模版
-		String url = app.getAppHostUrl() + File.separator + IParserRegexConstant.HTML_SAVE_PATH + File.separator + app.getAppId();
+		String url = app.getAppHostUrl() + File.separator + HTML + File.separator + app.getAppId();
 		// 站点生成后保存的html地址
-		String generatePath = getRealPath(request, IParserRegexConstant.HTML_SAVE_PATH) + File.separator + app.getAppId() + File.separator;
+		String generatePath = getRealPath(request, HTML) + File.separator + app.getAppId() + File.separator;
 		FileUtil.mkdir(generatePath);
 		// 网站风格物理路径
-		String tmpPath = getRealPath(request, IParserRegexConstant.REGEX_SAVE_TEMPLATE) + File.separator + app.getAppId() + File.separator + app.getAppStyle();
+		String tmpPath = getRealPath(request, TEMPLATES) + File.separator + app.getAppId() + File.separator + app.getAppStyle();
 		List<ColumnEntity> columns = new ArrayList<ColumnEntity>();
 		// 如果栏目id小于0则更新所有的栏目，否则只更新选中的栏目
 		int modelId = BasicUtil.getModelCodeId(ModelCode.CMS_COLUMN); // 查询当前模块编号
@@ -301,11 +307,12 @@ public class GeneraterAction extends BaseAction {
 					columnPath = generatePath + column.getColumnPath();
 				}
 				Map map = new HashMap();
+				//2、读取模板文件
+				Template template = cfg.getTemplate(column.getColumnListUrl(), Const.UTF8);
+				StringWriter writer = new StringWriter();
 				// 判断列表类型
 				switch (column.getColumnType()) {
 				case ColumnEntity.COLUMN_TYPE_LIST: // 列表
-					//2、读取模板文件
-					Template template = cfg.getTemplate(column.getColumnListUrl(),UTF8);
 					// 手机列表模版
 					if (!StringUtil.isBlank(mobileStyle)) {
 						FileUtil.mkdir(mobilePath);
@@ -314,25 +321,19 @@ public class GeneraterAction extends BaseAction {
 						if (!StringUtil.isBlank(mobileListTtmpContent)) {
 							// 生成手机端模版
 							// 要生成手机的静态页面数
-							int mobilePageSize = cmsParser.getPageSize(app, mobileListTtmpContent, column);
+							int mobilePageSize = 10;//cmsParser.getPageSize(app, mobileListTtmpContent, column);
 							// 根据页面数,循环生成静态页面个数在
 							for (int i = 0; i < mobilePageSize; i++) {
-								String writePath = mobilePath + File.separator + IParserRegexConstant.PAGE_LIST + (i + 1) + IParserRegexConstant.HTML_SUFFIX;
+								String writePath = mobilePath + File.separator + PAGE_LIST + (i + 1) + HTML_SUFFIX;
 								if (i == 0) {
-									writePath = mobilePath + File.separator + IParserRegexConstant.HTML_INDEX;
+									writePath = mobilePath + File.separator + INDEX + HTML_SUFFIX;
 								}
-								String pagePath = url + File.separator + mobileStyle + File.separator + column.getColumnPath() + File.separator + IParserRegexConstant.PAGE_LIST ;
-//								map.put(CmsParser.LIST_LINK_PATH, pagePath);
-//								map.put(CmsParser.CUR_PAGE_NO, i + 1);
-//								map.put(CmsParser.MOBILE,IParserRegexConstant.MOBILE);
-								String pageContent = cmsParser.parse(mobileListTtmpContent,app,column,map);
-								FileUtil.writeString(pageContent, writePath, UTF8);// 写文件
+								String pagePath = url + File.separator + mobileStyle + File.separator + column.getColumnPath() + File.separator + PAGE_LIST ;
 							}
 						}
 	
 					}
 					try {
-						StringWriter writer = new StringWriter();
 						Map parserParams = new HashMap();
 						parserParams.put("typeid", column.getCategoryId());
 						template.process(null, writer);
@@ -342,9 +343,11 @@ public class GeneraterAction extends BaseAction {
 						// 要生成的静态页面数
 						// 根据页面数,循环生成静态页面个数在
 						//3、将tag.getContent()写入路径
-						FileUtil.writeString(listTtmpContent, columnPath + File.separator + IParserRegexConstant.HTML_INDEX, UTF8);
+						FileUtil.writeString(listTtmpContent, columnPath + File.separator + INDEX + HTML_SUFFIX, Const.UTF8);
+						this.outJson(response, true);
 					} catch (TemplateException e) {
 						e.printStackTrace();
+						this.outJson(response, false);
 					}
 					break;
 				case ColumnEntity.COLUMN_TYPE_COVER:// 单页
@@ -356,11 +359,11 @@ public class GeneraterAction extends BaseAction {
 					String writePath = "";
 					try {
 						//2、读取单页模板文件
-						Template coverTemplate = cfg.getTemplate(column.getColumnUrl(),UTF8);
-						StringWriter writer = new StringWriter();
+						template = cfg.getTemplate(column.getColumnUrl(), Const.UTF8);
+						writer = new StringWriter();
 						Map parserParams = new HashMap();
 						parserParams.put("id", article.getBasicId());
-						coverTemplate.process(null, writer);
+						template.process(null, writer);
 						TagParser tag = new TagParser(writer.toString(),parserParams);
 						// 读取列表模版地址
 						String content = tag.rendering();
@@ -368,38 +371,40 @@ public class GeneraterAction extends BaseAction {
 						// 判断是否为顶级栏目
 						if (column.getCategoryCategoryId() == 0) {
 							FileUtil.mkdir(generatePath + column.getCategoryId());
-							writePath = generatePath + String.valueOf(column.getCategoryId()) + File.separator + IParserRegexConstant.HTML_INDEX;
-							mobileWritePath = generatePath + mobileStyle + File.separator + String.valueOf(column.getCategoryId()) + File.separator + IParserRegexConstant.HTML_INDEX;
+							writePath = generatePath + String.valueOf(column.getCategoryId()) + File.separator + INDEX + HTML_SUFFIX;
+							mobileWritePath = generatePath + mobileStyle + File.separator + String.valueOf(column.getCategoryId()) + File.separator + INDEX + HTML_SUFFIX;
 						} else {// 子栏目，子栏目需要获取父级栏目的编号
-							writePath = generatePath + column.getColumnPath() + File.separator + IParserRegexConstant.HTML_INDEX;
-							mobileWritePath = generatePath + mobileStyle + File.separator + column.getColumnPath() + File.separator + IParserRegexConstant.HTML_INDEX;
+							writePath = generatePath + column.getColumnPath() + File.separator + INDEX + HTML_SUFFIX;
+							mobileWritePath = generatePath + mobileStyle + File.separator + column.getColumnPath() + File.separator + INDEX + HTML_SUFFIX;
 						}
-						FileUtil.writeString(content, writePath, UTF8);
+						FileUtil.writeString(content, writePath, Const.UTF8);
 						// 手机端
 						if (!StringUtil.isBlank(mobileStyle)) {
 							//2、读取单页模板文件
-							Template mobileCoverTemplate = cfg.getTemplate(mobileStyle + File.separator + column.getColumnUrl(),UTF8);
-							StringWriter mobileWriter = new StringWriter();
-							mobileCoverTemplate.process(null, mobileWriter);
+							template = cfg.getTemplate(mobileStyle + File.separator + column.getColumnUrl(), Const.UTF8);
+							writer = new StringWriter();
+							template.process(null, writer);
 							Map mobileParserParams = new HashMap();
 							mobileParserParams.put("id", article.getBasicId());
 							//设置手机端style
-							mobileParserParams.put(mobileStyle, mobileStyle);
-							TagParser mobileTag = new TagParser(mobileWriter.toString(),mobileParserParams);
+							mobileParserParams.put(MOBILE, mobileStyle);
+							TagParser mobileTag = new TagParser(writer.toString(),mobileParserParams);
 							// 读取列表模版地址
 							String mobileContent = mobileTag.rendering();
-							FileUtil.writeString(mobileContent, mobileWritePath, UTF8);
+							FileUtil.writeString(mobileContent, mobileWritePath, Const.UTF8);
 						}
+						this.outJson(response, true);
 						break;
 					} catch (TemplateException e) {
 						e.printStackTrace();
+						this.outJson(response, false);
 					}
 				}
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
+			this.outJson(response, false);
 		}
-		this.outJson(response, true);
 	}
 
 	/**
@@ -450,19 +455,13 @@ public class GeneraterAction extends BaseAction {
 		if (app != null) {
 			mobileStyle = app.getAppMobileStyle(); // 手机端模版
 		}
-
-		String generatePath = getRealPath(request, IParserRegexConstant.HTML_SAVE_PATH) + File.separator + app.getAppId() + File.separator;// 站点生成后保存的html地址
-		FileUtil.mkdir(generatePath);
-		String tmpPath = getRealPath(request, IParserRegexConstant.REGEX_SAVE_TEMPLATE) + File.separator + app.getAppId() + File.separator + app.getAppStyle(); // 网站风格物理路径
-		List<ArticleEntity> articleList = null;
+		// 站点生成后保存的html地址
+		String generatePath = getRealPath(request, HTML) + File.separator + app.getAppId() + File.separator;
+		// 网站风格物理路径
+		String tmpPath = getRealPath(request, TEMPLATES) + File.separator + app.getAppId() + File.separator + app.getAppStyle(); 
+		List<Integer> articleList = null;
 		List<ColumnEntity> columns = new ArrayList<ColumnEntity>();
 		Integer modelId = modelBiz.getEntityByModelCode(ModelCode.CMS_COLUMN).getModelId(); // 查询当前模块编号
-		
-		//根据栏目取出所有文章（可能会增加一个方法，只返回文章编号集合，原则sql越简单越好）
-		//遍历文章记录
-		//解析标签时传递 basicId ，放到map
-		//生成文件
-		
 		
 		if (columnId > 0) {
 			List<CategoryEntity> categorys = columnBiz.queryChildrenCategory(columnId, app.getAppId(),modelId);
@@ -472,8 +471,8 @@ public class GeneraterAction extends BaseAction {
 		} else {
 			columns = columnBiz.queryColumnListByWebsiteId(app.getAppId()); // 读取所有栏目
 		}
-		
-		String url = app.getAppHostUrl() + File.separator + IParserRegexConstant.HTML_SAVE_PATH + File.separator + app.getAppId() + File.separator; // 文章地址前缀
+		// 文章地址前缀
+		String url = app.getAppHostUrl() + File.separator + HTML + File.separator + app.getAppId() + File.separator; 
 		//1、设置模板文件夹路径
 		FileTemplateLoader ft;
 		try {
@@ -489,103 +488,89 @@ public class GeneraterAction extends BaseAction {
 				if(!FileUtil.exist(columnPath)){
 					continue;
 				}
-				FileUtil.mkdir(generatePath + tempColumn.getColumnPath());
 				String writePath = null;
-				int[] categoryIds = {tempColumn.getCategoryId()};
-				articleList = articleBiz.query(app.getAppId(), categoryIds, null, null, null, true, null, dateTime, null);
+				articleList = articleBiz.queryIdsByCategoryId(tempColumn.getCategoryId(), dateTime, null);
 				// 有符合条件的新闻就更新
 				if (articleList.size() > 0) {
 					// 生成文档
 					switch (tempColumn.getColumnType()) {
 					case ColumnEntity.COLUMN_TYPE_LIST: // 列表
-						String tmpContent = FileUtil.readUtf8String(tmpPath + File.separator + tempColumn.getColumnUrl());// 读取文章模版地址
-						String mobileTmpContent = null;
-						if (!StringUtil.isBlank(mobileStyle)) {
-							mobileTmpContent = FileUtil.readUtf8String(tmpPath + File.separator + mobileStyle + File.separator + tempColumn.getColumnUrl());// 读取手机端文章模版地址
-						}
 						for (int ai = 0; ai < articleList.size();) {
-							ArticleEntity article = articleList.get(ai);
+							int articleId = articleList.get(ai);
 							if (tempColumn.getCategoryCategoryId() == 0) { // 如果是顶级下面有文章，那么文章的生成地址就是　分类id/文章编号
-								FileUtil.mkdir(generatePath + tempColumn.getCategoryId());
 								// 组合文章路径如:html/站点id/栏目id/文章id.html
-								writePath = generatePath + tempColumn.getColumnPath() + File.separator + article.getArticleID() + IParserRegexConstant.HTML_SUFFIX;
-								article.setArticleLinkURL(url + tempColumn.getColumnPath() + File.separator + article.getArticleID() + IParserRegexConstant.HTML_SUFFIX);
+								writePath = generatePath + tempColumn.getColumnPath() + File.separator + articleId + HTML_SUFFIX;
 							} else { // 如果有父级别编号，需要组合路径。格式如:父ID/子id/文章id.html
-								String path = File.separator + article.getArticleID() + IParserRegexConstant.HTML_SUFFIX;
+								String path = File.separator + articleId + HTML_SUFFIX;
 								writePath = generatePath + tempColumn.getColumnPath() + File.separator + path;
-								article.setArticleLinkURL(url + tempColumn.getColumnPath() + File.separator + article.getArticleID() + IParserRegexConstant.HTML_SUFFIX);
 							}
-							ArticleEntity previous = articleBiz.getPrevious(app.getAppId(), article.getArticleID(),article.getBasicCategoryId());// 上一篇文章
-							ArticleEntity next = articleBiz.getNext(app.getAppId(), article.getArticleID(),article.getBasicCategoryId());// 下一篇文章
-							if(article.getColumn()!=null){
-								if (previous != null) {
-									previous.setArticleLinkURL(url + article.getColumn().getColumnPath() + File.separator + previous.getArticleID() + IParserRegexConstant.HTML_SUFFIX);
-								}
-								if (next != null) {
-									next.setArticleLinkURL(url +  article.getColumn().getColumnPath() + File.separator + next.getArticleID() + IParserRegexConstant.HTML_SUFFIX);
-								}
+							// 上一篇文章
+							ArticleEntity previous = null;
+							// 下一篇文章
+							ArticleEntity next = null;
+							Map<String,Object> pageMap = new HashMap<String,Object>();
+							//第一篇文章没有上一篇
+							if(ai>0){
+								previous = (ArticleEntity) articleBiz.getEntity(articleList.get(ai-1));
+								pageMap.put("prelink", url + previous.getColumn().getColumnPath() + File.separator + previous.getArticleID() + HTML_SUFFIX);
+								pageMap.put("pretitle", previous.getBasicTitle());
+							}else{
+								pageMap.put("prelink", "");
+								pageMap.put("pretitle", "");
 							}
-							Map map = new HashMap();
-							map.put(CmsParser.PREVIOUS, previous);
-							map.put(CmsParser.NEXT, next);
-							
-							Map parserParams = new HashMap();
-							parserParams.put("id", article.getBasicId());
+							//最后一篇文章没有下一篇
+							if(ai+1 < articleList.size()){
+								next = (ArticleEntity) articleBiz.getEntity(articleList.get(ai+1));
+								pageMap.put("nextlink", url + next.getColumn().getColumnPath() + File.separator + next.getArticleID() + HTML_SUFFIX);
+								pageMap.put("nexttitle", next.getBasicTitle());
+							}else{
+								pageMap.put("nextlink", "");
+								pageMap.put("nexttitle", "");
+							}
+							Map<String,Object> parserParams = new HashMap<String,Object>();
+							parserParams.put("id", articleId);
+							parserParams.put("page", pageMap);
 							//2、读取模板文件
-							Template template = cfg.getTemplate(tempColumn.getColumnUrl(),UTF8);
+							Template template = cfg.getTemplate(tempColumn.getColumnUrl(), Const.UTF8);
 							//pc端内容
 							StringWriter writer = new StringWriter();
+							TagParser tag = null;
+							String content = null;
 							try {
 								template.process(null, writer);
-								TagParser tag = new TagParser(writer.toString(),parserParams);
-								String content = tag.rendering();
+								tag = new TagParser(writer.toString(),parserParams);
+								content = tag.rendering();
 								//3、将pcTag.getContent()写入路径
-								FileUtil.writeString(content, writePath, UTF8);
+								FileUtil.writeString(content, writePath, Const.UTF8);
 							} catch (TemplateException e) {
 								e.printStackTrace();
 							}
 	
 							// 手机端
-							if (!StringUtil.isBlank(mobileTmpContent)) {
-								FileUtil.mkdir(generatePath + mobileStyle + File.separator + tempColumn.getColumnPath());
+							if (!StringUtil.isBlank(mobileStyle)) {
 								if (tempColumn.getCategoryCategoryId() == 0) { // 如果是顶级下面有文章，那么文章的生成地址就是　分类id/文章编号
-	
 									// 组合文章路径如:html/站点id/栏目id/文章id.html
-									writePath = generatePath + mobileStyle + File.separator + tempColumn.getColumnPath() + File.separator + article.getArticleID() + IParserRegexConstant.HTML_SUFFIX;
-									article.setArticleLinkURL(url + mobileStyle + File.separator + tempColumn.getColumnPath() + File.separator + article.getArticleID() + IParserRegexConstant.HTML_SUFFIX);
+									writePath = generatePath + mobileStyle + File.separator + tempColumn.getColumnPath() + File.separator + articleId + HTML_SUFFIX;
 								} else { // 如果有父级别编号，需要组合路径。格式如:父ID/子id/文章id.html
-									String path = File.separator + article.getArticleID() + IParserRegexConstant.HTML_SUFFIX;
+									String path = File.separator + articleId + HTML_SUFFIX;
 									writePath = generatePath + mobileStyle + File.separator + tempColumn.getColumnPath() + File.separator + path;
-									article.setArticleLinkURL(url + mobileStyle + File.separator + tempColumn.getColumnPath() + File.separator + article.getArticleID() + IParserRegexConstant.HTML_SUFFIX);
 								}
-	
-								if(article.getColumn()!=null){
-									if (previous != null) {
-										previous.setArticleLinkURL(url + mobileStyle + File.separator + article.getColumn().getColumnPath() + File.separator + previous.getArticleID() + IParserRegexConstant.HTML_SUFFIX);
-									}
-									if (next != null) {
-										next.setArticleLinkURL(url + mobileStyle + File.separator + article.getColumn().getColumnPath() + File.separator + next.getArticleID() + IParserRegexConstant.HTML_SUFFIX);
-									}
-								}
-//								map.put(CmsParser.MOBILE,IParserRegexConstant.MOBILE);
-								StringWriter mobileWriter = new StringWriter();
-								template = cfg.getTemplate(app.getAppMobileStyle() + File.separator +tempColumn.getColumnUrl(), UTF8);
-								map.put(app.getAppMobileStyle(), app.getAppMobileStyle());
-								map.put("id", article.getBasicId());
-								TagParser mobileTag = new TagParser(mobileWriter.toString(),map);
-								String mobileContent = mobileTag.rendering(map);
-								FileUtil.writeString(mobileContent, writePath, UTF8);
+								writer = new StringWriter();
+								template = cfg.getTemplate(app.getAppMobileStyle() + File.separator +tempColumn.getColumnUrl(), Const.UTF8);
+								parserParams.put(app.getAppMobileStyle(), app.getAppMobileStyle());
 								try {
-									template.process(null, mobileWriter);
+									template.process(null, writer);
+									tag = new TagParser(writer.toString(),parserParams);
+									content = tag.rendering(parserParams);
+									FileUtil.writeString(content, writePath, Const.UTF8);
 								} catch (TemplateException e) {
-									// TODO Auto-generated catch block
 									e.printStackTrace();
+									this.outJson(response, false);
 								}
 							}
-	
 							ai++;
-	
 						}
+						this.outJson(response, true);
 						break;
 					// case ColumnEntity.COLUMN_TYPE_COVER:// 单页
 					// writePath = null;
@@ -620,7 +605,7 @@ public class GeneraterAction extends BaseAction {
 					// tempColumn, article, coverTtmpContent, tmpPath, null, null);
 					// // 解析标签
 					//
-					// FileUtil.writeString(coverContent, writePath, UTF8);//
+					// FileUtil.writeString(coverContent, writePath, Const.UTF8);//
 					// 写文件
 					//
 					// //移动端
@@ -657,7 +642,7 @@ public class GeneraterAction extends BaseAction {
 					// tempColumn, article, coverTtmpContent, tmpPath, null,
 					// null,mobileStyle); // 解析标签
 					//
-					// FileUtil.writeString(temp, writePath, UTF8);// 写文件
+					// FileUtil.writeString(temp, writePath, Const.UTF8);// 写文件
 					// }
 					//
 					//
@@ -676,15 +661,14 @@ public class GeneraterAction extends BaseAction {
 				 * File.separator + RegexConstant.HTML_INDEX; String coverContent =
 				 * generaterFactory.builderIndex(app, tempColumn, coverTtmpContent,
 				 * tmpPath); // 解析标签 // 取最后一篇文章作为栏目内容
-				 * FileUtil.writeString(coverContent, writePath, UTF8);// 写文件
+				 * FileUtil.writeString(coverContent, writePath, Const.UTF8);// 写文件
 				 * break; } }
 				 */
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			this.outJson(response, false);
 		}
-		this.outJson(response, true);
 	}
 
 	/**
@@ -719,8 +703,8 @@ public class GeneraterAction extends BaseAction {
 //
 //		// 3主
 //		Map map = new HashMap();
-//		map.put("url", IParserRegexConstant.REGEX_INDEX_HTML);
-//		map.put("position", IParserRegexConstant.HTML_INDEX);
+//		map.put("url", INDEX + HTM_SUFFIX);
+//		map.put("position", INDEX + HTML_SUFFIX);
 //		Proxy.get(this.getUrl(request) + managerPath + "/cms/generate/generateIndex.do", header, map);
 		Map parms = new HashMap();
 		parms.put("dateTime", StringUtil.getSimpleDateStr(new Date(), "yyyy-MM-dd"));
@@ -739,8 +723,8 @@ public class GeneraterAction extends BaseAction {
 
 		// 3主
 		Map map = new HashMap();
-		map.put("url", IParserRegexConstant.REGEX_INDEX_HTML);
-		map.put("position", IParserRegexConstant.HTML_INDEX);
+		map.put("url", INDEX + HTM_SUFFIX);
+		map.put("position", INDEX + HTML_SUFFIX);
 		HttpUtil.get(this.getUrl(request) + managerPath + "/cms/generate/generateIndex.do", map);
 
 		this.outJson(response, ModelCode.CMS_GENERATE_ARTICLE, true);
@@ -757,10 +741,10 @@ public class GeneraterAction extends BaseAction {
 	@ResponseBody
 	public void generateArticleByArticleId(HttpServletRequest request, HttpServletResponse response, @PathVariable int articleId) {
 		AppEntity app = BasicUtil.getApp();
-		String generatePath = getRealPath(request, IParserRegexConstant.HTML_SAVE_PATH) + File.separator + app.getAppId() + File.separator;// 站点生成后保存的html地址
+		String generatePath = getRealPath(request, HTML) + File.separator + app.getAppId() + File.separator;// 站点生成后保存的html地址
 		FileUtil.mkdir(generatePath);
-		String tmpPath = getRealPath(request, IParserRegexConstant.REGEX_SAVE_TEMPLATE) + File.separator + app.getAppId() + File.separator + app.getAppStyle(); // 网站风格物理路径
-		String url = app.getAppHostUrl() + File.separator + IParserRegexConstant.HTML_SAVE_PATH + File.separator + app.getAppId() + File.separator; // 文章地址前缀
+		String tmpPath = getRealPath(request, TEMPLATES) + File.separator + app.getAppId() + File.separator + app.getAppStyle(); // 网站风格物理路径
+		String url = app.getAppHostUrl() + File.separator + HTML + File.separator + app.getAppId() + File.separator; // 文章地址前缀
 		ArticleEntity article = (ArticleEntity) articleBiz.getBasic(articleId);
 		ColumnEntity tempColumn = article.getColumn();
 		FileUtil.mkdir(generatePath + tempColumn.getColumnPath());
@@ -774,30 +758,28 @@ public class GeneraterAction extends BaseAction {
 			String tmpContent = FileUtil.readUtf8String(tmpPath + File.separator + tempColumn.getColumnUrl());// 读取文章模版地址
 			ArticleEntity previous = articleBiz.getPrevious(tempColumn.getCategoryAppId(), articleId,article.getBasicCategoryId());
 			if (previous != null) {
-				previous.setArticleLinkURL(url + tempColumn.getColumnPath() + File.separator + previous.getArticleID() + IParserRegexConstant.HTML_SUFFIX);
+				previous.setArticleLinkURL(url + tempColumn.getColumnPath() + File.separator + previous.getArticleID() + HTML_SUFFIX);
 			}
 			ArticleEntity next = articleBiz.getNext(tempColumn.getCategoryAppId(), articleId,article.getBasicCategoryId());
 			if (next != null) {
-				next.setArticleLinkURL(url + tempColumn.getColumnPath() + File.separator + next.getArticleID() + IParserRegexConstant.HTML_SUFFIX);
+				next.setArticleLinkURL(url + tempColumn.getColumnPath() + File.separator + next.getArticleID() + HTML_SUFFIX);
 			}
 			
 			//生成页面
 			Map map = new HashMap();
-			map.put(CmsParser.PREVIOUS, previous);
-			map.put(CmsParser.NEXT, next);
-			String content = cmsParser.parse(tmpContent,app,tempColumn,article,map);
+			String content = "";//cmsParser.parse(tmpContent,app,tempColumn,article,map);
 			
 			if (tempColumn.getCategoryCategoryId() == 0) { // 如果是顶级下面有文章，那么文章的生成地址就是　分类id/文章编号
 				FileUtil.mkdir(generatePath + tempColumn.getCategoryId());
 				// 组合文章路径如:html/站点id/栏目id/文章id.html
-				writePath = generatePath + tempColumn.getColumnPath() + File.separator + article.getArticleID() + IParserRegexConstant.HTML_SUFFIX;
-				article.setArticleLinkURL(url + tempColumn.getColumnPath() + File.separator + article.getArticleID() + IParserRegexConstant.HTML_SUFFIX);
+				writePath = generatePath + tempColumn.getColumnPath() + File.separator + article.getArticleID() + HTML_SUFFIX;
+				article.setArticleLinkURL(url + tempColumn.getColumnPath() + File.separator + article.getArticleID() + HTML_SUFFIX);
 			} else { // 如果有父级别编号，需要组合路径。格式如:父ID/子id/文章id.html
-				String path = File.separator + article.getArticleID() + IParserRegexConstant.HTML_SUFFIX;
+				String path = File.separator + article.getArticleID() + HTML_SUFFIX;
 				writePath = generatePath + tempColumn.getColumnPath() + File.separator + path;
-				article.setArticleLinkURL(url + tempColumn.getColumnPath() + File.separator + article.getArticleID() + IParserRegexConstant.HTML_SUFFIX);
+				article.setArticleLinkURL(url + tempColumn.getColumnPath() + File.separator + article.getArticleID() + HTML_SUFFIX);
 			}
-			FileUtil.writeString(content, writePath, UTF8);// 写文件
+			FileUtil.writeString(content, writePath, Const.UTF8);// 写文件
 			break;
 		case ColumnEntity.COLUMN_TYPE_COVER:// 单页
 			writePath = null;
@@ -811,18 +793,18 @@ public class GeneraterAction extends BaseAction {
 			// 判断是否 顶级栏目
 			if (tempColumn.getCategoryCategoryId() == 0) {
 				FileUtil.mkdir(generatePath + tempColumn.getCategoryId());
-				writePath = generatePath + String.valueOf(tempColumn.getCategoryId()) + File.separator + IParserRegexConstant.HTML_INDEX;
+				writePath = generatePath + String.valueOf(tempColumn.getCategoryId()) + File.separator + INDEX + HTML_SUFFIX;
 				// 设置文章连接地址
-				article.setArticleLinkURL(url + tempColumn.getColumnPath() + File.separator + IParserRegexConstant.HTML_INDEX);
+				article.setArticleLinkURL(url + tempColumn.getColumnPath() + File.separator + INDEX + HTML_SUFFIX);
 			} else {// 子栏目，子栏目需要获取父级栏目的编号
-				writePath = generatePath + tempColumn.getColumnPath() + File.separator + IParserRegexConstant.HTML_INDEX;
-				article.setArticleLinkURL(url + tempColumn.getColumnPath() + File.separator + IParserRegexConstant.HTML_INDEX);
+				writePath = generatePath + tempColumn.getColumnPath() + File.separator + INDEX + HTML_SUFFIX;
+				article.setArticleLinkURL(url + tempColumn.getColumnPath() + File.separator + INDEX + HTML_SUFFIX);
 			}
 			
 			//生成页面
-			String coverContent = cmsParser.parse(coverTtmpContent,app,tempColumn,article);
+			String coverContent = "";//cmsParser.parse(coverTtmpContent,app,tempColumn,article);
 																																	// 取最后一篇文章作为栏目内容
-			FileUtil.writeString(coverContent, writePath, UTF8);// 写文件
+			FileUtil.writeString(coverContent, writePath, Const.UTF8);// 写文件
 			break;
 		}
 		this.outJson(response, true);
@@ -853,7 +835,7 @@ public class GeneraterAction extends BaseAction {
 	public String viewIndex(HttpServletRequest request, @PathVariable String position, HttpServletResponse response) {
 		AppEntity app = BasicUtil.getApp();
 		//组织主页预览地址
-		String indexPosition = app.getAppHostUrl() +  File.separator + IParserRegexConstant.HTML_SAVE_PATH + File.separator + app.getAppId() + File.separator + position;
+		String indexPosition = app.getAppHostUrl() +  File.separator + HTML + File.separator + app.getAppId() + File.separator + position;
 		return "redirect:" + indexPosition;
 	}
 
