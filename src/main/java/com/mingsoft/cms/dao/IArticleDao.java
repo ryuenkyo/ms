@@ -27,7 +27,6 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Param;
 
 import com.mingsoft.base.dao.IBaseDao;
-import com.mingsoft.base.entity.BaseEntity;
 import com.mingsoft.cms.entity.ArticleEntity;
 import com.mingsoft.util.PageUtil;
 
@@ -54,6 +53,7 @@ public interface IArticleDao extends IBaseDao {
 	 *            文章实体，便于扩展查询
 	 * @return 文章总数
 	 */
+	@Deprecated
 	int count(@Param("webId") int webId, @Param("basicCategoryIds") int[] basicCategoryIds, @Param("flag") String flag,
 			@Param("noFlag") String noFlag, @Param("article") ArticleEntity article);
 
@@ -64,6 +64,7 @@ public interface IArticleDao extends IBaseDao {
 	 *            分类编号
 	 * @return 文章集合
 	 */
+	@Deprecated
 	List getByCategoryId(@Param("categoryId") int categoryId);
 
 	/**

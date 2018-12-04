@@ -229,6 +229,7 @@
 	<sql id="queryWhereNoFlag" databaseId="sqlServer">
 		'%'+#{ noFlag}+'%'
 	</sql>
+	<!-- 已过期 -->
 	<select id="count" resultType="int">
 		select count(basic_id) FROM basic b
 		LEFT JOIN category c ON
@@ -320,7 +321,7 @@
 		<if test="order == false">asc</if>
 	</select>
 
-	<!-- 根据站点编号和栏目编号查询文章编号集合 -->
+	<!-- 根据站点编号、开始、结束时间和栏目编号查询文章编号集合 -->
 	<select id="queryIdsByCategoryId" resultType="Integer" >
 		select
 		ARTICLE_BASICID
@@ -345,6 +346,7 @@
 
 
 	<!--查询页面栏目的文章 开始 -->
+	<!-- 已过期 -->
 	<select id="queryListByColumnId" resultMap="resultMap">
 		select
 		<include refid="column_list" />
@@ -535,7 +537,65 @@
 		<result column="model_id" property="modelId" />
 
 	</resultMap>
-	
+	<!-- 已过期 -->
+	<!-- 查找上一篇下一篇 -->
+	<sql id="selectOne">
+		from 
+		(((basic JOIN cms_article ON (BASIC_ID = ARTICLE_BASICID))
+			JOIN basic_column ON (BASIC_CATEGORYID = COLUMN_CATEGORY_ID))
+			JOIN category ON (COLUMN_CATEGORY_ID = CATEGORY_ID))
+		
+		 where category_appid=#{appId}
+		<if test="flag==false">
+			and basic_id &lt; ${basicId}
+
+		</if>
+		<if test="flag==true">
+			and basic_id &gt; ${basicId}
+
+		</if>
+		<if test="categoryId!=null">
+			and BASIC_CATEGORYID = #{categoryId}
+		</if>
+	</sql>
+	<!-- 已过期 -->
+	<select id="getNextOrPrevious" resultMap="resultMap" databaseId="mysql">
+		select 
+		<include refid="basic_data_list" />
+		<include refid="selectOne"></include>
+		<if test="flag==false">
+			order by basic_id desc
+		</if>
+		<if test="flag==true">
+			order by basic_id asc
+		</if>
+		limit 0,1
+	</select>
+	<!-- 已过期 -->
+	<select id="getNextOrPrevious" resultMap="resultMap" databaseId="oracle">
+		select 
+		<include refid="basic_data_list" />
+		<include refid="selectOne"></include>
+		and rownum=1
+		<if test="flag==false">
+			order by basic_id desc
+		</if>
+		<if test="flag==true">
+			order by basic_id asc
+		</if>
+	</select>
+	<!-- 已过期 -->
+	<select id="getNextOrPrevious" resultMap="resultMap" databaseId="sqlServer">
+		select top(1)
+		<include refid="basic_data_list" />
+		<include refid="selectOne"></include>
+		<if test="flag==false">
+			order by basic_id desc
+		</if>
+		<if test="flag==true">
+			order by basic_id asc
+		</if>
+	</select>
 	<sql id="queryTime" databaseId="oracle">
 		to_date(#{dateTime},'yyyy-MM-dd HH24:mi:ss')
 	</sql>
@@ -545,7 +605,7 @@
 	<sql id="queryTime" databaseId="sqlServer">
 		#{dateTime}
 	</sql>
-
+	<!-- 已过期 -->
 	<select id="getByCategoryId" resultMap="resultMap">
 		select 
 		<include refid="basic_data_list" />
@@ -554,35 +614,6 @@
 			JOIN basic_column ON (BASIC_CATEGORYID = COLUMN_CATEGORY_ID))
 			JOIN category ON (COLUMN_CATEGORY_ID = CATEGORY_ID))
 		where basic_categoryId=#{categoryId} order by basic_id desc 
-	</select>
-
-	<!--根据分类id查询articleBean开始 -->
-	<select id="queryByCategoryForBean" resultMap="articleBeanMap">
-		select
-		<include refid="bean_column_list" />
-		from (((basic JOIN cms_article ON (BASIC_ID = ARTICLE_BASICID))
-			JOIN basic_column ON (BASIC_CATEGORYID = COLUMN_CATEGORY_ID))
-			JOIN category ON (COLUMN_CATEGORY_ID = CATEGORY_ID))
-		<if test="contentModelTableName!=null">
-			left join ${contentModelTableName} cmt on
-			cmt.basicid=basic_id
-		</if>
-		where BASIC_CATEGORYID=#{categoryId}
-		<if test="categoryIds!=null">
-			<foreach item="category" index="index" collection="categoryIds"
-				open="" separator="" close="">
-				UNION ALL (select
-				<include refid="bean_column_list" />
-				from 
-				(((basic JOIN cms_article ON (BASIC_ID = ARTICLE_BASICID))
-					JOIN basic_column ON (BASIC_CATEGORYID = COLUMN_CATEGORY_ID))
-					JOIN category ON (COLUMN_CATEGORY_ID = CATEGORY_ID))
-				where
-				BASIC_CATEGORYID=#{category.categoryId} order by
-				basic_id desc )
-			</foreach>
-		</if>
-		order by basic_id desc
 	</select>
 
 	<!-- 根据basicID删除开始 -->
