@@ -46,6 +46,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSONArray;
 import com.mingsoft.base.constant.Const;
+import com.mingsoft.base.entity.BaseEntity;
 import com.mingsoft.basic.action.BaseAction;
 import com.mingsoft.basic.biz.IAppBiz;
 import com.mingsoft.basic.biz.IColumnBiz;
@@ -57,6 +58,10 @@ import com.mingsoft.cms.biz.IArticleBiz;
 import com.mingsoft.cms.constant.ModelCode;
 import com.mingsoft.cms.constant.e.ColumnTypeEnum;
 import com.mingsoft.cms.entity.ArticleEntity;
+import com.mingsoft.mdiy.biz.IContentModelBiz;
+import com.mingsoft.mdiy.biz.IContentModelFieldBiz;
+import com.mingsoft.mdiy.entity.ContentModelEntity;
+import com.mingsoft.mdiy.entity.ContentModelFieldEntity;
 import com.mingsoft.util.StringUtil;
 
 import cn.hutool.core.io.FileUtil;
@@ -136,6 +141,18 @@ public class GeneraterAction extends BaseAction {
 	
 	@Value("${managerPath}")
 	private String managerPath;
+	
+	/**
+	 * 新增字段业务层
+	 */
+	@Autowired
+	protected IContentModelFieldBiz fieldBiz;
+	
+	/**
+	 * 自定义模型业务层
+	 */
+	@Autowired
+	protected IContentModelBiz contentBiz;
 
 	/**
 	 * 一键更新所有
@@ -259,7 +276,6 @@ public class GeneraterAction extends BaseAction {
 		String url = app.getAppHostUrl() + File.separator + HTML + File.separator + app.getAppId();
 		// 站点生成后保存的html地址
 		String generatePath = getRealPath(request, HTML) + File.separator + app.getAppId() + File.separator;
-		FileUtil.mkdir(generatePath);
 		// 网站风格物理路径
 		String tmpPath = getRealPath(request, TEMPLATES) + File.separator + app.getAppId() + File.separator + app.getAppStyle();
 		List<ColumnEntity> columns = new ArrayList<ColumnEntity>();
@@ -271,10 +287,10 @@ public class GeneraterAction extends BaseAction {
 				columns.add((ColumnEntity) columnBiz.getEntity(c.getCategoryId()));
 			}
 		} else {
-			
 			//获取所有的内容管理栏目
 			columns = columnBiz.queryAll(app.getAppId(),modelId);
 		}
+		List<Integer> articleList = null;
 		FileTemplateLoader ft;
 		try {
 			//1、设置模板文件夹路径
@@ -285,41 +301,36 @@ public class GeneraterAction extends BaseAction {
 			for (ColumnEntity column : columns) {
 				String columnPath = null;// pc端
 				String mobilePath = null;// 手机端
-				//判断模板文件是否存在
-				if(!FileUtil.exist(tmpPath + File.separator + column.getColumnUrl())){
-					continue;
-				}
-				// 生成列表保存路径
-				FileUtil.mkdir(generatePath + column.getColumnPath());
+				articleList = articleBiz.queryIdsByCategoryId(column.getCategoryId(), null, null);
 				// 判断是否为顶级栏目，进行栏目路径的组合
 				if (column.getCategoryCategoryId() == 0) {
-					FileUtil.mkdir(generatePath + column.getCategoryId());
 					columnPath = generatePath + File.separator + column.getCategoryId();
 					if (!StringUtil.isBlank(mobileStyle)) {
-						FileUtil.mkdir(generatePath + mobileStyle + File.separator + column.getCategoryId());
 						mobilePath = generatePath + mobileStyle + File.separator + column.getCategoryId();
 					}
 				} else {
 					if (!StringUtil.isBlank(mobileStyle)) {
 						mobilePath = generatePath + mobileStyle + File.separator + column.getColumnPath();
-						FileUtil.mkdir(mobilePath);
 					}
 					columnPath = generatePath + column.getColumnPath();
 				}
 				Map map = new HashMap();
 				//2、读取模板文件
-				Template template = cfg.getTemplate(column.getColumnListUrl(), Const.UTF8);
+				Template template;
 				StringWriter writer = new StringWriter();
+				Map parserParams = new HashMap();
 				// 判断列表类型
 				switch (column.getColumnType()) {
 				case ColumnEntity.COLUMN_TYPE_LIST: // 列表
+					//判断模板文件是否存在
+					if(!FileUtil.exist(tmpPath + File.separator + column.getColumnListUrl())){
+						continue;
+					}
+					template = cfg.getTemplate(column.getColumnListUrl(), Const.UTF8);
 					// 手机列表模版
-					if (!StringUtil.isBlank(mobileStyle)) {
-						FileUtil.mkdir(mobilePath);
-						String mobileListTtmpContent = FileUtil.readUtf8String(tmpPath + File.separator + mobileStyle + File.separator + column.getColumnListUrl());
+					if (ObjectUtil.isNotNull(mobileStyle)) {
 						// 如果模版不为空就进行标签替换
-						if (!StringUtil.isBlank(mobileListTtmpContent)) {
-							// 生成手机端模版
+						if (!FileUtil.exist(tmpPath + mobilePath + File.separator + File.separator + column.getColumnUrl())) {
 							// 要生成手机的静态页面数
 							int mobilePageSize = 10;//cmsParser.getPageSize(app, mobileListTtmpContent, column);
 							// 根据页面数,循环生成静态页面个数在
@@ -334,16 +345,24 @@ public class GeneraterAction extends BaseAction {
 	
 					}
 					try {
-						Map parserParams = new HashMap();
 						parserParams.put("typeid", column.getCategoryId());
+						parserParams.put("id", 179);
 						template.process(null, writer);
 						TagParser tag = new TagParser(writer.toString(),parserParams);
 						// 读取列表模版地址
-						String listTtmpContent = tag.rendering();
+						String content = tag.rendering();
 						// 要生成的静态页面数
+//						int pageSize = PageUtil.totalPage(articleList.size(), 6);
 						// 根据页面数,循环生成静态页面个数在
+//						for (int i = 0; i < pageSize; i++) {
+//							String writePath = mobilePath + File.separator + PAGE_LIST + (i + 1) + HTML_SUFFIX;
+//							if (i == 0) {
+//								writePath = mobilePath + File.separator + INDEX + HTML_SUFFIX;
+//							}
+//							String pagePath = url + File.separator + mobileStyle + File.separator + column.getColumnPath() + File.separator + PAGE_LIST ;
+//						}
 						//3、将tag.getContent()写入路径
-						FileUtil.writeString(listTtmpContent, columnPath + File.separator + INDEX + HTML_SUFFIX, Const.UTF8);
+						FileUtil.writeString(content, columnPath + File.separator + INDEX + HTML_SUFFIX, Const.UTF8);
 						this.outJson(response, true);
 					} catch (TemplateException e) {
 						e.printStackTrace();
@@ -351,6 +370,10 @@ public class GeneraterAction extends BaseAction {
 					}
 					break;
 				case ColumnEntity.COLUMN_TYPE_COVER:// 单页
+					//判断模板文件是否存在
+					if(!FileUtil.exist(tmpPath + File.separator + column.getColumnUrl())){
+						continue;
+					}
 					// 取该栏目的最后一篇新闻作为显示内容
 					List<ArticleEntity> list = articleBiz.queryListByColumnId(column.getCategoryId());
 					ArticleEntity article = list.get(0);// 取一篇文章作为封面栏目的内容
@@ -361,7 +384,6 @@ public class GeneraterAction extends BaseAction {
 						//2、读取单页模板文件
 						template = cfg.getTemplate(column.getColumnUrl(), Const.UTF8);
 						writer = new StringWriter();
-						Map parserParams = new HashMap();
 						parserParams.put("id", article.getBasicId());
 						template.process(null, writer);
 						TagParser tag = new TagParser(writer.toString(),parserParams);
@@ -380,8 +402,13 @@ public class GeneraterAction extends BaseAction {
 						FileUtil.writeString(content, writePath, Const.UTF8);
 						// 手机端
 						if (!StringUtil.isBlank(mobileStyle)) {
+							String mobileTemplatePath = mobileStyle + File.separator + column.getColumnUrl();
+							//判断模板文件是否存在
+							if(!FileUtil.exist(tmpPath + mobileTemplatePath)){
+								continue;
+							}
 							//2、读取单页模板文件
-							template = cfg.getTemplate(mobileStyle + File.separator + column.getColumnUrl(), Const.UTF8);
+							template = cfg.getTemplate(mobileTemplatePath, Const.UTF8);
 							writer = new StringWriter();
 							template.process(null, writer);
 							Map mobileParserParams = new HashMap();
@@ -405,6 +432,7 @@ public class GeneraterAction extends BaseAction {
 			e.printStackTrace();
 			this.outJson(response, false);
 		}
+		this.outJson(response, false);
 	}
 
 	/**
@@ -508,6 +536,7 @@ public class GeneraterAction extends BaseAction {
 							ArticleEntity previous = null;
 							// 下一篇文章
 							ArticleEntity next = null;
+							//存储上下篇的链接和标题
 							Map<String,Object> pageMap = new HashMap<String,Object>();
 							//第一篇文章没有上一篇
 							if(ai>0){
@@ -530,6 +559,8 @@ public class GeneraterAction extends BaseAction {
 							Map<String,Object> parserParams = new HashMap<String,Object>();
 							parserParams.put("id", articleId);
 							parserParams.put("page", pageMap);
+							Map modelMap = this.contentModelMap(tempColumn, articleId);
+							parserParams.put("cfield", modelMap);
 							//2、读取模板文件
 							Template template = cfg.getTemplate(tempColumn.getColumnUrl(), Const.UTF8);
 							//pc端内容
@@ -557,11 +588,11 @@ public class GeneraterAction extends BaseAction {
 								}
 								writer = new StringWriter();
 								template = cfg.getTemplate(app.getAppMobileStyle() + File.separator +tempColumn.getColumnUrl(), Const.UTF8);
-								parserParams.put(app.getAppMobileStyle(), app.getAppMobileStyle());
+								parserParams.put(MOBILE, app.getAppMobileStyle());
 								try {
 									template.process(null, writer);
 									tag = new TagParser(writer.toString(),parserParams);
-									content = tag.rendering(parserParams);
+									content = tag.rendering();
 									FileUtil.writeString(content, writePath, Const.UTF8);
 								} catch (TemplateException e) {
 									e.printStackTrace();
@@ -838,5 +869,35 @@ public class GeneraterAction extends BaseAction {
 		String indexPosition = app.getAppHostUrl() +  File.separator + HTML + File.separator + app.getAppId() + File.separator + position;
 		return "redirect:" + indexPosition;
 	}
-
+	/**
+	 * 替换自定义字段
+	 * @param column 栏目id
+	 * @param basicId 实体id
+	 * @return
+	 */
+	protected Map contentModelMap(ColumnEntity column,int basicId){
+		Map fields = new HashMap<>();
+		//判断该文章是否有扩展字段
+		if(column.getColumnContentModelId()!=0){
+			// 根据表单类型id查找出所有的字段信息
+			List<BaseEntity> listField = fieldBiz.queryListByCmid(column.getColumnContentModelId());
+			//遍历所有的字段实体,得到字段名列表信息
+			List<String> listFieldName = new ArrayList<String>();
+			for(int j = 0;j<listField.size();j++){
+				ContentModelFieldEntity field = (ContentModelFieldEntity) listField.get(j);
+				listFieldName.add(field.getFieldFieldName());
+			}
+			ContentModelEntity contentModel = (ContentModelEntity) contentBiz.getEntity(column.getColumnContentModelId());
+			// 组织where条件
+			Map<String, Integer> where = new HashMap<String, Integer>();
+			where.put("basicId",basicId);
+			// 获取各字段的值
+			List fieldLists = fieldBiz.queryBySQL(contentModel.getCmTableName(), listFieldName, where);
+		
+			if(fieldLists!=null && fieldLists.size()>0){
+				fields = (Map)fieldLists.get(0);
+			}
+		}
+		return fields;
+	}
 }
