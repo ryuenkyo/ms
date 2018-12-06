@@ -3,8 +3,8 @@
     <head>
         <title>注册</title>
         <meta charset="utf-8">
-        <link rel="stylesheet/less" type="text/css" href="{ms:globalskin.url/}/less/login.less">
-        <link rel="stylesheet/less" type="text/css" href="{ms:globalskin.url/}/less/base.less">
+        <link rel="stylesheet/less" type="text/css" href="{ms:global.host/}/{ms:global.style/}/less/login.less">
+        <link rel="stylesheet/less" type="text/css" href="{ms:global.host/}/{ms:global.style/}/less/base.less">
         <script src="http://cdn.mingsoft.net/plugins/jquery/1.9.1/jquery-1.9.1.js"></script>
         <script src="http://cdn.mingsoft.net/plugins/vue/2.3.3/vue.min.js"></script>
         <script src="http://cdn.mingsoft.net/plugins/validator/5.5.0/validator.min.js"></script>
@@ -13,7 +13,7 @@
     <body>
         <div id="login">
             <div class="ms-head">
-                <a href="{ms:global.host/}"><img src="{ms:globalskin.url/}/images/logo.png" /></a>
+                <a href="{ms:global.host/}"><img src="{ms:global.host/}/{ms:global.style/}/images/logo.png" /></a>
                 <span class="ms-head-line"></span>
                 <span class="ms-head-welcome-login">欢迎登录</span>
             </div>
@@ -24,7 +24,7 @@
                         <span class="ms-login-english-title">User Register</span>
                     </div>
                     <div class="ms-login-error-text">
-                        <img src="{ms:globalskin.url/}/images/error.png" style="display: none;" v-show="errorText != ''" />
+                        <img src="{ms:global.host/}/{ms:global.style/}/images/error.png" style="display: none;" v-show="errorText != ''" />
                         <span v-text="errorText" v-show="errorText != ''"></span>
                     </div>
                     <form id="ms-login-form">
@@ -33,7 +33,7 @@
                         <input @keyup="chanageBackgroundColor" maxlength="20" @keyup.enter="login" type="password" name="rePassword" class="ms-login-people-name" :class="{'ms-error':error == 'rePeoplePassword'}" v-model="rePeoplePassword" placeholder="必填，6-20个字符，与密码一致" @blur="checkPeopleRePassword">
                         <div class="login-code">
                             <input @keyup="chanageBackgroundColor" maxlength="4" @keyup.enter="login" type="text" class="login-code-input ms-login-float" name="rand_code" placeholder="必填，4个字符" v-model="peopleCode" :class="{'ms-error':error == 'peopleCode'}" @blur="checkPeopleCode" />
-                            <img src="{ms:globalskin.url/}/images/code.jpg" class="login-code-img ms-login-float" @click="code">
+                            <img src="{ms:global.host/}/{ms:global.style/}/images/code.jpg" class="login-code-img ms-login-float" @click="code">
                             <p class="ms-login-float login-code-text">
                                 <span class="login-code-rompt">看不清?</span>
                                 <br/>
